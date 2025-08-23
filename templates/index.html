@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CUTM Result Portal</title>
+  <link rel="icon" type="image/x-icon" href="/static/favhome.png">
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- AOS Animation -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 0 0 15px 15px;
+    }
+    .navbar .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+      margin: 0 8px;
+      transition: all 0.3s;
+    }
+    .navbar .nav-link:hover {
+      color: #ffdd57 !important;
+      transform: scale(1.1);
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: none;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
+      color: #fff;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffdd57;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .form-control::placeholder {
+      color: #eee;
+    }
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.3);
+      outline: none;
+      box-shadow: 0 0 10px #ffdd57;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #ffdd57, #ff7b72);
+      border: none;
+      color: #000;
+      font-weight: 600;
+      border-radius: 25px;
+      padding: 10px 20px;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.4);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      margin-top: auto;
+      text-align: center;
+      border-radius: 15px 15px 0 0;
+    }
+    footer p {
+      margin: 0;
+      color: #ccc;
+    }
+    footer .fab {
+      font-size: 20px;
+      margin: 0 10px;
+      color: #ffdd57;
+      transition: 0.3s;
+    }
+    footer .fab:hover {
+      color: #fff;
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand text-white" href="{{ url_for('home') }}">
+          <img src="./static/cutm.png" alt="Logo" height="60"> CUTM Portal
+        </a>
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span><i class="fas fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#footer"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('backlog') }}"><i class="fas fa-user-shield"></i> backlog</a></li>           
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_login') }}"><i class="fas fa-user-shield"></i> Admin</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Form Section -->
+  <div class="container my-5" data-aos="zoom-in">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card text-center">
+          <h1 class="card-title mb-4">🎓 Result Portal</h1>
+          <form action="/" method="post" id="searchForm">
+            <div class="form-group">
+              <label for="registration">Registration Number</label>
+              <input type="number" class="form-control" id="registration" name="registration" placeholder="Enter registration number" required>
+            </div>
+            <div class="form-group">
+              <label for="semester">Semester</label>
+              <select class="form-control" id="semester" name="semester">
+                {% for semester in semesters %}
+                  <option value="{{ semester }}">{{ semester }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn w-100 mt-3">Search Result</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <p>&copy; 2024 CUTM Result Portal. All rights reserved.</p>
+    <div>
+      <a href=""><i class="fab fa-github"></i></a>
+      <a href=""><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- AOS Animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+  </script>
+</body>
+</html>
