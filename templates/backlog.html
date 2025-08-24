@@ -2,211 +2,1204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Backlog Check</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backlog Search | CUTM Result Portal - Excellence in Education</title>
+    <link rel="icon" type="image/x-icon" href="/static/favhome.png">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-color: #0f172a;
+            --secondary-color: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-light: #ffffff;
+            --text-muted: #94a3b8;
+            --text-dark: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
         * {
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        body {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: #333;
-            min-height: 100vh;
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-primary);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Enhanced animated background with 2025 trends */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 25%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 25% 75%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(251, 146, 60, 0.15) 0%, transparent 50%);
+            z-index: -2;
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: rotate(0deg) scale(1); opacity: 1; }
+            25% { transform: rotate(1deg) scale(1.02); opacity: 0.8; }
+            50% { transform: rotate(-0.5deg) scale(0.98); opacity: 0.9; }
+            75% { transform: rotate(0.5deg) scale(1.01); opacity: 0.85; }
+        }
+
+        /* Floating geometric shapes - 2025 trend */
+        .geometric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: -2s;
+            animation-duration: 20s;
+        }
+
+        .shape:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: -4s;
+            animation-duration: 18s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: -6s;
+            animation-duration: 22s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(-60px) rotate(240deg); }
+        }
+
+        /* Enhanced navbar */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.98);
+            padding: 15px 0;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-light) !important;
             display: flex;
-            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand img {
+            margin-right: 15px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            box-shadow: var(--shadow-medium);
+            transform: rotate(5deg);
+        }
+
+        .navbar .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            margin: 0 5px;
+            padding: 12px 20px !important;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--text-light) !important;
+            background: rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .navbar .nav-link.active {
+            color: var(--accent-color) !important;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Main container */
+        .main-container {
+            min-height: 100vh;
+            padding-top: 120px;
+            padding-bottom: 80px;
+            display: flex;
             align-items: flex-start;
-            padding: 50px 0;
+            justify-content: center;
         }
-        .container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 900px;
-            animation: fadeIn 1s ease;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
+
+        /* Breadcrumb navigation */
+        .breadcrumb-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 12px 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .breadcrumb-nav .current {
+            color: var(--accent-color);
             font-weight: 600;
         }
-        form {
+
+        /* Main container card - using 2025 glassmorphism trends */
+        .container-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-heavy);
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease;
+        }
+
+        .container-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+        }
+
+        /* Header section with bold typography - 2025 trend */
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 2rem;
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Enhanced form styling with micro-interactions - 2025 trend */
+        .search-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 30px;
+            margin-bottom: 40px;
         }
+
         .search-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s ease;
+        }
+
+        .search-box:hover::before {
+            transform: scale(1);
+        }
+
+        .search-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .search-box-header {
             display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .search-label {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced button with 2025 micro-interactions */
+        .search-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            border-radius: 50px;
+            padding: 15px 35px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .search-btn:hover::before {
+            left: 100%;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-heavy);
+            background: linear-gradient(135deg, var(--accent-hover), #1d4ed8);
+        }
+
+        .search-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* Divider with animation */
+        .divider {
+            margin: 50px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateY(-50%);
+        }
+
+        .divider-text {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 12px 30px;
+            display: inline-block;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Message styling */
+        .message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #fca5a5;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            animation: slideInDown 0.5s ease;
+        }
+
+        .message i {
+            font-size: 1.5rem;
+            color: var(--danger-color);
+        }
+
+        /* Results section */
+        .results-section {
+            margin-top: 50px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
             flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 20px;
         }
-        .search-box {
-            flex: 1;
-            display: flex;
-            gap: 10px;
-            align-items: center;
+
+        .results-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0;
         }
-        label {
+
+        .results-count {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 8px 20px;
+            color: var(--accent-color);
             font-weight: 600;
-            min-width: 150px;
+            font-size: 0.9rem;
         }
-        input[type="text"] {
-            flex: 1;
-            padding: 10px 15px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            transition: all 0.3s ease;
+
+        /* Enhanced table with 2025 styling */
+        .table-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
         }
-        input[type="text"]:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 10px rgba(37,117,252,0.3);
-            outline: none;
-        }
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 12px;
-            background: #6a11cb;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        button:hover {
-            background: #2575fc;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        hr {
-            margin: 30px 0;
-            border: 0;
-            border-top: 2px dashed #6a11cb;
-            opacity: 0.5;
-        }
-        table {
+
+        .modern-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            animation: slideIn 1s ease;
+            margin: 0;
+            background: transparent;
+            border-collapse: separate;
+            border-spacing: 0;
         }
-        th, td {
-            padding: 12px 15px;
+
+        .modern-table thead {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.2));
+            backdrop-filter: blur(10px);
+        }
+
+        .modern-table th {
+            padding: 20px 16px;
             text-align: center;
-            border: 1px solid #ccc;
+            border: none;
+            color: var(--text-light);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
         }
-        th {
-            background: #6a11cb;
-            color: #fff;
+
+        .modern-table th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         }
-        tr:nth-child(even) {
-            background: #f4f4f4;
-        }
-        tr:hover {
-            background: #d6e0ff;
-            transform: scale(1.02);
+
+        .modern-table td {
+            padding: 18px 16px;
+            text-align: center;
+            border: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
         }
-        .message {
-            text-align: center;
-            color: #ff3b3b;
+
+        .modern-table tbody tr {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInRow 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .modern-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .modern-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Grade styling */
+        .grade-badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .grade-a, .grade-s { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .grade-b { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .grade-c { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .grade-d, .grade-f { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            z-index: 9999;
+            transition: width 0.25s ease;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: var(--text-light);
+            font-size: 1.1rem;
             font-weight: 600;
             margin-top: 20px;
-            animation: pop 0.5s ease;
+            animation: pulse-text 2s ease-in-out infinite;
         }
-        @keyframes fadeIn {
-            0% {opacity: 0; transform: translateY(-20px);}
-            100% {opacity: 1; transform: translateY(0);}
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        @keyframes slideIn {
-            0% {opacity: 0; transform: translateX(-50px);}
-            100% {opacity: 1; transform: translateX(0);}
+
+        @keyframes pulse-text {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
-        @keyframes pop {
-            0% {transform: scale(0);}
-            100% {transform: scale(1);}
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        @media (max-width: 700px) {
+
+        @keyframes fadeInRow {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding-top: 100px;
+                padding-bottom: 60px;
+            }
+
+            .container-card {
+                width: 95%;
+                padding: 30px 20px;
+                border-radius: 24px;
+            }
+
+            .search-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
             .search-box {
-                flex-direction: column;
-                align-items: stretch;
+                padding: 25px 20px;
             }
-            button {
-                width: 100%;
+
+            .header-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .modern-table {
+                min-width: 700px;
+            }
+
+            .results-header {
+                flex-direction: column;
+                text-align: center;
             }
         }
+
+        @media (max-width: 480px) {
+            .container-card {
+                margin: 0 10px;
+                padding: 25px 15px;
+            }
+
+            .search-box {
+                padding: 20px 15px;
+            }
+
+            .search-input {
+                padding: 15px 20px;
+            }
+
+            .search-btn {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+
+        /* Animation delays for staggered effect */
+        .modern-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        .modern-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        .modern-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        .modern-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        .modern-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+        .modern-table tbody tr:nth-child(n+6) { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Backlog Search</h1>
-        <form method="POST">
-            <div class="search-section">
-                <div class="search-box">
-                    <label>Registration Number:</label>
-                    <input type="text" name="registration" placeholder="Enter registration number">
-                    <button type="submit" name="search_type" value="registration">Search</button>
-                </div>
-                <div class="search-box">
-                    <label>Subject Name:</label>
-                    <input type="text" name="subject" placeholder="Enter subject name">
-                    <button type="submit" name="search_type" value="subject">Search</button>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <div class="loading-text">Loading Backlog Search...</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Geometric Background -->
+    <div class="geometric-bg">
+        <div class="shape">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" fill="currentColor"/>
+            </svg>
+        </div>
+        <div class="shape">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="35" fill="currentColor"/>
+            </svg>
+        </div>
+        <div class="shape">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="100" height="100" rx="20" fill="currentColor"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Enhanced Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg" id="mainNavbar">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('home') }}">
+                    <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="45"> 
+                    CUTM Portal
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span><i class="fas fa-bars text-white"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('home') }}">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('home') }}#features">
+                                <i class="fas fa-star"></i> Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('backlog') }}">
+                                <i class="fas fa-history"></i> Backlog
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin_login') }}">
+                                <i class="fas fa-user-shield"></i> Admin
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('about') }}">
+                                <i class="fas fa-info-circle"></i> About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#footer">
+                                <i class="fas fa-envelope"></i> Contact
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </form>
-        <hr>
+        </nav>
+    </header>
 
-        {% if message %}
-            <div class="message">{{ message }}</div>
-        {% endif %}
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="container-card" data-aos="zoom-in" data-aos-duration="800">
+            <!-- Breadcrumb Navigation -->
+            <div class="text-center mb-4" data-aos="fade-up">
+                <div class="breadcrumb-nav">
+                    <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span class="current">Backlog Search</span>
+                </div>
+            </div>
 
-        {% if result %}
-            <h2>Backlog Results ({{ count }})</h2>
-            <table>
-                <tr>
-                    {% if search_type == "registration" %}
-                          <th>Reg No</th>
-                        <th>Name</th>
-                        <th>Semester</th>
-                        <th>Subject Code</th>
-                        <th>Subject Name</th>
-                        <th>Grade</th>
-                    {% else %}
-                        <th>Reg No</th>
-                        <th>Name</th>
-                        <th>Semester</th>
-                        <th>Subject Code</th>
-                        <th>Subject Name</th>
-                        <th>Grade</th>
-                    {% endif %}
-                </tr>
-                {% for row in result %}
-                    {% if search_type == "registration" %}
-                        <tr>
-                           <td>{{ row.Reg_No }}</td>
-                            <td>{{ row.Name }}</td>
-                            <td>{{ row.Sem }}</td>
-                            <td>{{ row.Subject_Code }}</td>
-                            <td>{{ row.Subject_Name }}</td>
-                            <td>{{ row.Grade }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td>{{ row.Reg_No }}</td>
-                            <td>{{ row.Name }}</td>
-                            <td>{{ row.Sem }}</td>
-                            <td>{{ row.Subject_Code }}</td>
-                            <td>{{ row.Subject_Name }}</td>
-                            <td>{{ row.Grade }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        {% endif %}
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="header-icon">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+                <h1 class="main-title">Backlog Assessment Search</h1>
+                <p class="subtitle">
+                    Discover pending academic requirements with our advanced search system. 
+                    Find backlog information by registration number or subject name.
+                </p>
+            </div>
+
+            <!-- Search Form -->
+            <form method="POST" class="search-form" data-aos="fade-up" data-aos-delay="200">
+                <div class="search-section">
+                    <!-- Registration Search -->
+                    <div class="search-box" data-aos="fade-right" data-aos-delay="300">
+                        <div class="search-box-header">
+                            <div class="search-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <h3 class="search-label">Search by Registration</h3>
+                        </div>
+                        <input type="text" name="registration" class="search-input" 
+                               placeholder="Enter registration number (e.g., 2021001234)" 
+                               value="{{ request.form.registration if request.form.registration }}">
+                        <button type="submit" name="search_type" value="registration" class="search-btn">
+                            <i class="fas fa-search"></i> Search by Reg No
+                        </button>
+                    </div>
+
+                    <!-- Subject Search -->
+                    <div class="search-box" data-aos="fade-left" data-aos-delay="400">
+                        <div class="search-box-header">
+                            <div class="search-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3 class="search-label">Search by Subject</h3>
+                        </div>
+                        <input type="text" name="subject" class="search-input" 
+                               placeholder="Enter subject name (e.g., Mathematics)" 
+                               value="{{ request.form.subject if request.form.subject }}">
+                        <button type="submit" name="search_type" value="subject" class="search-btn">
+                            <i class="fas fa-search"></i> Search by Subject
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="divider">
+                <div class="divider-text">
+                    <i class="fas fa-chart-line"></i> Search Results
+                </div>
+            </div>
+
+            <!-- Message Display -->
+            {% if message %}
+                <div class="message" data-aos="fade-in">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}
+
+            <!-- Results Display -->
+            {% if result %}
+                <div class="results-section" data-aos="fade-up" data-aos-delay="600">
+                    <div class="results-header">
+                        <h2 class="results-title">Backlog Assessment Results</h2>
+                        <div class="results-count">
+                            <i class="fas fa-list-ol"></i> {{ count }} Record{{ 's' if count != 1 else '' }} Found
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-id-badge"></i> Reg No</th>
+                                    <th><i class="fas fa-user"></i> Name</th>
+                                    <th><i class="fas fa-calendar"></i> Semester</th>
+                                    <th><i class="fas fa-code"></i> Subject Code</th>
+                                    <th><i class="fas fa-book-open"></i> Subject Name</th>
+                                    <th><i class="fas fa-award"></i> Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in result %}
+                                    <tr>
+                                        <td><strong>{{ row.Reg_No }}</strong></td>
+                                        <td>{{ row.Name }}</td>
+                                        <td><span class="badge badge-primary">{{ row.Sem }}</span></td>
+                                        <td><code>{{ row.Subject_Code }}</code></td>
+                                        <td>{{ row.Subject_Name }}</td>
+                                        <td>
+                                            <span class="grade-badge grade-{{ row.Grade|lower }}">
+                                                {{ row.Grade }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({ 
+            duration: 600, 
+            once: true,
+            offset: 50
+        });
+
+        // Loading overlay
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Navbar scroll effect
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 100) {
+                $('#mainNavbar').addClass('scrolled');
+                $('#scrollToTop').addClass('show');
+            } else {
+                $('#mainNavbar').removeClass('scrolled');
+                $('#scrollToTop').removeClass('show');
+            }
+        });
+
+        // Scroll to top
+        $('#scrollToTop').click(function() {
+            $('html, body').animate({scrollTop: 0}, 800);
+        });
+
+        // Enhanced form interactions
+        $('.search-input').on('focus', function() {
+            $(this).closest('.search-box').addClass('focused');
+        }).on('blur', function() {
+            if ($(this).val() === '') {
+                $(this).closest('.search-box').removeClass('focused');
+            }
+        });
+
+        // Form submission enhancement
+        $('.search-form').on('submit', function(e) {
+            const activeButton = $(e.target).find('button[type="submit"]:focus, button[type="submit"]:hover').first();
+            if (activeButton.length) {
+                const originalText = activeButton.html();
+                activeButton.html('<i class="fas fa-spinner fa-spin"></i> Searching...');
+                activeButton.prop('disabled', true);
+
+                // Re-enable button after 3 seconds (remove in production)
+                setTimeout(() => {
+                    activeButton.html(originalText);
+                    activeButton.prop('disabled', false);
+                }, 3000);
+            }
+        });
+
+        // Enhanced table row animations
+        function animateTableRows() {
+            $('.modern-table tbody tr').each(function(index) {
+                $(this).css('animation-delay', (index * 0.1) + 's');
+            });
+        }
+
+        // Initialize table animations when results load
+        if ($('.modern-table tbody tr').length > 0) {
+            animateTableRows();
+        }
+
+        // Smooth scrolling for navigation links
+        $('a[href^="#"]').on('click', function(event) {
+            const target = $(this.getAttribute('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 100
+                }, 1000);
+            }
+        });
+
+        // Add input validation and formatting
+        $('input[name="registration"]').on('input', function() {
+            let value = $(this).val().replace(/\D/g, ''); // Remove non-digits
+            if (value.length > 12) {
+                value = value.slice(0, 12); // Limit to 10 digits
+            }
+            $(this).val(value);
+        });
+
+        // Add keyboard shortcuts
+        $(document).keydown(function(e) {
+            // Ctrl + / to focus first search input
+            if (e.ctrlKey && e.keyCode === 191) {
+                e.preventDefault();
+                $('.search-input').first().focus();
+            }
+        });
+
+        // Add parallax effect for geometric shapes
+        $(window).scroll(function() {
+            const scrolled = $(window).scrollTop();
+            $('.geometric-bg .shape').each(function(index) {
+                const speed = 0.3 + (index * 0.1);
+                $(this).css('transform', `translateY(${scrolled * speed}px)`);
+            });
+        });
+
+        // Performance optimization
+        let ticking = false;
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Intersection Observer for better animation performance
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, observerOptions);
+
+        // Observe animated elements
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add tooltips for better UX
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Auto-focus on appropriate input based on URL parameters or previous search
+        $(document).ready(function() {
+            if ($('input[name="registration"]').val()) {
+                $('input[name="registration"]').focus();
+            } else if ($('input[name="subject"]').val()) {
+                $('input[name="subject"]').focus();
+            }
+        });
+    </script>
 </body>
 </html>
