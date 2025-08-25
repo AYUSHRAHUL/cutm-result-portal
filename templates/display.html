@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,152 +11,435 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #e1bee7);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
     }
 
-    header {
-      background: linear-gradient(90deg, #004080, #0066cc);
-      padding: 10px 0;
-      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+    /* Header - Mobile First */
+    .header-container {
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .navbar .nav-link {
-      color: #fff !important;
-      font-weight: 500;
-      transition: 0.3s;
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      max-width: 100%;
     }
 
-    .navbar .nav-link:hover {
-      color: #ffeb3b !important;
-      transform: scale(1.1);
-    }
-
-    h1 {
-      text-align: center;
-      font-weight: 700;
-      color: #004080;
-      margin-bottom: 20px;
-      animation: fadeInDown 1s ease-in-out;
-    }
-
-    .table-container {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-      animation: fadeInUp 1s ease-in-out;
-    }
-
-    table th {
-      background: #004080 !important;
+    .logo {
       color: white;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
     }
 
-    table tbody tr:hover {
-      background: #f1f8ff;
-      transform: scale(1.01);
-      transition: 0.2s;
+    .menu-btn {
+      color: white;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
     }
 
-    .row p,
-    .row strong {
-      font-size: 16px;
-      animation: fadeIn 1.5s ease-in-out;
+    /* Main Content Container */
+    .main-container {
+      padding: 16px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Page Title */
+    .page-title {
+      background: white;
+      color: #2a5298;
+      text-align: center;
+      padding: 20px 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Student Info Card */
+    .student-info {
+      background: linear-gradient(145deg, #f8f9ff, #e8ebff);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #e0e0e0;
+      flex-wrap: wrap;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #555;
+      font-size: 14px;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .info-value {
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+      text-align: right;
+      flex: 1;
+      word-break: break-word;
+    }
+
+    /* GPA Cards */
+    .gpa-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .gpa-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+      padding: 20px 12px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .gpa-value {
+      font-size: 28px;
+      font-weight: bold;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .gpa-label {
+      font-size: 12px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    /* Subject Cards - Mobile Only */
+    .subjects-title {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .subject-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      border-left: 4px solid #2a5298;
+    }
+
+    .subject-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .subject-code {
+      background: #f0f4ff;
+      color: #2a5298;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .grade-badge {
+      background: #28a745;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .grade-e {
+      background: #6c757d;
+    }
+
+    .grade-o {
+      background: #28a745;
+    }
+
+    .subject-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .subject-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .credits {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Desktop Table - Hidden on Mobile */
+    .desktop-table {
+      display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 576px) {
+      .main-container {
+        padding: 12px;
+      }
+
+      .page-title {
+        font-size: 20px;
+        padding: 16px 12px;
+      }
+
+      .student-info {
+        padding: 16px;
+      }
+
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .info-value {
+        text-align: left;
+        font-weight: 600;
+        color: #2a5298;
+      }
+
+      .gpa-value {
+        font-size: 24px;
+      }
+
+      .subject-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* Tablet and Desktop */
+    @media (min-width: 768px) {
+      .main-container {
+        max-width: 1200px;
+        padding: 20px;
+      }
+
+      .desktop-table {
+        display: block;
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      .mobile-subjects {
+        display: none;
+      }
+
+      .desktop-table table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .desktop-table th {
+        background: #2a5298;
+        color: white;
+        padding: 12px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .desktop-table td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+      }
+
+      .desktop-table tbody tr:hover {
+        background: #f8f9ff;
+      }
+    }
+
+    /* Large Desktop */
+    @media (min-width: 1200px) {
+      .gpa-container {
+        max-width: 600px;
+        margin: 0 auto 20px auto;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand text-white" href="{{ url_for('home') }}">
-          <img src="./static/cutm.png" alt="Logo" height="70">
-        </a>
-        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#footer">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_login') }}">Admin</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
-          </ul>
+  <!-- Header -->
+  <div class="header-container">
+    <div class="header-content">
+      <a href="{{ url_for('home') }}" class="logo">
+        <i class="fas fa-graduation-cap"></i> CUTM
+      </a>
+      <button class="menu-btn" type="button" data-toggle="collapse" data-target="#mobileMenu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <div class="collapse" id="mobileMenu">
+      <div style="background: rgba(0,0,0,0.1); padding: 10px 16px;">
+        <a href="{{ url_for('home') }}" style="color: white; text-decoration: none; display: block; padding: 8px 0;">Home</a>
+        <a href="#footer" style="color: white; text-decoration: none; display: block; padding: 8px 0;">Contact</a>
+        <a href="{{ url_for('admin_login') }}" style="color: white; text-decoration: none; display: block; padding: 8px 0;">Admin</a>
+        <a href="{{ url_for('about') }}" style="color: white; text-decoration: none; display: block; padding: 8px 0;">About</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-container">
+    {% if message %}
+      <div class="alert alert-info text-center">{{ message }}</div>
+    {% else %}
+      
+      <!-- Page Title -->
+      <div class="page-title">
+        Student Result
+      </div>
+
+      {% if result %}
+      <!-- Student Information -->
+      <div class="student-info">
+        <div class="info-row">
+          <span class="info-label">Registration Number</span>
+          <span class="info-value">{{ result[0].Reg_No }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Name</span>
+          <span class="info-value">{{ result[0].Name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Semester</span>
+          <span class="info-value">{{ result[0].Sem }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Number of Subjects</span>
+          <span class="info-value">{{ count }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Credits</span>
+          <span class="info-value">{{ total_credits }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Total Credits</span>
+          <span class="info-value">{{ total_all_semester_credits }}</span>
         </div>
       </div>
-    </nav>
-  </header>
 
-  <div class="container mt-4">
-    {% if message %}
-    <p class="alert alert-info text-center">{{ message }}</p>
-    {% else %}
-    <h1 class="mb-4">Student Result</h1>
-
-    {% if result %}
-    <div class="row mb-4">
-      <div class="col-md-6"><strong>Registration Number:</strong> {{ result[0].Reg_No }}</div>
-      <div class="col-md-6"><strong>Name:</strong> {{ result[0].Name }}</div>
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-md-6"><strong>Semester:</strong> {{ result[0].Sem }}</div>
-      <div class="col-md-6"><strong>Number of Subjects:</strong> {{ count }}</div>
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-md-6"><strong>Credits:</strong> {{ result[0].Sem }} - {{ total_credits }}</div>
-      <div class="col-md-6"><strong>Total Credits:</strong> {{ total_all_semester_credits }}</div>
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-md-6">
+      <!-- GPA Cards -->
+      <div class="gpa-container">
         {% if sgpa is not none %}
-        <p><strong>SGPA:</strong> <span class="badge badge-primary p-2">{{ '%.2f' % sgpa }}</span></p>
+        <div class="gpa-card">
+          <div class="gpa-value">{{ '%.2f' % sgpa }}</div>
+          <div class="gpa-label">SGPA</div>
+        </div>
         {% endif %}
-      </div>
-      <div class="col-md-6">
         {% if cgpa is not none %}
-        <p><strong>CGPA:</strong> <span class="badge badge-success p-2">{{ '%.2f' % cgpa }}</span></p>
+        <div class="gpa-card">
+          <div class="gpa-value">{{ '%.2f' % cgpa }}</div>
+          <div class="gpa-label">CGPA</div>
+        </div>
         {% endif %}
       </div>
-    </div>
 
-    <div class="table-container">
-      <table class="table table-striped table-bordered text-center">
-        <thead class="thead-dark">
-          <tr>
-            <th>Subject Code</th>
-            <th>Subject Name</th>
-            <th>Credits</th>
-            <th>Grade</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in result %}
-          <tr>
-            <td>{{ row.Subject_Code }}</td>
-            <td style="font-weight: bold">{{ row.Subject_Name }}</td>
-            <td>{{ row.Credits }}</td>
-            <td style="font-weight: bold">{{ row.Grade }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% endif %}
+      <!-- Mobile Subjects -->
+      <div class="mobile-subjects">
+        <div class="subjects-title">Subject Details</div>
+        {% for row in result %}
+        <div class="subject-card">
+          <div class="subject-header">
+            <span class="subject-code">{{ row.Subject_Code }}</span>
+            <span class="grade-badge grade-{{ row.Grade|lower }}">{{ row.Grade }}</span>
+          </div>
+          <div class="subject-name">{{ row.Subject_Name }}</div>
+          <div class="subject-details">
+            <div class="credits">
+              <i class="fas fa-star"></i>
+              <span>{{ row.Credits }} Credits</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Desktop Table -->
+      <div class="desktop-table">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Subject Code</th>
+              <th>Subject Name</th>
+              <th>Credits</th>
+              <th>Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in result %}
+            <tr>
+              <td>{{ row.Subject_Code }}</td>
+              <td style="font-weight: 600;">{{ row.Subject_Name }}</td>
+              <td>{{ row.Credits }}</td>
+              <td><span class="grade-badge grade-{{ row.Grade|lower }}">{{ row.Grade }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
     {% endif %}
   </div>
 
-  <!-- Bootstrap & JS -->
+  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
