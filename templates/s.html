@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fire Spinner</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: linear-gradient(-45deg, #0f172a, #1e3a8a, #2563eb, #0ea5e9);
+      background-size: 400% 400%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    .fire-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Fire Glow Layer */
+    .fire {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160px;
+      height: 160px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,140,0,0.8) 0%, rgba(255,0,0,0.2) 70%, transparent 100%);
+      filter: blur(20px);
+      animation: flame 1s infinite alternate ease-in-out;
+      z-index: 0;
+    }
+
+    /* Spinner Image */
+    .spinner {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      position: relative;
+      z-index: 1;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Spin */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Flickering Fire Animation */
+    @keyframes flame {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+    }
+
+    /* Background Gradient */
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div class="fire-wrapper">
+      <div class="fire"></div>
+      <img
+        class="spinner"
+        src="Screenshot 2025-08-25 171437.png"
+        alt="Loading..."
+      />
+    </div>
+  </div>
+</body>
+</html>

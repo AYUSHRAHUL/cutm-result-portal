@@ -315,6 +315,7 @@
       text-align: center;
     }
 
+    /* Fixed Form Control Styles */
     .form-control {
       background: rgba(255, 255, 255, 0.9);
       border: 2px solid rgba(59, 130, 246, 0.1);
@@ -324,6 +325,28 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       color: var(--text-dark);
+      width: 100%;
+      height: auto;
+      appearance: none; /* Remove default select styling */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    /* Custom Select Arrow for Dropdown */
+    select.form-control {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px 12px;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    /* Select Options Styling */
+    select.form-control option {
+      background: white;
+      color: var(--text-dark);
+      padding: 0.5rem;
     }
 
     .form-control:focus {
@@ -333,6 +356,16 @@
       transform: translateY(-2px);
       outline: none;
       color: var(--text-dark);
+    }
+
+    /* Ensure text visibility in select */
+    select.form-control:focus {
+      color: var(--text-dark);
+    }
+
+    select.form-control option:checked {
+      background: var(--accent-color);
+      color: white;
     }
 
     .form-control::placeholder {
@@ -880,7 +913,8 @@
                 <label for="semester" class="form-label">
                   <i class="fas fa-calendar-alt"></i> Select Semester
                 </label>
-                <select class="form-control" id="semester" name="semester">
+                <select class="form-control" id="semester" name="semester" required>
+                  <option value="" disabled selected>Choose your semester</option>
                   {% for semester in semesters %}
                     <option value="{{ semester }}">{{ semester }}</option>
                   {% endfor %}
@@ -1145,25 +1179,43 @@
       }
     });
 
-    // FIXED: Form interaction - REMOVED e.preventDefault()
+    // Form interaction with improved validation
     $('#searchForm').on('submit', function(e) {
-      // Show loading state but allow form submission
+      const registrationInput = $('#registration');
+      const semesterSelect = $('#semester');
+      
+      // Validate registration number
+      if (!registrationInput.val() || registrationInput.val().length < 5) {
+        e.preventDefault();
+        alert('Please enter a valid registration number (minimum 5 digits)');
+        registrationInput.focus();
+        return false;
+      }
+      
+      // Validate semester selection
+      if (!semesterSelect.val()) {
+        e.preventDefault();
+        alert('Please select a semester');
+        semesterSelect.focus();
+        return false;
+      }
+      
+      // Show loading state
       const submitBtn = $(this).find('button[type="submit"]');
       const originalText = submitBtn.html();
       
-      // Add loading state
       submitBtn.addClass('loading');
       submitBtn.html('<span style="opacity: 0;">Searching...</span>');
       submitBtn.prop('disabled', true);
       
-      // Re-enable button after a delay (this is just for UI feedback)
+      // Re-enable button after form submission (in case of errors)
       setTimeout(() => {
         if (submitBtn.hasClass('loading')) {
           submitBtn.removeClass('loading');
           submitBtn.html(originalText);
           submitBtn.prop('disabled', false);
         }
-      }, 3000);
+      }, 5000);
     });
 
     // Enhanced smooth scrolling for navigation links
@@ -1185,6 +1237,19 @@
     }).on('blur', function() {
       $(this).parent().removeClass('focused');
     });
+
+    // Select dropdown enhancement
+    $('#semester').on('change', function() {
+      const selectedValue = $(this).val();
+      if (selectedValue) {
+        $(this).removeClass('placeholder-active');
+      } else {
+        $(this).addClass('placeholder-active');
+      }
+    });
+
+    // Initialize select state
+    $('#semester').addClass('placeholder-active');
 
     // Parallax effect for hero section
     $(window).scroll(function() {

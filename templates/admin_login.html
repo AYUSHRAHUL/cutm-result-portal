@@ -134,6 +134,174 @@
             75% { transform: translateY(-30px) rotate(270deg); }
         }
 
+        /* Professional Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #2563eb 50%, #0ea5e9 75%, #0f172a 100%);
+            background-size: 300% 300%;
+            animation: professionalGradient 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes professionalGradient {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Professional Spinner Container */
+        .spinner-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        /* Main Logo Spinner */
+        .main-spinner {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .spinner-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            animation: logoSpin 3s linear infinite;
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.05); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.05); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Orbital Rings */
+        .spinner-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            animation: ringRotate 4s linear infinite;
+        }
+
+        .ring-1 {
+            width: 140px;
+            height: 140px;
+            border-top: 2px solid var(--accent-color);
+            border-right: 2px solid rgba(59, 130, 246, 0.3);
+            animation-duration: 2s;
+        }
+
+        .ring-2 {
+            width: 160px;
+            height: 160px;
+            border-bottom: 2px solid var(--success-color);
+            border-left: 2px solid rgba(16, 185, 129, 0.3);
+            animation-duration: 3s;
+            animation-direction: reverse;
+        }
+
+        .ring-3 {
+            width: 180px;
+            height: 180px;
+            border-top: 2px solid var(--warning-color);
+            border-right: 2px solid rgba(245, 158, 11, 0.3);
+            animation-duration: 4s;
+        }
+
+        @keyframes ringRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Pulsing Background Circle */
+        .pulse-bg {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Professional Loading Text */
+        .loading-text {
+            color: var(--text-light);
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            animation: textFade 3s ease-in-out infinite;
+        }
+
+        @keyframes textFade {
+            0%, 100% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0.7; transform: translateY(-5px); }
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-custom {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+            animation: progressFill 4s ease-in-out infinite;
+        }
+
+        @keyframes progressFill {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* Loading Status */
+        .loading-status {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
         /* Enhanced navbar with admin theme */
         .navbar {
             background: rgba(15, 23, 42, 0.95);
@@ -527,60 +695,6 @@
             transition: width 0.25s ease;
         }
 
-        /* Loading overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-secondary);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 20px;
-            animation: pulse-text 2s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse-text {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* Scroll to top button */
         .scroll-to-top {
             position: fixed;
@@ -632,6 +746,17 @@
             color: #6ee7b7;
         }
 
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .main-container {
@@ -661,6 +786,19 @@
                 flex-direction: column;
                 gap: 15px;
             }
+
+            .main-spinner {
+                width: 100px;
+                height: 100px;
+            }
+
+            .ring-1 { width: 120px; height: 120px; }
+            .ring-2 { width: 140px; height: 140px; }
+            .ring-3 { width: 160px; height: 160px; }
+
+            .loading-text {
+                font-size: 1.2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -675,6 +813,19 @@
 
             .login-btn {
                 padding: 15px;
+            }
+
+            .main-spinner {
+                width: 80px;
+                height: 80px;
+            }
+
+            .ring-1 { width: 100px; height: 100px; }
+            .ring-2 { width: 120px; height: 120px; }
+            .ring-3 { width: 140px; height: 140px; }
+
+            .progress-container {
+                width: 150px;
             }
         }
 
@@ -702,10 +853,24 @@
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
-        <div class="loading-text">Securing Admin Access...</div>
+    <!-- Professional Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite" aria-label="Loading Admin Portal">
+        <div class="spinner-container">
+            <div class="pulse-bg"></div>
+            <div class="spinner-ring ring-3"></div>
+            <div class="spinner-ring ring-2"></div>
+            <div class="spinner-ring ring-1"></div>
+            <div class="main-spinner">
+                <img class="spinner-logo" 
+                     src="https://tse1.mm.bing.net/th/id/OIP.yR5DUnUlOBL5eCaPQ9HFgwHaHZ?rs=1&pid=ImgDetMain&o=7&rm=3" 
+                     alt="CUTM Logo Loading" />
+            </div>
+        </div>
+        <div class="loading-text" id="loadingText">Initializing Secure Portal...</div>
+        <div class="progress-container">
+            <div class="progress-bar-custom"></div>
+        </div>
+        <div class="loading-status" id="loadingStatus">Setting up security protocols</div>
     </div>
 
     <!-- Progress Bar -->
@@ -904,14 +1069,45 @@
             offset: 50
         });
 
-        // Loading overlay
+        // Professional loading sequence
         window.addEventListener('load', function() {
+            const loadingText = document.getElementById('loadingText');
+            const loadingStatus = document.getElementById('loadingStatus');
+            
+            const loadingMessages = [
+                { text: 'Initializing Secure Portal...', status: 'Setting up security protocols' },
+                { text: 'Verifying System Status...', status: 'Checking server connectivity' },
+                { text: 'Loading Security Modules...', status: 'Encrypting communication channels' },
+                { text: 'Preparing Admin Interface...', status: 'Finalizing user interface' },
+                { text: 'Access Ready', status: 'Welcome to CUTM Admin Portal' }
+            ];
+            
+            let messageIndex = 0;
+            
+            const updateMessages = () => {
+                if (messageIndex < loadingMessages.length) {
+                    loadingText.textContent = loadingMessages[messageIndex].text;
+                    loadingStatus.textContent = loadingMessages[messageIndex].status;
+                    messageIndex++;
+                }
+            };
+            
+            // Update messages every 800ms
+            const messageInterval = setInterval(updateMessages, 800);
+            
+            // Hide loading overlay after sequence completes
             setTimeout(() => {
-                document.getElementById('loadingOverlay').style.opacity = '0';
+                clearInterval(messageInterval);
+                const overlay = document.getElementById('loadingOverlay');
+                
+                // Smooth fade out
+                overlay.style.opacity = '0';
+                overlay.style.transform = 'scale(0.95)';
+                
                 setTimeout(() => {
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                }, 500);
-            }, 1000);
+                    overlay.style.display = 'none';
+                }, 600);
+            }, 4500); // Total loading time: 4.5 seconds
         });
 
         // Progress bar
@@ -952,19 +1148,27 @@
             }
         });
 
-        // Enhanced form submission
+        // Professional form submission with loading state
         $('#adminLoginForm').on('submit', function(e) {
             const loginButton = $('#loginButton');
             const originalText = loginButton.html();
             
-            // Add loading state
-            loginButton.html('<i class="fas fa-spinner fa-spin"></i> Authenticating...');
+            // Professional loading state
+            loginButton.html(`
+                <span style="display: inline-flex; align-items: center; gap: 10px;">
+                    <span style="width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+                    Authenticating...
+                </span>
+            `);
             loginButton.prop('disabled', true);
             
-            // Add a slight delay for better UX (remove in production)
+            // Reset button state after timeout (adjust based on your server response time)
             setTimeout(() => {
-                // Form will submit normally
-            }, 1000);
+                if (window.location.pathname.includes('/admin/login')) {
+                    loginButton.html(originalText);
+                    loginButton.prop('disabled', false);
+                }
+            }, 5000);
         });
 
         // Enhanced form interactions
@@ -976,18 +1180,24 @@
             }
         });
 
-        // Security feedback
-        $('#username, #password').on('input', function() {
-            const username = $('#username').val();
+        // Real-time form validation
+        function validateForm() {
+            const username = $('#username').val().trim();
             const password = $('#password').val();
             const loginButton = $('#loginButton');
             
-            if (username && password) {
-                loginButton.removeClass('btn-disabled');
+            // Enable/disable login button based on input
+            if (username.length >= 3 && password.length >= 6) {
+                loginButton.prop('disabled', false);
+                loginButton.css('opacity', '1');
             } else {
-                loginButton.addClass('btn-disabled');
+                loginButton.prop('disabled', true);
+                loginButton.css('opacity', '0.7');
             }
-        });
+        }
+
+        // Bind validation to input events
+        $('#username, #password').on('input', validateForm);
 
         // Smooth scrolling for navigation links
         $('a[href^="#"]').on('click', function(event) {
@@ -1000,109 +1210,70 @@
             }
         });
 
-        // Add keyboard shortcuts
+        // Keyboard shortcuts
         $(document).keydown(function(e) {
-            // Enter key to focus login button
-            if (e.keyCode === 13 && !$('#loginButton').is(':focus')) {
+            // Enter key to submit form
+            if (e.keyCode === 13 && ($('#username').is(':focus') || $('#password').is(':focus'))) {
                 e.preventDefault();
-                $('#loginButton').focus().click();
+                if (!$('#loginButton').prop('disabled')) {
+                    $('#adminLoginForm').submit();
+                }
             }
             
             // Escape key to clear form
             if (e.keyCode === 27) {
                 $('#username, #password').val('');
                 $('#username').focus();
+                validateForm();
             }
         });
 
-        // Auto-focus username field
+        // Auto-focus username field when page loads
         $(document).ready(function() {
-            $('#username').focus();
+            setTimeout(() => {
+                $('#username').focus();
+                validateForm(); // Initial validation
+            }, 4600); // Focus after loading completes
         });
 
-        // Session timeout warning (demo - implement server-side)
-        let sessionTimer;
-        function resetSessionTimer() {
-            clearTimeout(sessionTimer);
-            sessionTimer = setTimeout(() => {
-                console.log('Session timeout warning - implement server-side logic');
-            }, 900000); // 15 minutes
+        // Security timeout simulation
+        let inactivityTimer;
+        const INACTIVITY_TIME = 15 * 60 * 1000; // 15 minutes
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                console.log('Session timeout warning - implement server-side session management');
+                // You can show a warning modal here
+            }, INACTIVITY_TIME);
         }
 
-        // Reset timer on any activity
-        $(document).on('mousedown keydown scroll', resetSessionTimer);
-        resetSessionTimer();
+        // Reset timer on user activity
+        $(document).on('mousedown keydown scroll touchstart', resetInactivityTimer);
+        resetInactivityTimer();
 
         // Performance optimization
-        let ticking = false;
-        function requestTick() {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }
-
-        // Intersection Observer for better animation performance
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+        const debounce = (func, wait) => {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                }
-            });
-        }, observerOptions);
+        // Debounced scroll handler
+        const debouncedScrollHandler = debounce(() => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }, 10);
 
-        // Observe animated elements
-        document.querySelectorAll('[data-aos]').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Form validation feedback
-        function validateForm() {
-            const username = $('#username').val().trim();
-            const password = $('#password').val();
-            const loginButton = $('#loginButton');
-            
-            if (username.length < 3) {
-                showFieldError('username', 'Username must be at least 3 characters');
-                return false;
-            }
-            
-            if (password.length < 6) {
-                showFieldError('password', 'Password must be at least 6 characters');
-                return false;
-            }
-            
-            clearFieldErrors();
-            return true;
-        }
-
-        function showFieldError(fieldId, message) {
-            const field = $('#' + fieldId);
-            field.addClass('is-invalid');
-            
-            // Remove existing error message
-            field.next('.invalid-feedback').remove();
-            
-            // Add new error message
-            field.after(`<div class="invalid-feedback">${message}</div>`);
-        }
-
-        function clearFieldErrors() {
-            $('.form-control').removeClass('is-invalid');
-            $('.invalid-feedback').remove();
-        }
-
-        // Real-time validation
-        $('#username, #password').on('blur', function() {
-            validateForm();
-        });
+        window.addEventListener('scroll', debouncedScrollHandler);
     </script>
 </body>
 </html>

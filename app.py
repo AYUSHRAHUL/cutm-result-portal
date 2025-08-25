@@ -857,7 +857,7 @@ def update_data():
                 )
 
                 if existing_record:
-                    if existing_record.get("Grade") in {'F', 'S', 'M'}:
+                    if existing_record.get("Grade") in {'F', 'S', 'M',''}:
                         cutm_collection.update_one(
                             {"Reg_No": reg_no, "Subject_Code": subject_code},
                             {"$set": {"Grade": grade}}
@@ -894,7 +894,7 @@ def backlog():
                 search_type = 'registration'
                 cursor = cutm_collection.find(
                     {"Reg_No": reg_no, "Grade": {"$in": ["F", "M", "S"]}},
-                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, "Grade": 1, "Sem": 1}
+                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, "Grade": 1, "Sem": 1 ,"Name":1}
                 )
                 result = list(cursor)
                 count = len(result)
