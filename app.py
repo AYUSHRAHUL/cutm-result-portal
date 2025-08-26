@@ -904,7 +904,7 @@ def backlog():
                 search_type = 'subject'
                 cursor = cutm_collection.find(
                     {"Subject_Name": {"$regex": subject_name, "$options": "i"}, "Grade": {"$in": ["F", "M", "S"]}},
-                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, "Grade": 1, "Sem": 1}
+                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, "Grade": 1, "Sem": 1, "Name":1}
                 )
                 result = list(cursor)
                 count = len(result)

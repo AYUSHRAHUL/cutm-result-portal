@@ -330,6 +330,50 @@
       color: var(--danger-color);
     }
 
+    /* Debug section */
+    .debug-section {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    .debug-section h5 {
+      color: var(--warning-color);
+      margin-bottom: 10px;
+    }
+
+    /* Table search */
+    .table-search {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .table-search input {
+      max-width: 400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 25px;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+    }
+
+    .table-search input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .table-search input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
     /* Enhanced table styling */
     .table-container {
       margin: 40px 0;
@@ -622,6 +666,13 @@
       box-shadow: var(--shadow-heavy);
     }
 
+    /* N/A styling */
+    .na-text {
+      opacity: 0.6;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
     /* Responsive design */
     @media (max-width: 768px) {
       .main-container {
@@ -675,6 +726,10 @@
         width: 100%;
         margin: 10px 0 0 0;
       }
+
+      .table-search input {
+        max-width: 100%;
+      }
     }
 
     @media (max-width: 480px) {
@@ -703,7 +758,9 @@
       .breadcrumb-nav,
       .btn-back,
       .btn-download,
-      .scroll-to-top {
+      .scroll-to-top,
+      .debug-section,
+      .table-search {
         display: none !important;
       }
 
@@ -718,6 +775,10 @@
       .modern-table td {
         color: black;
         border: 1px solid #ddd;
+      }
+
+      .stats-section {
+        page-break-inside: avoid;
       }
     }
   </style>
@@ -825,6 +886,26 @@
           <p class="subtitle">Complete overview of pending academic requirements</p>
         </div>
 
+        <!-- Debug Info (Remove in production) -->
+        {% if result and result|length > 0 %}
+          <div class="debug-section" style="display: none;" id="debugInfo">
+            <h5><i class="fas fa-bug"></i> Debug Information</h5>
+            <p><strong>Total rows:</strong> {{ result|length }}</p>
+            <p><strong>First row structure:</strong> {{ result[0] }}</p>
+            <p><strong>Row length:</strong> {{ result[0]|length }}</p>
+            <p><strong>Sample data types:</strong> 
+              {% for item in result[0] %}
+                {{ item.__class__.__name__ }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+          </div>
+          <div class="text-center mb-3">
+            <button class="btn btn-sm btn-outline-warning" onclick="toggleDebug()">
+              <i class="fas fa-code"></i> Toggle Debug Info
+            </button>
+          </div>
+        {% endif %}
+
         <!-- Message Display -->
         {% if message %}
           <div class="message" data-aos="fade-in">
@@ -834,7 +915,7 @@
         {% endif %}
 
         <!-- Results Display -->
-        {% if result %}
+        {% if result and result|length > 0 %}
           <!-- Statistics Cards -->
           <div class="stats-section" data-aos="fade-up" data-aos-delay="200">
             <div class="stat-card">
@@ -849,8 +930,15 @@
                 <i class="fas fa-credit-card"></i>
               </div>
               <div class="stat-number">
-                {% set total_credits = result|sum(attribute=7) %}
-                {{ total_credits or 0 }}
+                {% set total_credits = 0 %}
+                {% for row in result %}
+                  {% if row|length > 6 and row[6] is not none and row[6] != '' %}
+                    {% set total_credits = total_credits + (row[6]|int if row[6]|string|regex_match('^\d+$') else 0) %}
+                  {% elif row|length > 7 and row[7] is not none and row[7] != '' %}
+                    {% set total_credits = total_credits + (row[7]|int if row[7]|string|regex_match('^\d+$') else 0) %}
+                  {% endif %}
+                {% endfor %}
+                {{ total_credits }}
               </div>
               <div class="stat-label">Total Credits</div>
             </div>
@@ -859,7 +947,12 @@
                 <i class="fas fa-calendar-alt"></i>
               </div>
               <div class="stat-number">
-                {% set semesters = result|map(attribute=2)|list|unique|list %}
+                {% set semesters = [] %}
+                {% for row in result %}
+                  {% if row|length > 2 and row[2] not in semesters %}
+                    {% set _ = semesters.append(row[2]) %}
+                  {% endif %}
+                {% endfor %}
                 {{ semesters|length }}
               </div>
               <div class="stat-label">Semesters</div>
@@ -868,9 +961,17 @@
               <div class="stat-icon">
                 <i class="fas fa-user-graduate"></i>
               </div>
-              <div class="stat-number">{{ result[0][0] if result }}</div>
+              <div class="stat-number">
+                {{ result[0][0] if result[0]|length > 0 else 'N/A' }}
+              </div>
               <div class="stat-label">Reg Number</div>
             </div>
+          </div>
+
+          <!-- Table Search -->
+          <div class="table-search" data-aos="fade-up" data-aos-delay="300">
+            <input type="text" id="tableSearch" class="form-control" 
+                   placeholder="🔍 Search subjects, codes, grades, or any table data...">
           </div>
 
           <!-- Enhanced Table -->
@@ -890,15 +991,54 @@
               <tbody>
                 {% for row in result %}
                   <tr data-aos="fade-in" data-aos-delay="{{ loop.index * 50 }}">
-                    <td><strong>{{ row[0] }}</strong></td>
-                    <td>{{ row[1] }}</td>
-                    <td><span class="badge badge-primary">{{ row[2] }}</span></td>
-                    <td><code>{{ row[3] }}</code></td>
-                    <td>{{ row[4] }}</td>
-                    <td><strong>{{ row[7] }}</strong></td>
                     <td>
-                      <span class="grade-cell grade-{{ row[8]|lower }}">
-                        {{ row[8] }}
+                      <strong>{{ row[0] if row|length > 0 and row[0] is not none and row[0] != '' else 'N/A' }}</strong>
+                    </td>
+                    <td>
+                      {% set name = row[1] if row|length > 1 and row[1] is not none and row[1] != '' else 'N/A' %}
+                      {% if name == 'N/A' %}
+                        <span class="na-text">{{ name }}</span>
+                      {% else %}
+                        {{ name }}
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% set semester = row[2] if row|length > 2 and row[2] is not none and row[2] != '' else 'N/A' %}
+                      {% if semester == 'N/A' %}
+                        <span class="badge badge-secondary na-text">{{ semester }}</span>
+                      {% else %}
+                        <span class="badge badge-primary">{{ semester }}</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% set subject_code = row[3] if row|length > 3 and row[3] is not none and row[3] != '' else 'N/A' %}
+                      {% if subject_code == 'N/A' %}
+                        <span class="na-text">{{ subject_code }}</span>
+                      {% else %}
+                        <code>{{ subject_code }}</code>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% set subject_name = row[4] if row|length > 4 and row[4] is not none and row[4] != '' else 'N/A' %}
+                      {% if subject_name == 'N/A' %}
+                        <span class="na-text">{{ subject_name }}</span>
+                      {% else %}
+                        {{ subject_name }}
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% set credits = row[6] if row|length > 6 and row[6] is not none and row[6] != '' else (row[7] if row|length > 7 and row[7] is not none and row[7] != '' else 'N/A') %}
+                      {% if credits == 'N/A' %}
+                        <span class="na-text">{{ credits }}</span>
+                      {% else %}
+                        <strong>{{ credits }}</strong>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% set grade = row[8] if row|length > 8 and row[8] is not none and row[8] != '' else (row[6] if row|length > 6 and row[6] is not none and row[6] != '' and row[6]|string|length <= 2 else (row[5] if row|length > 5 and row[5] is not none and row[5] != '' and row[5]|string|length <= 2 else 'F')) %}
+                      <span class="grade-cell grade-{{ grade|lower if grade != 'N/A' else 'f' }}" 
+                            title="{{ grade_explanations.get(grade, 'Unknown Grade') if grade != 'N/A' else 'No grade available' }}">
+                        {{ grade }}
                       </span>
                     </td>
                   </tr>
@@ -913,7 +1053,7 @@
               <i class="fas fa-arrow-left"></i>
               Back to Search
             </a>
-            <button class="btn-back btn-download" onclick="window.print()">
+            <button class="btn-back btn-download" onclick="printResults()">
               <i class="fas fa-download"></i>
               Download PDF
             </button>
@@ -927,7 +1067,7 @@
             </div>
             <h3 style="color: var(--text-muted); margin-bottom: 20px;">No Results Found</h3>
             <p style="color: var(--text-muted); margin-bottom: 40px;">
-              We couldn't find any backlog details. Please try searching again.
+              We couldn't find any backlog details. Please try searching again with different criteria.
             </p>
             <a href="{{ url_for('backlog') }}" class="btn-back">
               <i class="fas fa-search"></i>
@@ -951,6 +1091,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   
   <script>
+    // Grade explanations
+    const gradeExplanations = {
+      'S': 'Outstanding (90-100%)',
+      'A': 'Excellent (80-89%)', 
+      'B': 'Very Good (70-79%)',
+      'C': 'Good (60-69%)',
+      'D': 'Satisfactory (50-59%)',
+      'F': 'Fail (Below 50%)',
+      'P': 'Pass'
+    };
+
     // Initialize AOS
     AOS.init({ 
       duration: 600, 
@@ -1002,6 +1153,37 @@
       }
     );
 
+    // Table search functionality
+    $('#tableSearch').on('keyup', function() {
+      const searchTerm = $(this).val().toLowerCase();
+      $('.modern-table tbody tr').each(function() {
+        const rowText = $(this).text().toLowerCase();
+        if (rowText.indexOf(searchTerm) > -1) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+
+      // Update visible count
+      const visibleRows = $('.modern-table tbody tr:visible').length;
+      const totalRows = $('.modern-table tbody tr').length;
+      
+      if (searchTerm !== '') {
+        if (!$('#searchResults').length) {
+          $('.table-search').append(`
+            <div id="searchResults" style="margin-top: 10px; color: var(--text-muted); font-size: 0.9rem;">
+              Showing <span id="visibleCount">${visibleRows}</span> of <span id="totalCount">${totalRows}</span> results
+            </div>
+          `);
+        } else {
+          $('#visibleCount').text(visibleRows);
+        }
+      } else {
+        $('#searchResults').remove();
+      }
+    });
+
     // Smooth scrolling for navigation links
     $('a[href^="#"]').on('click', function(event) {
       const target = $(this.getAttribute('href'));
@@ -1013,87 +1195,91 @@
       }
     });
 
-    // Print functionality enhancement
-    window.addEventListener('beforeprint', function() {
-      document.body.classList.add('printing');
-    });
+    // Enhanced print functionality
+    function printResults() {
+      // Hide search before printing
+      const searchDiv = document.querySelector('.table-search');
+      const debugDiv = document.querySelector('.debug-section');
+      
+      if (searchDiv) searchDiv.style.display = 'none';
+      if (debugDiv) debugDiv.style.display = 'none';
+      
+      // Show all rows for printing
+      $('.modern-table tbody tr').show();
+      
+      // Add print title
+      const originalTitle = document.title;
+      document.title = 'CUTM Backlog Report - ' + new Date().toLocaleDateString();
+      
+      window.print();
+      
+      // Restore after printing
+      setTimeout(() => {
+        if (searchDiv) searchDiv.style.display = 'block';
+        document.title = originalTitle;
+      }, 1000);
+    }
 
-    window.addEventListener('afterprint', function() {
-      document.body.classList.remove('printing');
-    });
-
-    // Add keyboard navigation for table
-    $(document).keydown(function(e) {
-      const currentRow = $('.modern-table tbody tr.table-row-hover');
-      if (e.keyCode === 40) { // Down arrow
-        e.preventDefault();
-        if (currentRow.length) {
-          currentRow.removeClass('table-row-hover').next('tr').addClass('table-row-hover');
-        } else {
-          $('.modern-table tbody tr:first').addClass('table-row-hover');
-        }
-      } else if (e.keyCode === 38) { // Up arrow
-        e.preventDefault();
-        if (currentRow.length) {
-          currentRow.removeClass('table-row-hover').prev('tr').addClass('table-row-hover');
-        } else {
-          $('.modern-table tbody tr:last').addClass('table-row-hover');
-        }
-      }
-    });
-
-    // Add tooltips for grade explanations
-    const gradeExplanations = {
-      'S': 'Outstanding (90-100%)',
-      'A': 'Excellent (80-89%)', 
-      'B': 'Very Good (70-79%)',
-      'C': 'Good (60-69%)',
-      'D': 'Satisfactory (50-59%)',
-      'F': 'Fail (Below 50%)',
-      'P': 'Pass'
-    };
-
-    $('.grade-cell').each(function() {
-      const grade = $(this).text().trim();
-      if (gradeExplanations[grade]) {
-        $(this).attr('title', gradeExplanations[grade]);
-        $(this).attr('data-toggle', 'tooltip');
-      }
-    });
-
-    // Initialize tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
-    // Add search functionality (client-side filter)
-    function addTableSearch() {
-      if ($('.modern-table tbody tr').length > 5) {
-        const searchHTML = `
-          <div class="table-search" style="margin-bottom: 20px; text-align: center;">
-            <input type="text" id="tableSearch" class="form-control" 
-                   style="max-width: 400px; margin: 0 auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 25px; padding: 12px 20px;"
-                   placeholder="Search subjects, codes, or grades...">
-          </div>
-        `;
-        $('.table-container').before(searchHTML);
-
-        $('#tableSearch').on('keyup', function() {
-          const searchTerm = $(this).val().toLowerCase();
-          $('.modern-table tbody tr').each(function() {
-            const rowText = $(this).text().toLowerCase();
-            if (rowText.indexOf(searchTerm) > -1) {
-              $(this).show();
-            } else {
-              $(this).hide();
-            }
-          });
-        });
+    // Debug toggle function
+    function toggleDebug() {
+      const debugInfo = document.getElementById('debugInfo');
+      if (debugInfo) {
+        debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
       }
     }
 
-    // Initialize search if table has enough rows
+    // Handle empty cells and N/A values
     $(document).ready(function() {
-      addTableSearch();
+      $('.modern-table td').each(function() {
+        const text = $(this).text().trim();
+        if (text === '' || text === 'None' || text === 'null') {
+          $(this).html('<span class="na-text">N/A</span>');
+        }
+      });
+
+      // Initialize tooltips for grades
+      $('.grade-cell').each(function() {
+        const grade = $(this).text().trim();
+        if (gradeExplanations[grade]) {
+          $(this).attr('title', gradeExplanations[grade]);
+          $(this).attr('data-toggle', 'tooltip');
+        }
+      });
+
+      // Initialize Bootstrap tooltips
+      $('[data-toggle="tooltip"]').tooltip({
+        placement: 'top',
+        trigger: 'hover'
+      });
     });
+
+    // Add keyboard navigation for table
+    let currentRow = -1;
+    $(document).keydown(function(e) {
+      const visibleRows = $('.modern-table tbody tr:visible');
+      
+      if (e.keyCode === 40) { // Down arrow
+        e.preventDefault();
+        currentRow = Math.min(currentRow + 1, visibleRows.length - 1);
+        highlightRow();
+      } else if (e.keyCode === 38) { // Up arrow
+        e.preventDefault();
+        currentRow = Math.max(currentRow - 1, 0);
+        highlightRow();
+      }
+    });
+
+    function highlightRow() {
+      $('.modern-table tbody tr').removeClass('table-row-highlight');
+      const visibleRows = $('.modern-table tbody tr:visible');
+      if (currentRow >= 0 && currentRow < visibleRows.length) {
+        $(visibleRows[currentRow]).addClass('table-row-highlight');
+        $(visibleRows[currentRow])[0].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
+      }
+    }
 
     // Performance optimization
     let ticking = false;
@@ -1124,6 +1310,41 @@
     document.querySelectorAll('[data-aos]').forEach(el => {
       observer.observe(el);
     });
+
+    // Auto-focus search if table has many rows
+    $(document).ready(function() {
+      if ($('.modern-table tbody tr').length > 10) {
+        setTimeout(() => {
+          $('#tableSearch').focus();
+        }, 2000);
+      }
+    });
+
+    // Add search suggestions
+    $('#tableSearch').on('focus', function() {
+      if (!$('#searchSuggestions').length) {
+        const suggestions = ['Grade: A', 'Grade: B', 'Grade: F', 'Semester', 'Credits'];
+        const suggestionsHtml = suggestions.map(s => 
+          `<span class="badge badge-outline-primary mr-2 mb-2" style="cursor: pointer; opacity: 0.7;" onclick="$('#tableSearch').val('${s.split(': ')[1] || s}').trigger('keyup')">${s}</span>`
+        ).join('');
+        
+        $('.table-search').append(`
+          <div id="searchSuggestions" style="margin-top: 10px;">
+            <small style="color: var(--text-muted);">Quick filters:</small><br>
+            ${suggestionsHtml}
+          </div>
+        `);
+      }
+    });
+
+    // Hide suggestions when clicking outside
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('.table-search').length) {
+        $('#searchSuggestions').fadeOut();
+      }
+    });
+
+    console.log('CUTM Backlog Details Portal - Loaded Successfully');
   </script>
 </body>
 </html>
