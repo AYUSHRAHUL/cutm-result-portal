@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | CUTM Result Portal - Secure Access</title>
+    <link rel="icon" type="image/x-icon" href="/static/admin.png">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --secondary-color: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --text-light: #ffffff;
+            --text-muted: #94a3b8;
+            --text-dark: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-secondary);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Enhanced animated background with security theme */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            z-index: -2;
+            animation: securityGlow 25s ease-in-out infinite;
+        }
+
+        @keyframes securityGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            25% { opacity: 0.2; transform: scale(1.05); }
+            50% { opacity: 0.4; transform: scale(0.95); }
+            75% { opacity: 0.25; transform: scale(1.02); }
+        }
+
+        /* Security-themed floating elements */
+        .security-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .security-element {
+            position: absolute;
+            opacity: 0.05;
+            animation: securityFloat 20s ease-in-out infinite;
+            color: var(--accent-color);
+        }
+
+        .security-element:nth-child(1) {
+            top: 15%;
+            left: 10%;
+            font-size: 2rem;
+            animation-delay: -2s;
+        }
+
+        .security-element:nth-child(2) {
+            top: 25%;
+            right: 15%;
+            font-size: 1.5rem;
+            animation-delay: -8s;
+        }
+
+        .security-element:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            font-size: 2.5rem;
+            animation-delay: -15s;
+        }
+
+        .security-element:nth-child(4) {
+            bottom: 15%;
+            right: 25%;
+            font-size: 1.8rem;
+            animation-delay: -5s;
+        }
+
+        @keyframes securityFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(90deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+            75% { transform: translateY(-30px) rotate(270deg); }
+        }
+
+        /* Professional Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #2563eb 50%, #0ea5e9 75%, #0f172a 100%);
+            background-size: 300% 300%;
+            animation: professionalGradient 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes professionalGradient {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Professional Spinner Container */
+        .spinner-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        /* Main Logo Spinner */
+        .main-spinner {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .spinner-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            animation: logoSpin 3s linear infinite;
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.05); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.05); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Orbital Rings */
+        .spinner-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            animation: ringRotate 4s linear infinite;
+        }
+
+        .ring-1 {
+            width: 140px;
+            height: 140px;
+            border-top: 2px solid var(--accent-color);
+            border-right: 2px solid rgba(59, 130, 246, 0.3);
+            animation-duration: 2s;
+        }
+
+        .ring-2 {
+            width: 160px;
+            height: 160px;
+            border-bottom: 2px solid var(--success-color);
+            border-left: 2px solid rgba(16, 185, 129, 0.3);
+            animation-duration: 3s;
+            animation-direction: reverse;
+        }
+
+        .ring-3 {
+            width: 180px;
+            height: 180px;
+            border-top: 2px solid var(--warning-color);
+            border-right: 2px solid rgba(245, 158, 11, 0.3);
+            animation-duration: 4s;
+        }
+
+        @keyframes ringRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Pulsing Background Circle */
+        .pulse-bg {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Professional Loading Text */
+        .loading-text {
+            color: var(--text-light);
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            animation: textFade 3s ease-in-out infinite;
+        }
+
+        @keyframes textFade {
+            0%, 100% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0.7; transform: translateY(-5px); }
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-custom {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+            animation: progressFill 4s ease-in-out infinite;
+        }
+
+        @keyframes progressFill {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* Loading Status */
+        .loading-status {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Enhanced navbar with admin theme */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.98);
+            padding: 15px 0;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-light) !important;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand img {
+            margin-right: 15px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            box-shadow: var(--shadow-medium);
+            transform: rotate(5deg);
+        }
+
+        .navbar .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            margin: 0 5px;
+            padding: 12px 20px !important;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .navbar .nav-link:hover {
+            color: var(--text-light) !important;
+            background: rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .navbar .nav-link.active {
+            color: var(--accent-color) !important;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Main container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 40px;
+            min-height: 100vh;
+        }
+
+        /* Admin login card with 2025 glassmorphism trends */
+        .admin-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-heavy);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease;
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+
+        .admin-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+            animation: cardGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes cardGlow {
+            0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.5; }
+            50% { transform: rotate(180deg) scale(1.1); opacity: 0.8; }
+        }
+
+        /* Header section with security theme */
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .admin-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+            color: white;
+            animation: securityPulse 3s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+
+        @keyframes securityPulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); 
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); 
+            }
+        }
+
+        .admin-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .admin-subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Enhanced form styling */
+        .admin-form {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-label i {
+            color: var(--accent-color);
+            width: 16px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 18px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Password visibility toggle */
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        /* Enhanced login button */
+        .login-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            border-radius: 50px;
+            padding: 18px 40px;
+            width: 100%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-medium);
+            margin-top: 20px;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+            background: linear-gradient(135deg, var(--accent-hover), #1d4ed8);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Security features section */
+        .security-features {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .security-item i {
+            color: var(--success-color);
+            width: 16px;
+        }
+
+        /* Enhanced footer */
+        footer {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-content {
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            z-index: 9999;
+            transition: width 0.25s ease;
+        }
+
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        /* Alert messages */
+        .alert {
+            border-radius: 16px;
+            border: none;
+            margin-bottom: 25px;
+            padding: 16px 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 100px 15px 20px;
+            }
+
+            .admin-card {
+                padding: 40px 25px;
+                border-radius: 24px;
+            }
+
+            .admin-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .admin-title {
+                font-size: 2rem;
+            }
+
+            .navbar {
+                padding: 15px 0;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-spinner {
+                width: 100px;
+                height: 100px;
+            }
+
+            .ring-1 { width: 120px; height: 120px; }
+            .ring-2 { width: 140px; height: 140px; }
+            .ring-3 { width: 160px; height: 160px; }
+
+            .loading-text {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-card {
+                margin: 0 10px;
+                padding: 30px 20px;
+            }
+
+            .form-control {
+                padding: 15px 20px;
+            }
+
+            .login-btn {
+                padding: 15px;
+            }
+
+            .main-spinner {
+                width: 80px;
+                height: 80px;
+            }
+
+            .ring-1 { width: 100px; height: 100px; }
+            .ring-2 { width: 120px; height: 120px; }
+            .ring-3 { width: 140px; height: 140px; }
+
+            .progress-container {
+                width: 150px;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .admin-card {
+                border: 2px solid var(--accent-color);
+            }
+            
+            .form-control {
+                border-width: 2px;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite" aria-label="Loading Admin Portal">
+        <div class="spinner-container">
+            <div class="pulse-bg"></div>
+            <div class="spinner-ring ring-3"></div>
+            <div class="spinner-ring ring-2"></div>
+            <div class="spinner-ring ring-1"></div>
+            <div class="main-spinner">
+                <img class="spinner-logo" 
+                     src="https://tse1.mm.bing.net/th/id/OIP.yR5DUnUlOBL5eCaPQ9HFgwHaHZ?rs=1&pid=ImgDetMain&o=7&rm=3" 
+                     alt="CUTM Logo Loading" />
+            </div>
+        </div>
+        <div class="loading-text" id="loadingText">Initializing Secure Portal...</div>
+        <div class="progress-container">
+            <div class="progress-bar-custom"></div>
+        </div>
+        <div class="loading-status" id="loadingStatus">Setting up security protocols</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Security Background Elements -->
+    <div class="security-bg">
+        <div class="security-element">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="security-element">
+            <i class="fas fa-lock"></i>
+        </div>
+        <div class="security-element">
+            <i class="fas fa-key"></i>
+        </div>
+        <div class="security-element">
+            <i class="fas fa-user-shield"></i>
+        </div>
+    </div>
+
+    <!-- Enhanced Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg" id="mainNavbar">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('home') }}">
+                    <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="45"> 
+                    CUTM Portal
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                    <span><i class="fas fa-bars text-white"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('home') }}">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('home') }}#features">
+                                <i class="fas fa-star"></i> Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('backlog') }}">
+                                <i class="fas fa-history"></i> Backlog
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('admin_login') }}">
+                                <i class="fas fa-user-shield"></i> Admin
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('about') }}">
+                                <i class="fas fa-info-circle"></i> About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#footer">
+                                <i class="fas fa-envelope"></i> Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="admin-card" data-aos="zoom-in" data-aos-duration="800">
+            <!-- Admin Header -->
+            <div class="admin-header">
+                <div class="admin-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h1 class="admin-title">Admin Access</h1>
+                <p class="admin-subtitle">Secure administrative portal for CUTM Result Management</p>
+                <div class="security-badge">
+                    <i class="fas fa-shield-check"></i>
+                    <span>SSL Secured</span>
+                </div>
+            </div>
+
+            <!-- Error/Success Messages -->
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }}" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Admin Login Form -->
+            <form action="/admin/login" method="post" class="admin-form" id="adminLoginForm" data-aos="fade-up" data-aos-delay="200">
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user"></i>
+                        Administrator Username
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="username" 
+                           name="username" 
+                           placeholder="Enter admin username"
+                           autocomplete="username" 
+                           required
+                           data-aos="fade-right" 
+                           data-aos-delay="300">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Secure Password
+                    </label>
+                    <div class="password-container">
+                        <input type="password" 
+                               class="form-control" 
+                               id="password" 
+                               name="password" 
+                               placeholder="Enter admin password"
+                               autocomplete="current-password" 
+                               required
+                               data-aos="fade-left" 
+                               data-aos-delay="400">
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                        class="login-btn" 
+                        id="loginButton"
+                        data-aos="fade-up" 
+                        data-aos-delay="500">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Secure Login
+                </button>
+            </form>
+
+            <!-- Security Features -->
+            <div class="security-features" data-aos="fade-up" data-aos-delay="600">
+                <div class="security-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Advanced encryption protection</span>
+                </div>
+                <div class="security-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Session timeout for security</span>
+                </div>
+                <div class="security-item">
+                    <i class="fas fa-history"></i>
+                    <span>Complete audit trail logging</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content" data-aos="fade-up">
+                <div class="footer-links">
+                    <a href="{{ url_for('home') }}">Home</a>
+                    <a href="{{ url_for('about') }}">About</a>
+                    <a href="#footer">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <p>&copy; 2024 CUTM Result Portal. All rights reserved. | Secure Admin Access</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({ 
+            duration: 600, 
+            once: true,
+            offset: 50
+        });
+
+        // Professional loading sequence
+        window.addEventListener('load', function() {
+            const loadingText = document.getElementById('loadingText');
+            const loadingStatus = document.getElementById('loadingStatus');
+            
+            const loadingMessages = [
+                { text: 'Initializing Secure Portal...', status: 'Setting up security protocols' },
+                { text: 'Verifying System Status...', status: 'Checking server connectivity' },
+                { text: 'Loading Security Modules...', status: 'Encrypting communication channels' },
+                { text: 'Preparing Admin Interface...', status: 'Finalizing user interface' },
+                { text: 'Access Ready', status: 'Welcome to CUTM Admin Portal' }
+            ];
+            
+            let messageIndex = 0;
+            
+            const updateMessages = () => {
+                if (messageIndex < loadingMessages.length) {
+                    loadingText.textContent = loadingMessages[messageIndex].text;
+                    loadingStatus.textContent = loadingMessages[messageIndex].status;
+                    messageIndex++;
+                }
+            };
+            
+            // Update messages every 800ms
+            const messageInterval = setInterval(updateMessages, 800);
+            
+            // Hide loading overlay after sequence completes
+            setTimeout(() => {
+                clearInterval(messageInterval);
+                const overlay = document.getElementById('loadingOverlay');
+                
+                // Smooth fade out
+                overlay.style.opacity = '0';
+                overlay.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 600);
+            }, 4500); // Total loading time: 4.5 seconds
+        });
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Navbar scroll effect
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 100) {
+                $('#mainNavbar').addClass('scrolled');
+                $('#scrollToTop').addClass('show');
+            } else {
+                $('#mainNavbar').removeClass('scrolled');
+                $('#scrollToTop').removeClass('show');
+            }
+        });
+
+        // Scroll to top
+        $('#scrollToTop').click(function() {
+            $('html, body').animate({scrollTop: 0}, 800);
+        });
+
+        // Password visibility toggle
+        $('#togglePassword').click(function() {
+            const passwordField = $('#password');
+            const icon = $(this).find('i');
+            
+            if (passwordField.attr('type') === 'password') {
+                passwordField.attr('type', 'text');
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+
+        // Professional form submission with loading state
+        $('#adminLoginForm').on('submit', function(e) {
+            const loginButton = $('#loginButton');
+            const originalText = loginButton.html();
+            
+            // Professional loading state
+            loginButton.html(`
+                <span style="display: inline-flex; align-items: center; gap: 10px;">
+                    <span style="width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+                    Authenticating...
+                </span>
+            `);
+            loginButton.prop('disabled', true);
+            
+            // Reset button state after timeout (adjust based on your server response time)
+            setTimeout(() => {
+                if (window.location.pathname.includes('/admin/login')) {
+                    loginButton.html(originalText);
+                    loginButton.prop('disabled', false);
+                }
+            }, 5000);
+        });
+
+        // Enhanced form interactions
+        $('.form-control').on('focus', function() {
+            $(this).closest('.form-group').addClass('focused');
+        }).on('blur', function() {
+            if ($(this).val() === '') {
+                $(this).closest('.form-group').removeClass('focused');
+            }
+        });
+
+        // Real-time form validation
+        function validateForm() {
+            const username = $('#username').val().trim();
+            const password = $('#password').val();
+            const loginButton = $('#loginButton');
+            
+            // Enable/disable login button based on input
+            if (username.length >= 3 && password.length >= 6) {
+                loginButton.prop('disabled', false);
+                loginButton.css('opacity', '1');
+            } else {
+                loginButton.prop('disabled', true);
+                loginButton.css('opacity', '0.7');
+            }
+        }
+
+        // Bind validation to input events
+        $('#username, #password').on('input', validateForm);
+
+        // Smooth scrolling for navigation links
+        $('a[href^="#"]').on('click', function(event) {
+            const target = $(this.getAttribute('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 100
+                }, 1000);
+            }
+        });
+
+        // Keyboard shortcuts
+        $(document).keydown(function(e) {
+            // Enter key to submit form
+            if (e.keyCode === 13 && ($('#username').is(':focus') || $('#password').is(':focus'))) {
+                e.preventDefault();
+                if (!$('#loginButton').prop('disabled')) {
+                    $('#adminLoginForm').submit();
+                }
+            }
+            
+            // Escape key to clear form
+            if (e.keyCode === 27) {
+                $('#username, #password').val('');
+                $('#username').focus();
+                validateForm();
+            }
+        });
+
+        // Auto-focus username field when page loads
+        $(document).ready(function() {
+            setTimeout(() => {
+                $('#username').focus();
+                validateForm(); // Initial validation
+            }, 4600); // Focus after loading completes
+        });
+
+        // Security timeout simulation
+        let inactivityTimer;
+        const INACTIVITY_TIME = 15 * 60 * 1000; // 15 minutes
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                console.log('Session timeout warning - implement server-side session management');
+                // You can show a warning modal here
+            }, INACTIVITY_TIME);
+        }
+
+        // Reset timer on user activity
+        $(document).on('mousedown keydown scroll touchstart', resetInactivityTimer);
+        resetInactivityTimer();
+
+        // Performance optimization
+        const debounce = (func, wait) => {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        };
+
+        // Debounced scroll handler
+        const debouncedScrollHandler = debounce(() => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }, 10);
+
+        window.addEventListener('scroll', debouncedScrollHandler);
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View & Update Data</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <style>
+    table { font-size: 0.9rem; }
+    input[type="text"] { width: 80px; }
+  </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <h2 class="mb-4">All Student Records</h2>
+
+  <table class="table table-bordered table-striped bg-white shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>Reg No</th>
+        <th>Name</th>
+        <th>Sem</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+        <th>Credits</th>
+        <th>Grade</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+        <td>{{ row[5] }}</td>
+        <td>{{ row[6] }}</td>
+        <td>
+          <form method="POST" class="d-flex">
+            <input type="hidden" name="reg_no" value="{{ row[0] }}">
+            <input type="hidden" name="subject_code" value="{{ row[3] }}">
+            <input type="text" name="new_grade" placeholder="Grade" class="form-control me-2" required>
+            <button type="submit" class="btn btn-sm btn-success">Save</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="mt-3">
+    <a href="/update_data" class="btn btn-primary">Upload New File</a>
+  </div>
+</div>
+
+</body>
+</html>
