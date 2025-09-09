@@ -20,8 +20,8 @@ ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 MONGO_URI = os.getenv('MONGO_URI')
 
 client = MongoClient(MONGO_URI, w=1, retryWrites=True, socketTimeoutMS=20000)
-db = client.get_database("cutm")
-cutm_collection = db.get_collection("CUTM")
+db = client.get_database("cutm1")
+cutm_collection = db.get_collection("CUTM1")
 
 # ---------------- Indexes (biggest speed-up for queries) ----------------
 def ensure_indexes():
