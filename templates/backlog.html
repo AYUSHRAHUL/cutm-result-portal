@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CUTM Result Portal </title>
+    <title>CUTM Result Portal</title>
     <link rel="icon" type="image/x-icon" href="https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true">
 
     <!-- jQuery -->
@@ -284,68 +284,6 @@
             justify-content: center;
         }
 
-        /* Breadcrumb navigation */
-        .breadcrumb-nav {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            padding: 12px 30px;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: breadcrumbSlideIn 0.8s ease-out 1.3s forwards;
-            transition: all 0.3s ease;
-        }
-
-        .breadcrumb-nav:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        @keyframes breadcrumbSlideIn {
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
-
-        .breadcrumb-nav a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .breadcrumb-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-light);
-            transition: width 0.3s ease;
-        }
-
-        .breadcrumb-nav a:hover {
-            color: var(--accent-light);
-        }
-
-        .breadcrumb-nav a:hover::after {
-            width: 100%;
-        }
-
-        .breadcrumb-nav .current {
-            color: var(--accent-light);
-            font-weight: 600;
-        }
-
         /* Main container card */
         .container-card {
             background: var(--card-bg);
@@ -355,7 +293,7 @@
             padding: 50px 40px;
             box-shadow: var(--shadow-large);
             width: 90%;
-            max-width: 1000px;
+            max-width: 10000px;
             position: relative;
             overflow: hidden;
             transform: scale(0.95);
@@ -578,6 +516,54 @@
             border-color: var(--accent-color);
         }
 
+        /* Enhanced Search Box for Subject Code with Filters */
+        .enhanced-search-box {
+            min-height: 420px;
+            padding: 35px;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 2;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            min-width: 140px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-select {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid var(--glass-border);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+
         .search-box-header {
             display: flex;
             align-items: center;
@@ -706,6 +692,110 @@
             50% { 
                 box-shadow: 0 15px 30px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6);
             }
+        }
+
+        /* Search criteria display */
+        .search-criteria-display {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .search-criteria-display h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .criteria-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .criteria-tag {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Statistics Dashboard */
+        .statistics-dashboard {
+            background: rgba(59, 130, 246, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 25px 0;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .stats-section {
+            margin-bottom: 25px;
+        }
+
+        .stats-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .stats-section h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .branch-stat .stat-number {
+            color: var(--success-color);
+        }
+
+        .year-stat .stat-number {
+            color: var(--warning-color);
         }
 
         /* Divider */
@@ -1007,10 +1097,10 @@
             font-size: 0.85rem;
         }
 
-        .grade-a, .grade-s { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-        .grade-b { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .grade-o, .grade-a, .grade-s { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .grade-e, .grade-b { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
         .grade-c { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .grade-d, .grade-f { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .grade-d, .grade-f, .grade-m, .grade-i, .grade-r { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
         /* Loading overlay */
         .loading-overlay {
@@ -1153,6 +1243,10 @@
                 padding: 25px 20px;
             }
 
+            .enhanced-search-box {
+                padding: 30px 20px;
+            }
+
             .header-icon {
                 width: 60px;
                 height: 60px;
@@ -1189,6 +1283,11 @@
                 width: 100%;
                 max-width: 250px;
             }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1199,6 +1298,10 @@
 
             .search-box {
                 padding: 20px 15px;
+            }
+
+            .enhanced-search-box {
+                padding: 25px 15px;
             }
 
             .search-input {
@@ -1297,9 +1400,6 @@
     <!-- Main Container -->
     <div class="main-container">
         <div class="container-card">
-            <!-- Breadcrumb Navigation -->
-           
-
             <!-- Header Section -->
             <div class="header-section">
                 <div class="header-icon">
@@ -1308,7 +1408,7 @@
                 <h1 class="main-title">Backlog Assessment Search</h1>
                 <p class="subtitle">
                     Discover pending academic requirements with our advanced search system. 
-                    Find backlog information by registration number or subject name.
+                    Find backlog information by registration number, subject code with branch/batch filters.
                 </p>
             </div>
 
@@ -1324,26 +1424,65 @@
                             <h3 class="search-label">Search by Registration</h3>
                         </div>
                         <input type="text" name="registration" class="search-input" 
-                               placeholder="Enter registration number (e.g., 2021001234)" 
+                               placeholder="Enter registration number (e.g., 220101130056)" 
                                value="{{ request.form.registration if request.form.registration }}">
                         <button type="submit" name="search_type" value="registration" class="search-btn">
                             <i class="fas fa-search"></i> Search by Reg No
                         </button>
                     </div>
 
-                    <!-- Subject Search -->
-                    <div class="search-box animate" style="animation-delay: 0.4s;">
+                    <!-- Enhanced Subject Code Search with Filters -->
+                    <div class="search-box enhanced-search-box animate" style="animation-delay: 0.4s;">
                         <div class="search-box-header">
                             <div class="search-icon">
-                                <i class="fas fa-book"></i>
+                                <i class="fas fa-code"></i>
                             </div>
-                            <h3 class="search-label">Search by Subject</h3>
+                            <h3 class="search-label">Search by Subject Code</h3>
                         </div>
-                        <input type="text" name="subject" class="search-input" 
-                               placeholder="Enter subject name (e.g., Mathematics)" 
-                               value="{{ request.form.subject if request.form.subject }}">
-                        <button type="submit" name="search_type" value="subject" class="search-btn">
-                            <i class="fas fa-search"></i> Search by Subject
+                        
+                        <!-- Subject Code Input -->
+                        <input type="text" name="subject_code" class="search-input" 
+                               placeholder="Enter subject code (e.g., CS101, MATH201)" 
+                               value="{{ request.form.subject_code if request.form.subject_code }}">
+                        
+                        <!-- Branch Filter -->
+                        <div class="filter-row">
+                            <label class="filter-label">
+                                <i class="fas fa-graduation-cap"></i> Branch:
+                            </label>
+                            <select name="branch" class="filter-select">
+                                <option value="">All Branches</option>
+                                <option value="Civil" {{ 'selected' if request.form.branch == 'Civil' }}>Civil Engineering</option>
+                                <option value="CSE" {{ 'selected' if request.form.branch == 'CSE' }}>Computer Science Engineering</option>
+                                <option value="ECE" {{ 'selected' if request.form.branch == 'ECE' }}>Electronics & Communication Engineering</option>
+                                <option value="EEE" {{ 'selected' if request.form.branch == 'EEE' }}>Electrical & Electronics Engineering</option>
+                                <option value="Mechanical" {{ 'selected' if request.form.branch == 'Mechanical' }}>Mechanical Engineering</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Batch Filter -->
+                        <div class="filter-row">
+                            <label class="filter-label">
+                                <i class="fas fa-calendar-alt"></i> Batch:
+                            </label>
+                            <select name="year" class="filter-select">
+                                <option value="">All Batches</option>
+                                <option value="2025" {{ 'selected' if request.form.year == '25' }}>2025 Batch</option>
+                                <option value="2024" {{ 'selected' if request.form.year == '24' }}>2024 Batch</option>
+                                <option value="2023" {{ 'selected' if request.form.year == '23' }}>2023 Batch</option>
+                                <option value="22" {{ 'selected' if request.form.year == '22' }}>2022 Batch</option>
+                                <option value="2021" {{ 'selected' if request.form.year == '21' }}>2021 Batch</option>
+                                <option value="2020" {{ 'selected' if request.form.year == '20' }}>2020 Batch</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" name="search_type" value="subject_code" class="search-btn">
+                            <i class="fas fa-search"></i> Search with Filters
+                        </button>
+                        
+                        <!-- Clear Filters Button -->
+                        <button type="button" onclick="clearFilters()" class="search-btn" style="background: linear-gradient(135deg, #6b7280, #4b5563); margin-top: 10px;">
+                            <i class="fas fa-times"></i> Clear Filters
                         </button>
                     </div>
                 </div>
@@ -1354,6 +1493,18 @@
                     <i class="fas fa-chart-line"></i> Search Results
                 </div>
             </div>
+
+            <!-- Search Criteria Display -->
+            {% if search_criteria %}
+            <div class="search-criteria-display">
+                <h4><i class="fas fa-info-circle"></i> Search Applied:</h4>
+                <div class="criteria-tags">
+                    {% for criteria in search_criteria %}
+                    <span class="criteria-tag">{{ criteria }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
 
             <!-- Message Display -->
             {% if message %}
@@ -1372,6 +1523,39 @@
                             <i class="fas fa-list-ol"></i> {{ count }} Record{{ 's' if count != 1 else '' }} Found
                         </div>
                     </div>
+
+                    <!-- Statistics Dashboard -->
+                    {% if branch_stats or year_stats %}
+                    <div class="statistics-dashboard">
+                        {% if branch_stats %}
+                        <div class="stats-section">
+                            <h4><i class="fas fa-graduation-cap"></i> Branch-wise Distribution</h4>
+                            <div class="stats-grid">
+                                {% for branch, count in branch_stats.items() %}
+                                <div class="stat-card branch-stat">
+                                    <div class="stat-number">{{ count }}</div>
+                                    <div class="stat-label">{{ branch }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if year_stats %}
+                        <div class="stats-section">
+                            <h4><i class="fas fa-calendar-alt"></i> Year-wise Distribution</h4>
+                            <div class="stats-grid">
+                                {% for year, count in year_stats.items() %}
+                                <div class="stat-card year-stat">
+                                    <div class="stat-number">{{ count }}</div>
+                                    <div class="stat-label">{{ year }} Batch</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
 
                     <!-- Download Section -->
                     <div class="download-section">
@@ -1405,6 +1589,8 @@
                                 <tr>
                                     <th><i class="fas fa-id-badge"></i> Reg No</th>
                                     <th><i class="fas fa-user"></i> Name</th>
+                                    {% if branch_stats %}<th><i class="fas fa-graduation-cap"></i> Branch</th>{% endif %}
+                                    {% if year_stats %}<th><i class="fas fa-calendar-alt"></i> Batch</th>{% endif %}
                                     <th><i class="fas fa-calendar"></i> Semester</th>
                                     <th><i class="fas fa-code"></i> Subject Code</th>
                                     <th><i class="fas fa-book-open"></i> Subject Name</th>
@@ -1416,6 +1602,8 @@
                                     <tr>
                                         <td><strong>{{ row.Reg_No }}</strong></td>
                                         <td>{{ row.Name }}</td>
+                                        {% if branch_stats %}<td><span class="badge badge-info">{{ row.Branch_Short if row.Branch_Short else 'Unknown' }}</span></td>{% endif %}
+                                        {% if year_stats %}<td><span class="badge badge-secondary">{{ row.Year if row.Year else 'Unknown' }}</span></td>{% endif %}
                                         <td><span class="badge badge-primary">{{ row.Sem }}</span></td>
                                         <td><code>{{ row.Subject_Code }}</code></td>
                                         <td>{{ row.Subject_Name }}</td>
@@ -1505,6 +1693,14 @@
             }
         });
 
+        // Clear all filter inputs
+        function clearFilters() {
+            document.querySelector('input[name="registration"]').value = '';
+            document.querySelector('input[name="subject_code"]').value = '';
+            document.querySelector('select[name="branch"]').value = '';
+            document.querySelector('select[name="year"]').value = '';
+        }
+
         // Download Functions
         function getTableData() {
             const dataDiv = document.getElementById('downloadData');
@@ -1514,15 +1710,15 @@
             return [];
         }
 
-        // CSV Download
+        // Enhanced CSV Download with Branch and Batch
         function downloadCSV() {
             const data = getTableData();
             if (data.length === 0) return;
 
-            let csv = 'Reg No,Name,Semester,Subject Code,Subject Name,Grade\n';
+            let csv = 'Reg No,Name,Branch,Batch,Semester,Subject Code,Subject Name,Grade\n';
             
             data.forEach(row => {
-                csv += `${row.Reg_No},"${row.Name}",${row.Sem},${row.Subject_Code},"${row.Subject_Name}",${row.Grade}\n`;
+                csv += `${row.Reg_No},"${row.Name}","${row.Branch_Short || 'Unknown'}","${row.Year || 'Unknown'}",${row.Sem},${row.Subject_Code},"${row.Subject_Name}",${row.Grade}\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1541,7 +1737,7 @@
             showDownloadSuccess('CSV');
         }
 
-        // Excel Download
+        // Enhanced Excel Download with Branch and Batch
         function downloadExcel() {
             const data = getTableData();
             if (data.length === 0) return;
@@ -1549,6 +1745,8 @@
             const ws = XLSX.utils.json_to_sheet(data.map(row => ({
                 'Registration Number': row.Reg_No,
                 'Student Name': row.Name,
+                'Branch': row.Branch_Short || 'Unknown',
+                'Batch': row.Year || 'Unknown',
                 'Semester': row.Sem,
                 'Subject Code': row.Subject_Code,
                 'Subject Name': row.Subject_Name,
@@ -1584,6 +1782,8 @@
             const tableData = data.map(row => [
                 row.Reg_No,
                 row.Name,
+                row.Branch_Short || 'Unknown',
+                row.Year || 'Unknown',
                 row.Sem,
                 row.Subject_Code,
                 row.Subject_Name,
@@ -1592,7 +1792,7 @@
 
             // Add table
             doc.autoTable({
-                head: [['Reg No', 'Name', 'Semester', 'Subject Code', 'Subject Name', 'Grade']],
+                head: [['Reg No', 'Name', 'Branch', 'Batch', 'Semester', 'Subject Code', 'Subject Name', 'Grade']],
                 body: tableData,
                 startY: 40,
                 theme: 'striped',
@@ -1633,10 +1833,10 @@
                         th { background-color: #3b82f6; color: white; font-weight: bold; }
                         tr:nth-child(even) { background-color: #f8fafc; }
                         .grade-badge { padding: 4px 8px; border-radius: 8px; font-weight: bold; }
-                        .grade-a, .grade-s { background-color: #10b981; color: white; }
-                        .grade-b { background-color: #22c55e; color: white; }
+                        .grade-o, .grade-a, .grade-s { background-color: #10b981; color: white; }
+                        .grade-e, .grade-b { background-color: #22c55e; color: white; }
                         .grade-c { background-color: #f59e0b; color: white; }
-                        .grade-d, .grade-f { background-color: #ef4444; color: white; }
+                        .grade-d, .grade-f, .grade-m, .grade-i, .grade-r { background-color: #ef4444; color: white; }
                     </style>
                 </head>
                 <body>
@@ -1735,6 +1935,17 @@
             $(this).val(value);
         });
 
+        // Add subject code formatting
+        $('input[name="subject_code"]').on('input', function() {
+            let value = $(this).val().toUpperCase(); // Convert to uppercase
+            // Remove special characters except letters and numbers
+            value = value.replace(/[^A-Z0-9]/g, '');
+            if (value.length > 10) {
+                value = value.slice(0, 10); // Limit to 10 characters
+            }
+            $(this).val(value);
+        });
+
         // Keyboard navigation improvements
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -1750,8 +1961,8 @@
         $(document).ready(function() {
             if ($('input[name="registration"]').val()) {
                 $('input[name="registration"]').focus();
-            } else if ($('input[name="subject"]').val()) {
-                $('input[name="subject"]').focus();
+            } else if ($('input[name="subject_code"]').val()) {
+                $('input[name="subject_code"]').focus();
             }
             
             // Initialize search box animations
@@ -1797,7 +2008,7 @@
             }
         }
 
-        function updateAnimations() {
+            function updateAnimations() {
             // Update scroll-based animations here
             ticking = false;
         }

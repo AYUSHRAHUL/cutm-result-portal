@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CUTM Result Portal</title>
-    <link rel="icon" type="image/x-icon" href="https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true">
+    <link rel="icon" type="image/x-icon"
+        href="https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true">
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -13,7 +15,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- AOS Animation -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
@@ -64,7 +68,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 40% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
@@ -74,10 +78,22 @@
         }
 
         @keyframes uploadGlow {
-            0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
-            25% { opacity: 0.3; transform: scale(1.02) rotate(1deg); }
-            50% { opacity: 0.5; transform: scale(0.98) rotate(-0.5deg); }
-            75% { opacity: 0.35; transform: scale(1.01) rotate(0.5deg); }
+            0%, 100% {
+                opacity: 0.4;
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                opacity: 0.3;
+                transform: scale(1.02) rotate(1deg);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.98) rotate(-0.5deg);
+            }
+            75% {
+                opacity: 0.35;
+                transform: scale(1.01) rotate(0.5deg);
+            }
         }
 
         /* Upload-themed floating elements */
@@ -127,10 +143,18 @@
         }
 
         @keyframes uploadFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            25% { transform: translateY(-25px) rotate(90deg) scale(1.1); }
-            50% { transform: translateY(-10px) rotate(180deg) scale(0.9); }
-            75% { transform: translateY(-35px) rotate(270deg) scale(1.05); }
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-25px) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translateY(-10px) rotate(180deg) scale(0.9);
+            }
+            75% {
+                transform: translateY(-35px) rotate(270deg) scale(1.05);
+            }
         }
 
         /* Enhanced navbar */
@@ -300,13 +324,13 @@
         }
 
         @keyframes uploadPulse {
-            0%, 100% { 
-                transform: scale(1); 
-                box-shadow: 0 0 40px rgba(59, 130, 246, 0.4); 
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
             }
-            50% { 
-                transform: scale(1.05); 
-                box-shadow: 0 0 60px rgba(59, 130, 246, 0.6); 
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 60px rgba(59, 130, 246, 0.6);
             }
         }
 
@@ -330,7 +354,7 @@
             margin-right: auto;
         }
 
-        /* Alert messages with 2025 styling */
+        /* Enhanced alert styling */
         .alert {
             border-radius: 20px;
             border: none;
@@ -341,8 +365,21 @@
             overflow: hidden;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 15px;
             font-weight: 500;
+            animation: slideInFromTop 0.5s ease-out;
+        }
+
+        @keyframes slideInFromTop {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .alert::before {
@@ -355,21 +392,78 @@
             background: currentColor;
         }
 
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
         .alert-success {
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.3);
             color: #6ee7b7;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-success::before {
+            background: var(--success-color);
         }
 
         .alert-danger {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #fca5a5;
+            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-danger::before {
+            background: var(--danger-color);
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2);
+        }
+
+        .alert-warning::before {
+            background: var(--warning-color);
         }
 
         .alert i {
             font-size: 1.5rem;
             opacity: 0.8;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: currentColor;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Success celebration animation */
+        .alert-success.celebrate {
+            animation: celebrate 0.6s ease-out;
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         /* Modern drag and drop file upload */
@@ -837,6 +931,18 @@
             box-shadow: var(--shadow-heavy);
         }
 
+        /* Confetti animation keyframes */
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .main-container {
@@ -901,9 +1007,7 @@
 
         /* Accessibility improvements */
         @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
+            *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
@@ -915,13 +1019,14 @@
             .upload-container {
                 border: 2px solid var(--accent-color);
             }
-            
+
             .file-upload-area {
                 border-width: 3px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
@@ -953,7 +1058,7 @@
         <nav class="navbar navbar-expand-lg" id="mainNavbar">
             <div class="container">
                 <a class="navbar-brand" href="{{ url_for('home') }}">
-                    <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="45"> 
+                    <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="45">
                     CUTM Admin
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -1010,28 +1115,39 @@
                     </div>
                     <h1 class="upload-title">Data Upload Center</h1>
                     <p class="upload-subtitle">
-                        Upload Excel or CSV files to update student records with our secure, 
+                        Upload Excel or CSV files to update student records with our secure,
                         high-performance data processing system.
                     </p>
                 </div>
 
-                <!-- Alert Messages -->
+                <!-- Enhanced Alert Messages -->
                 {% if error %}
-                    <div class="alert alert-danger" data-aos="fade-in">
+                <div class="alert alert-danger" data-aos="fade-in">
+                    <div class="alert-content">
                         <i class="fas fa-exclamation-triangle"></i>
                         <span>{{ error }}</span>
                     </div>
+                    <button type="button" class="btn-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 {% endif %}
 
                 {% if success %}
-                    <div class="alert alert-success" data-aos="fade-in">
+                <div class="alert alert-success celebrate" data-aos="fade-in">
+                    <div class="alert-content">
                         <i class="fas fa-check-circle"></i>
                         <span>{{ success }}</span>
                     </div>
+                    <button type="button" class="btn-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 {% endif %}
 
                 <!-- Upload Form -->
-                <form method="POST" enctype="multipart/form-data" id="uploadForm" data-aos="fade-up" data-aos-delay="200">
+                <form method="POST" enctype="multipart/form-data" id="uploadForm" data-aos="fade-up"
+                    data-aos-delay="200">
                     <div class="upload-section">
                         <div class="file-upload-area" id="uploadArea">
                             <div class="upload-area-icon">
@@ -1039,7 +1155,7 @@
                             </div>
                             <h3 class="upload-area-title">Drag & Drop Files Here</h3>
                             <p class="upload-area-subtitle">or click to browse and select files</p>
-                            
+
                             <div class="file-types">
                                 <div class="file-type">
                                     <i class="fas fa-file-csv"></i> CSV
@@ -1051,19 +1167,15 @@
                                     <i class="fas fa-file-excel"></i> XLSX
                                 </div>
                             </div>
-                            
-                            <button type="button" class="browse-btn" onclick="document.getElementById('fileInput').click()">
+
+                            <button type="button" class="browse-btn"
+                                onclick="document.getElementById('fileInput').click()">
                                 <i class="fas fa-folder-open"></i>
                                 Browse Files
                             </button>
-                            
-                            <input type="file" 
-                                   id="fileInput" 
-                                   name="files" 
-                                   accept=".csv,.xls,.xlsx" 
-                                   multiple 
-                                   required 
-                                   class="upload-input">
+
+                            <input type="file" id="fileInput" name="files" accept=".csv,.xls,.xlsx" multiple required
+                                class="upload-input">
                         </div>
 
                         <!-- File List -->
@@ -1090,9 +1202,10 @@
                             <i class="fas fa-cloud-upload-alt"></i>
                             Upload & Process
                         </button>
-                        <a href="/view_data" class="action-btn secondary-btn">
+                        <a href="https://docs.google.com/spreadsheets/d/1hwmCRQwFYEUsCy_ZCov0yKS15PhrEGBK/edit?usp=sharing&ouid=104118655440603258258&rtpof=true&sd=true" 
+                           download class="action-btn secondary-btn">
                             <i class="fas fa-table"></i>
-                            View All Data
+                            Download Template
                         </a>
                     </div>
                 </form>
@@ -1144,17 +1257,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- AOS Animation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    
+
     <script>
         // Initialize AOS
-        AOS.init({ 
-            duration: 800, 
+        AOS.init({
+            duration: 800,
             once: true,
             offset: 50
         });
 
         // Loading overlay
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             setTimeout(() => {
                 document.getElementById('loadingOverlay').style.opacity = '0';
                 setTimeout(() => {
@@ -1172,7 +1285,7 @@
         });
 
         // Navbar scroll effect
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             if ($(window).scrollTop() > 100) {
                 $('#mainNavbar').addClass('scrolled');
                 $('#scrollToTop').addClass('show');
@@ -1183,8 +1296,8 @@
         });
 
         // Scroll to top
-        $('#scrollToTop').click(function() {
-            $('html, body').animate({scrollTop: 0}, 800);
+        $('#scrollToTop').click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 800);
         });
 
         // File upload functionality
@@ -1295,10 +1408,10 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // Enhanced form submission with progress
-        $('#uploadForm').on('submit', function(e) {
+        // Enhanced form submission with better success handling
+        $('#uploadForm').on('submit', function (e) {
             e.preventDefault();
-            
+
             if (selectedFiles.length === 0) {
                 showNotification('Please select at least one file to upload.', 'error');
                 return;
@@ -1315,12 +1428,12 @@
                 formData.append('files', file);
             });
 
-            // Simulate progress (replace with actual XMLHttpRequest for real progress)
+            // Simulate progress
             let progress = 0;
             const progressInterval = setInterval(() => {
                 progress += Math.random() * 20;
                 if (progress > 90) progress = 90;
-                
+
                 document.getElementById('progressFill').style.width = progress + '%';
                 document.querySelector('.progress-percentage').textContent = Math.floor(progress) + '%';
             }, 200);
@@ -1336,10 +1449,27 @@
                 document.getElementById('progressFill').style.width = '100%';
                 document.querySelector('.progress-percentage').textContent = '100%';
                 
-                setTimeout(() => {
-                    // Reload page to show results
-                    location.reload();
-                }, 1000);
+                // Check if response contains success or error
+                if (data.includes('alert-success') || data.includes('Successfully')) {
+                    // Show success alert with celebration
+                    showSuccessAlert('Data uploaded successfully! Files have been processed and added to the database.', selectedFiles.length);
+                    
+                    // Reset form after success
+                    setTimeout(() => {
+                        resetUploadState();
+                        selectedFiles = [];
+                        updateFileList();
+                        uploadProgress.style.display = 'none';
+                    }, 2000);
+                } else if (data.includes('alert-danger') || data.includes('Error')) {
+                    showNotification('Upload failed. Please check your files and try again.', 'error');
+                    resetUploadState();
+                } else {
+                    // Fallback to page reload
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
             })
             .catch(error => {
                 clearInterval(progressInterval);
@@ -1349,6 +1479,47 @@
             });
         });
 
+        // Enhanced success alert function
+        function showSuccessAlert(message, fileCount = 0) {
+            // Create success notification with detailed information
+            const notification = document.createElement('div');
+            notification.className = 'alert alert-success celebrate';
+            notification.innerHTML = `
+                <div class="alert-content">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">${message}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">
+                            ${fileCount} file${fileCount !== 1 ? 's' : ''} processed successfully at ${new Date().toLocaleTimeString()}
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            // Insert at top of upload container
+            const uploadContainer = document.querySelector('.upload-container');
+            const header = document.querySelector('.upload-header');
+            uploadContainer.insertBefore(notification, header.nextSibling);
+
+            // Scroll to show the alert
+            notification.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Auto-remove after 8 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateY(-20px)';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 8000);
+
+            // Add confetti effect
+            createConfetti();
+        }
+
         // Reset upload state
         function resetUploadState() {
             uploadProgress.style.display = 'none';
@@ -1356,29 +1527,74 @@
             uploadBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Upload & Process';
         }
 
-        // Show notification
+        // Enhanced notification function
         function showNotification(message, type) {
             // Create notification element
             const notification = document.createElement('div');
             notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'success'}`;
             notification.innerHTML = `
-                <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i>
-                <span>${message}</span>
+                <div class="alert-content">
+                    <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button type="button" class="btn-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
             `;
-            
+
             // Insert at top of upload container
             const uploadContainer = document.querySelector('.upload-container');
             const header = document.querySelector('.upload-header');
             uploadContainer.insertBefore(notification, header.nextSibling);
-            
-            // Remove after 5 seconds
+
+            // Auto-remove after 5 seconds
             setTimeout(() => {
-                notification.remove();
+                if (notification.parentElement) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateY(-20px)';
+                    setTimeout(() => notification.remove(), 300);
+                }
             }, 5000);
         }
 
+        // Confetti effect for successful upload
+        function createConfetti() {
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            const confettiContainer = document.createElement('div');
+            confettiContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 9999;
+            `;
+            document.body.appendChild(confettiContainer);
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: absolute;
+                    width: 10px;
+                    height: 10px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    top: -10px;
+                    left: ${Math.random() * 100}%;
+                    animation: confetti-fall 3s linear forwards;
+                    border-radius: 50%;
+                `;
+                confettiContainer.appendChild(confetti);
+            }
+
+            // Clean up after animation
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 3000);
+        }
+
         // Smooth scrolling for navigation links
-        $('a[href^="#"]').on('click', function(event) {
+        $('a[href^="#"]').on('click', function (event) {
             const target = $(this.getAttribute('href'));
             if (target.length) {
                 event.preventDefault();
@@ -1389,27 +1605,16 @@
         });
 
         // Add parallax effect for upload background elements
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             const scrolled = $(window).scrollTop();
-            $('.upload-bg .upload-element').each(function(index) {
+            $('.upload-bg .upload-element').each(function (index) {
                 const speed = 0.2 + (index * 0.1);
                 $(this).css('transform', `translateY(${scrolled * speed}px)`);
             });
         });
 
-        // Performance optimization
-        let ticking = false;
-        function requestTick() {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }
-
         // Add keyboard shortcuts
-        $(document).keydown(function(e) {
+        $(document).keydown(function (e) {
             // Ctrl + U for upload
             if (e.ctrlKey && e.keyCode === 85) {
                 e.preventDefault();
@@ -1421,16 +1626,17 @@
         function validateFile(file) {
             const maxSize = 50 * 1024 * 1024; // 50MB
             const validTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
-            
+
             if (file.size > maxSize) {
                 showNotification(`File "${file.name}" is too large. Maximum size is 50MB.`, 'error');
                 return false;
             }
-            
+
             return true;
         }
 
         console.log('CUTM Data Upload Center loaded successfully');
     </script>
 </body>
+
 </html>

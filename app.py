@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, json,make_response
 import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -7,6 +7,9 @@ import pytz
 import pandas as pd
 from werkzeug.utils import secure_filename
 import io
+from io import StringIO, BytesIO
+# from flask import make_response
+
 
 load_dotenv()
 
@@ -33,13 +36,87 @@ def ensure_indexes():
 
 ensure_indexes()
 
+#branch identify 
+def get_branch_from_reg_no(reg_no):
+    """Extract branch name from registration number"""
+    branch_codes = {
+        '1': 'Civil Engineering',
+        '2': 'Computer Science Engineering', 
+        '3': 'Electronics & Communication Engineering',
+        '5': 'Electrical & Electronics Engineering',
+        '6': 'Mechanical Engineering'
+    }
+    
+    if len(str(reg_no)) >= 10:
+        branch_code = str(reg_no)[7:8]
+        return branch_codes.get(branch_code, 'Unknown Branch')
+    return 'Invalid Registration'
+
+def get_year_from_reg_no(reg_no):
+    """Extract admission year from registration number"""
+    year_codes = {
+        '20': '2020',
+        '21': '2021', 
+        '22': '2022',
+        '23': '2023',
+        '24': '2024',
+        '25': '2025',
+        '26': '2026',
+        '27': '2027', 
+        '28': '2028',
+        '29': '2029'
+        
+    }
+    
+    if len(str(reg_no)) >= 2:
+        year_code = str(reg_no)[:2]
+        return year_codes.get(year_code, f'20{year_code}')
+    return 'Unknown'
+
+def get_branch_code_mapping():
+    """Get branch name to code mapping for search"""
+    return {
+         'Civil': '1',
+         'CSE': '2',
+         'ECE': '3',
+         'EEE': '5',
+         'Mechanical': '6'
+    }
+
+def get_year_code_mapping():
+    """Get year to code mapping for search"""
+    return {
+         '20': '2020',
+        '21': '2021', 
+        '22': '2022',
+        '23': '2023',
+        '24': '2024',
+        '25': '2025',
+        '26': '2026',
+        '27': '2027', 
+        '28': '2028',
+        '29': '2029'
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ---------------- Utilities ----------------
 def convert_to_ist(gmt_time):
     ist_timezone = pytz.timezone('Asia/Kolkata')
     gmt_time = gmt_time.replace(tzinfo=pytz.utc)
     return gmt_time.astimezone(ist_timezone).strftime('%Y-%m-%d %I:%M:%S %p IST')
 
-GRADE_MAP = {'O': 10, 'E': 9, 'A': 8, 'B': 7, 'C': 6, 'D': 5, 'S': 0, 'M': 0, 'F': 0}
+GRADE_MAP = {'O': 10, 'E': 9, 'A': 8, 'B': 7, 'C': 6, 'D': 5, 'S': 0, 'M': 0, 'F': 0, "I" :0,"R":0}
 
 def convert_grade_to_integer(grade):
     return GRADE_MAP.get(grade, 0)
@@ -212,7 +289,7 @@ def update_data():
                 )
 
                 if existing_record:
-                    if existing_record.get("Grade") in {'F', 'S', 'M',''}:
+                    if existing_record.get("Grade") in {'F', 'S', 'M','I','R',''}:
                         cutm_collection.update_one(
                             {"Reg_No": reg_no, "Subject_Code": subject_code},
                             {"$set": {"Grade": grade}}
@@ -237,42 +314,841 @@ def update_data():
     return render_template('update_data.html')
 
 # ---------------- Backlog ----------------
+ 
+
+# @app.route('/backlog', methods=['GET', 'POST'])
+# def backlog():
+#     try:
+#         result, count, message, search_type = [], 0, None, None
+#         branch_stats = {}
+#         year_stats = {}
+#         search_criteria = []
+        
+#         if request.method == 'POST':
+#             reg_no = (request.form.get('registration') or "").strip().upper()
+#             subject_code = (request.form.get('subject_code') or "").strip().upper()
+#             branch_filter = (request.form.get('branch') or "").strip()
+#             year_filter = (request.form.get('year') or "").strip()
+
+#             base_query = {"Grade": {"$in": ["F", "M", "S", "I", "R"]}}
+#             reg_conditions = []  # Store regex conditions for Reg_No field
+            
+#             # Build search criteria based on provided filters
+#             if reg_no:
+#                 search_type = 'registration'
+#                 base_query["Reg_No"] = reg_no
+#                 search_criteria.append(f"Registration: {reg_no}")
+                
+#             elif subject_code:
+#                 search_type = 'subject_code'
+#                 base_query["Subject_Code"] = subject_code
+#                 search_criteria.append(f"Subject Code: {subject_code}")
+                
+#                 # Add branch filter if provided with subject code
+#                 if branch_filter:
+#                     branch_codes = get_branch_code_mapping()
+#                     branch_code = None
+                    
+#                     for branch_name, code in branch_codes.items():
+#                         if branch_filter.lower() in branch_name.lower():
+#                             branch_code = code
+#                             break
+                    
+#                     if branch_code:
+#                         search_criteria.append(f"Branch: {branch_filter}")
+#                         reg_conditions.append({"Reg_No": {"$regex": f".{{7}}{branch_code}"}})
+#                     else:
+#                         message = f"Invalid branch selection: {branch_filter}"
+                
+#                 # Add year filter if provided with subject code
+#                 if year_filter and not message:
+#                     year_codes = get_year_code_mapping()
+#                     year_code = None
+#                     year_short = year_filter
+                    
+#                     # Handle both 2-digit and 4-digit year inputs
+#                     if year_filter in year_codes:
+#                         year_code = year_codes[year_filter]
+#                     elif len(year_filter) == 4 and year_filter.isdigit():
+#                         year_short = year_filter[-2:]  # Get last 2 digits
+#                         if year_short in year_codes:
+#                             year_code = year_codes[year_short]
+                    
+#                     if year_code:
+#                         search_criteria.append(f"Year: {year_filter}")
+#                         reg_conditions.append({"Reg_No": {"$regex": f"^{year_short}"}})
+#                     else:
+#                         message = f"Invalid year selection: {year_filter}"
+                
+#                 # Apply multiple regex conditions using $and
+#                 if reg_conditions and not message:
+#                     if len(reg_conditions) == 1:
+#                         base_query.update(reg_conditions[0])
+#                     else:
+#                         base_query["$and"] = reg_conditions
+                        
+#             elif branch_filter or year_filter:
+#                 search_type = 'advanced'
+                
+#                 # Branch filtering
+#                 if branch_filter:
+#                     branch_codes = get_branch_code_mapping()
+#                     branch_code = None
+                    
+#                     for branch_name, code in branch_codes.items():
+#                         if branch_filter.lower() in branch_name.lower():
+#                             branch_code = code
+#                             break
+                    
+#                     if branch_code:
+#                         search_criteria.append(f"Branch: {branch_filter}")
+#                         reg_conditions.append({"Reg_No": {"$regex": f".{{7}}{branch_code}"}})
+#                     else:
+#                         message = f"Invalid branch selection: {branch_filter}"
+                
+#                 # Year filtering  
+#                 if year_filter and not message:
+#                     year_codes = get_year_code_mapping()
+#                     year_code = None
+#                     year_short = year_filter
+                    
+#                     # Handle both 2-digit and 4-digit year inputs
+#                     if year_filter in year_codes:
+#                         year_code = year_codes[year_filter]
+#                     elif len(year_filter) == 4 and year_filter.isdigit():
+#                         year_short = year_filter[-2:]  # Get last 2 digits
+#                         if year_short in year_codes:
+#                             year_code = year_codes[year_short]
+                    
+#                     if year_code:
+#                         search_criteria.append(f"Year: {year_filter}")
+#                         reg_conditions.append({"Reg_No": {"$regex": f"^{year_short}"}})
+#                     else:
+#                         message = f"Invalid year selection: {year_filter}"
+                
+#                 # Apply multiple regex conditions using $and
+#                 if reg_conditions and not message:
+#                     if len(reg_conditions) == 1:
+#                         base_query.update(reg_conditions[0])
+#                     else:
+#                         base_query["$and"] = reg_conditions
+
+#             if not message and (reg_no or subject_code or branch_filter or year_filter):
+#                 cursor = cutm_collection.find(
+#                     base_query,
+#                     {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, 
+#                      "Grade": 1, "Sem": 1, "Name": 1}
+#                 )
+#                 result = list(cursor)
+#                 count = len(result)
+                
+#                 # Add branch and year information to results
+#                 for row in result:
+#                     row['Branch'] = get_branch_from_reg_no(row.get('Reg_No', ''))
+#                     row['Year'] = get_year_from_reg_no(row.get('Reg_No', ''))
+#                     # Create short branch name for display
+#                     if row['Branch'] != 'Unknown Branch':
+#                         row['Branch_Short'] = row['Branch'].split()[0]
+#                     else:
+#                         row['Branch_Short'] = 'Unknown'
+                
+#                 # Calculate statistics
+#                 for row in result:
+#                     branch = row.get('Branch_Short', 'Unknown')
+#                     year = row.get('Year', 'Unknown')
+#                     branch_stats[branch] = branch_stats.get(branch, 0) + 1
+#                     year_stats[year] = year_stats.get(year, 0) + 1
+                
+#                 if count == 0:
+#                     if search_type == 'registration':
+#                         message = f"No backlog found for registration number {reg_no}."
+#                     elif search_type == 'subject_code':
+#                         criteria_text = ", ".join(search_criteria)
+#                         message = f"No students found with backlog for: {criteria_text}."
+#                     elif search_type == 'advanced':
+#                         criteria_text = ", ".join(search_criteria)
+#                         message = f"No backlog found for criteria: {criteria_text}."
+#             elif not (reg_no or subject_code or branch_filter or year_filter):
+#                 message = "Please enter a registration number, subject code, or select branch/year to search."
+
+#         return render_template('backlog.html', 
+#                              result=result, 
+#                              count=count, 
+#                              message=message, 
+#                              search_type=search_type,
+#                              branch_stats=branch_stats,
+#                              year_stats=year_stats,
+#                              search_criteria=search_criteria)
+#     except Exception as e:
+#         return render_template('backlog.html', error=str(e))
 @app.route('/backlog', methods=['GET', 'POST'])
 def backlog():
     try:
         result, count, message, search_type = [], 0, None, None
+        branch_stats = {}
+        year_stats = {}
+        search_criteria = []
+        
         if request.method == 'POST':
             reg_no = (request.form.get('registration') or "").strip().upper()
-            subject_name = (request.form.get('subject') or "").strip()
+            subject_code = (request.form.get('subject_code') or "").strip().upper()
+            branch_filter = (request.form.get('branch') or "").strip()
+            year_filter = (request.form.get('year') or "").strip()
 
+            base_query = {"Grade": {"$in": ["F", "M", "S", "I", "R"]}}
+            reg_conditions = []
+            
+            # Helper function to get branch code from user input
+            def get_branch_code_from_input(branch_input):
+                """Get branch code from various input formats"""
+                branch_mapping = {
+                    'civil': '1',
+                    'civil engineering': '1',
+                    'cse': '2', 
+                    'computer science': '2',
+                    'computer science engineering': '2',
+                    'ece': '3',
+                    'electronics': '3',
+                    'electronics & communication': '3',
+                    'electronics & communication engineering': '3',
+                    'eee': '5',
+                    'electrical': '5',
+                    'electrical & electronics': '5',
+                    'electrical & electronics engineering': '5',
+                    'mechanical': '6',
+                    'mechanical engineering': '6'
+                }
+                
+                branch_lower = branch_input.lower().strip()
+                return branch_mapping.get(branch_lower)
+            
             if reg_no:
                 search_type = 'registration'
-                cursor = cutm_collection.find(
-                    {"Reg_No": reg_no, "Grade": {"$in": ["F", "M", "S"]}},
-                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, "Grade": 1, "Sem": 1 ,"Name":1}
-                )
-                result = list(cursor)
-                count = len(result)
-                if count == 0:
-                    message = f"No backlog found for registration number {reg_no}."
-            elif subject_name:
-                search_type = 'subject'
-                cursor = cutm_collection.find(
-                    {"Subject_Name": {"$regex": subject_name, "$options": "i"}, "Grade": {"$in": ["F", "M", "S"]}},
-                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, "Grade": 1, "Sem": 1, "Name":1}
-                )
-                result = list(cursor)
-                count = len(result)
-                if count == 0:
-                    message = f"No students found with backlog in subject '{subject_name}'."
-            else:
-                message = "Please enter a registration number or subject name to search."
+                base_query["Reg_No"] = reg_no
+                search_criteria.append(f"Registration: {reg_no}")
+                
+            elif subject_code:
+                search_type = 'subject_code'
+                base_query["Subject_Code"] = subject_code
+                search_criteria.append(f"Subject Code: {subject_code}")
+                
+                # Add branch filter if provided with subject code
+                if branch_filter:
+                    branch_code = get_branch_code_from_input(branch_filter)
+                    
+                    if branch_code:
+                        search_criteria.append(f"Branch: {branch_filter}")
+                        # Fixed regex: match any 7 characters, then the branch code at position 7
+                        reg_conditions.append({"Reg_No": {"$regex": f"^.{{{7}}}{branch_code}"}})
+                    else:
+                        message = f"Invalid branch selection: {branch_filter}. Valid options: Civil, CSE, ECE, EEE, Mechanical"
+                
+                # Add year filter if provided with subject code
+                if year_filter and not message:
+                    year_short = year_filter
+                    
+                    # Handle both 2-digit and 4-digit year inputs
+                    if len(year_filter) == 4 and year_filter.isdigit():
+                        year_short = year_filter[-2:]  # Get last 2 digits
+                    elif len(year_filter) == 2 and year_filter.isdigit():
+                        year_short = year_filter
+                    else:
+                        message = f"Invalid year format: {year_filter}. Use format: 21, 22, 2021, 2022, etc."
+                    
+                    if not message:
+                        search_criteria.append(f"Year: {year_filter}")
+                        # Fixed regex: match year at the beginning
+                        reg_conditions.append({"Reg_No": {"$regex": f"^{year_short}"}})
+                
+                # Apply regex conditions properly
+                if reg_conditions and not message:
+                    if len(reg_conditions) == 1:
+                        base_query.update(reg_conditions[0])
+                    else:
+                        # Use $and to combine multiple regex conditions
+                        base_query["$and"] = reg_conditions
+                        
+            elif branch_filter or year_filter:
+                search_type = 'advanced'
+                
+                # Branch filtering for advanced search
+                if branch_filter:
+                    branch_code = get_branch_code_from_input(branch_filter)
+                    
+                    if branch_code:
+                        search_criteria.append(f"Branch: {branch_filter}")
+                        reg_conditions.append({"Reg_No": {"$regex": f"^.{{{7}}}{branch_code}"}})
+                    else:
+                        message = f"Invalid branch selection: {branch_filter}. Valid options: Civil, CSE, ECE, EEE, Mechanical"
+                
+                # Year filtering for advanced search
+                if year_filter and not message:
+                    year_short = year_filter
+                    
+                    if len(year_filter) == 4 and year_filter.isdigit():
+                        year_short = year_filter[-2:]
+                    elif len(year_filter) == 2 and year_filter.isdigit():
+                        year_short = year_filter
+                    else:
+                        message = f"Invalid year format: {year_filter}. Use format: 21, 22, 2021, 2022, etc."
+                    
+                    if not message:
+                        search_criteria.append(f"Year: {year_filter}")
+                        reg_conditions.append({"Reg_No": {"$regex": f"^{year_short}"}})
+                
+                # Apply regex conditions for advanced search
+                if reg_conditions and not message:
+                    if len(reg_conditions) == 1:
+                        base_query.update(reg_conditions[0])
+                    else:
+                        base_query["$and"] = reg_conditions
 
-        return render_template('backlog.html', result=result, count=count, message=message, search_type=search_type)
+            # Execute query if no errors
+            if not message and (reg_no or subject_code or branch_filter or year_filter):
+                cursor = cutm_collection.find(
+                    base_query,
+                    {"_id": 0, "Reg_No": 1, "Subject_Code": 1, "Subject_Name": 1, 
+                     "Grade": 1, "Sem": 1, "Name": 1}
+                )
+                result = list(cursor)
+                count = len(result)
+                
+                # Add branch and year information to results
+                for row in result:
+                    row['Branch'] = get_branch_from_reg_no(row.get('Reg_No', ''))
+                    row['Year'] = get_year_from_reg_no(row.get('Reg_No', ''))
+                    if row['Branch'] != 'Unknown Branch':
+                        row['Branch_Short'] = row['Branch'].split()[0]
+                    else:
+                        row['Branch_Short'] = 'Unknown'
+                
+                # Calculate statistics
+                for row in result:
+                    branch = row.get('Branch_Short', 'Unknown')
+                    year = row.get('Year', 'Unknown')
+                    branch_stats[branch] = branch_stats.get(branch, 0) + 1
+                    year_stats[year] = year_stats.get(year, 0) + 1
+                
+                if count == 0:
+                    if search_type == 'registration':
+                        message = f"No backlog found for registration number {reg_no}."
+                    elif search_type == 'subject_code':
+                        criteria_text = ", ".join(search_criteria)
+                        message = f"No students found with backlog for: {criteria_text}."
+                    elif search_type == 'advanced':
+                        criteria_text = ", ".join(search_criteria)
+                        message = f"No backlog found for criteria: {criteria_text}."
+            elif not (reg_no or subject_code or branch_filter or year_filter):
+                message = "Please enter a registration number, subject code, or select branch/year to search."
+
+        return render_template('backlog.html', 
+                             result=result, 
+                             count=count, 
+                             message=message, 
+                             search_type=search_type,
+                             branch_stats=branch_stats,
+                             year_stats=year_stats,
+                             search_criteria=search_criteria)
     except Exception as e:
         return render_template('backlog.html', error=str(e))
 
-# ---------------- Admin ----------------
+
+
+
+
+
+
+
+
+# ---------------- Batch Route ----------------
+@app.route('/batch', methods=['GET', 'POST'])
+def batch():
+    try:
+        result, count, message = [], 0, None
+        branch_stats = {}
+        batch_stats = {}
+        search_criteria = []
+        
+        if request.method == 'POST':
+            branch_filter = (request.form.get('branch') or "").strip()
+            batch_filter = (request.form.get('batch') or "").strip()
+            
+            base_query = {}
+            reg_conditions = []
+            
+            # Helper function to get branch code from user input
+            def get_branch_code_from_input(branch_input):
+                """Get branch code from various input formats"""
+                branch_mapping = {
+                    'civil': '1',
+                    'civil engineering': '1',
+                    'cse': '2', 
+                    'computer science': '2',
+                    'computer science engineering': '2',
+                    'ece': '3',
+                    'electronics': '3',
+                    'electronics & communication': '3',
+                    'electronics & communication engineering': '3',
+                    'eee': '5',
+                    'electrical': '5',
+                    'electrical & electronics': '5',
+                    'electrical & electronics engineering': '5',
+                    'mechanical': '6',
+                    'mechanical engineering': '6'
+                }
+                
+                branch_lower = branch_input.lower().strip()
+                return branch_mapping.get(branch_lower)
+            
+            # Branch filtering
+            if branch_filter:
+                branch_code = get_branch_code_from_input(branch_filter)
+                
+                if branch_code:
+                    search_criteria.append(f"Branch: {branch_filter}")
+                    # Match any 7 characters, then the branch code at position 7
+                    reg_conditions.append({"Reg_No": {"$regex": f"^.{{{7}}}{branch_code}"}})
+                else:
+                    message = f"Invalid branch selection: {branch_filter}. Valid options: Civil, CSE, ECE, EEE, Mechanical"
+            
+            # Batch/Year filtering
+            if batch_filter and not message:
+                batch_short = batch_filter
+                
+                # Handle both 2-digit and 4-digit year inputs
+                if len(batch_filter) == 4 and batch_filter.isdigit():
+                    batch_short = batch_filter[-2:]  # Get last 2 digits
+                elif len(batch_filter) == 2 and batch_filter.isdigit():
+                    batch_short = batch_filter
+                else:
+                    message = f"Invalid batch format: {batch_filter}. Use format: 21, 22, 2021, 2022, etc."
+                
+                if not message:
+                    search_criteria.append(f"Batch: {batch_filter}")
+                    # Match batch year at the beginning
+                    reg_conditions.append({"Reg_No": {"$regex": f"^{batch_short}"}})
+            
+            # Apply regex conditions
+            if reg_conditions and not message:
+                if len(reg_conditions) == 1:
+                    base_query.update(reg_conditions[0])
+                else:
+                    # Use $and to combine multiple regex conditions
+                    base_query["$and"] = reg_conditions
+            
+            # Execute query if conditions are provided
+            if not message and (branch_filter or batch_filter):
+                # Get unique students first, then get all their records
+                if base_query:
+                    # Get all records matching the criteria
+                    cursor = cutm_collection.find(
+                        base_query,
+                        {"_id": 0, "Reg_No": 1, "Name": 1, "Sem": 1, 
+                         "Subject_Code": 1, "Subject_Name": 1, "Credits": 1, "Grade": 1}
+                    ).sort([("Reg_No", 1), ("Sem", 1), ("Subject_Code", 1)])
+                    
+                    result = list(cursor)
+                    count = len(result)
+                    
+                    # Add branch and batch information to results
+                    unique_students = set()
+                    for row in result:
+                        reg_no = row.get('Reg_No', '')
+                        row['Branch'] = get_branch_from_reg_no(reg_no)
+                        row['Batch'] = get_year_from_reg_no(reg_no)
+                        
+                        if row['Branch'] != 'Unknown Branch':
+                            row['Branch_Short'] = row['Branch'].split()[0]
+                        else:
+                            row['Branch_Short'] = 'Unknown'
+                        
+                        unique_students.add(reg_no)
+                    
+                    # Calculate statistics
+                    for row in result:
+                        branch = row.get('Branch_Short', 'Unknown')
+                        batch = row.get('Batch', 'Unknown')
+                        branch_stats[branch] = branch_stats.get(branch, 0) + 1
+                        batch_stats[batch] = batch_stats.get(batch, 0) + 1
+                    
+                    # Update count to show unique students count
+                    student_count = len(unique_students)
+                    
+                    if count == 0:
+                        criteria_text = ", ".join(search_criteria)
+                        message = f"No records found for criteria: {criteria_text}."
+                    else:
+                        success_criteria = ", ".join(search_criteria)
+                        message = f"Found {count} records for {student_count} students matching: {success_criteria}."
+                else:
+                    message = "Please select at least one filter (branch or batch)."
+            elif not message:
+                message = "Please select branch and/or batch to view data."
+        
+        return render_template('batch.html', 
+                             result=result, 
+                             count=count, 
+                             message=message,
+                             branch_stats=branch_stats,
+                             batch_stats=batch_stats,
+                             search_criteria=search_criteria)
+                             
+    except Exception as e:
+        return render_template('batch.html', error=str(e))
+
+
+
+
+
+
+
+
+ 
+
+# ---------------- Export Routes for Batch Data ----------------
+@app.route('/export_batch_csv', methods=['POST'])
+def export_batch_csv():
+    try:
+        # Get the same query parameters from the form
+        branch_filter = (request.form.get('branch') or "").strip()
+        batch_filter = (request.form.get('batch') or "").strip()
+        
+        # Recreate the same query logic as in batch route
+        base_query = {}
+        reg_conditions = []
+        
+        def get_branch_code_from_input(branch_input):
+            branch_mapping = {
+                'civil': '1', 'civil engineering': '1',
+                'cse': '2', 'computer science': '2', 'computer science engineering': '2',
+                'ece': '3', 'electronics': '3', 'electronics & communication': '3', 'electronics & communication engineering': '3',
+                'eee': '5', 'electrical': '5', 'electrical & electronics': '5', 'electrical & electronics engineering': '5',
+                'mechanical': '6', 'mechanical engineering': '6'
+            }
+            return branch_mapping.get(branch_input.lower().strip())
+        
+        if branch_filter:
+            branch_code = get_branch_code_from_input(branch_filter)
+            if branch_code:
+                reg_conditions.append({"Reg_No": {"$regex": f"^.{{{7}}}{branch_code}"}})
+        
+        if batch_filter:
+            batch_short = batch_filter
+            if len(batch_filter) == 4 and batch_filter.isdigit():
+                batch_short = batch_filter[-2:]
+            reg_conditions.append({"Reg_No": {"$regex": f"^{batch_short}"}})
+        
+        if reg_conditions:
+            if len(reg_conditions) == 1:
+                base_query.update(reg_conditions[0])
+            else:
+                base_query["$and"] = reg_conditions
+        
+        # Get data
+        cursor = cutm_collection.find(
+            base_query,
+            {"_id": 0, "Reg_No": 1, "Name": 1, "Sem": 1, 
+             "Subject_Code": 1, "Subject_Name": 1, "Credits": 1, "Grade": 1}
+        ).sort([("Reg_No", 1), ("Sem", 1), ("Subject_Code", 1)])
+        
+        result = list(cursor)
+        
+        # Add branch and batch info
+        for row in result:
+            row['Branch'] = get_branch_from_reg_no(row.get('Reg_No', ''))
+            row['Batch'] = get_year_from_reg_no(row.get('Reg_No', ''))
+        
+        # Create CSV
+        output = StringIO()
+        writer = csv.writer(output)
+        
+        # Write header
+        writer.writerow(['Registration No', 'Name', 'Branch', 'Batch', 'Semester', 
+                        'Subject Code', 'Subject Name', 'Credits', 'Grade'])
+        
+        # Write data
+        for row in result:
+            writer.writerow([
+                row.get('Reg_No', ''),
+                row.get('Name', ''),
+                row.get('Branch', ''),
+                row.get('Batch', ''),
+                row.get('Sem', ''),
+                row.get('Subject_Code', ''),
+                row.get('Subject_Name', ''),
+                row.get('Credits', ''),
+                row.get('Grade', '')
+            ])
+        
+        # Create response
+        response = make_response(output.getvalue())
+        response.headers['Content-Disposition'] = f'attachment; filename=batch_data_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+        response.headers['Content-Type'] = 'text/csv'
+        
+        return response
+        
+    except Exception as e:
+        return render_template('batch.html', error=f"Export failed: {str(e)}")
+
+@app.route('/export_batch_excel', methods=['POST'])
+def export_batch_excel():
+    try:
+        # Get the same query parameters from the form
+        branch_filter = (request.form.get('branch') or "").strip()
+        batch_filter = (request.form.get('batch') or "").strip()
+        
+        # Recreate the same query logic
+        base_query = {}
+        reg_conditions = []
+        
+        def get_branch_code_from_input(branch_input):
+            branch_mapping = {
+                'civil': '1', 'civil engineering': '1',
+                'cse': '2', 'computer science': '2', 'computer science engineering': '2',
+                'ece': '3', 'electronics': '3', 'electronics & communication': '3', 'electronics & communication engineering': '3',
+                'eee': '5', 'electrical': '5', 'electrical & electronics': '5', 'electrical & electronics engineering': '5',
+                'mechanical': '6', 'mechanical engineering': '6'
+            }
+            return branch_mapping.get(branch_input.lower().strip())
+        
+        if branch_filter:
+            branch_code = get_branch_code_from_input(branch_filter)
+            if branch_code:
+                reg_conditions.append({"Reg_No": {"$regex": f"^.{{{7}}}{branch_code}"}})
+        
+        if batch_filter:
+            batch_short = batch_filter
+            if len(batch_filter) == 4 and batch_filter.isdigit():
+                batch_short = batch_filter[-2:]
+            reg_conditions.append({"Reg_No": {"$regex": f"^{batch_short}"}})
+        
+        if reg_conditions:
+            if len(reg_conditions) == 1:
+                base_query.update(reg_conditions[0])
+            else:
+                base_query["$and"] = reg_conditions
+        
+        # Get data
+        cursor = cutm_collection.find(
+            base_query,
+            {"_id": 0, "Reg_No": 1, "Name": 1, "Sem": 1, 
+             "Subject_Code": 1, "Subject_Name": 1, "Credits": 1, "Grade": 1}
+        ).sort([("Reg_No", 1), ("Sem", 1), ("Subject_Code", 1)])
+        
+        result = list(cursor)
+        
+        # Add branch and batch info
+        for row in result:
+            row['Branch'] = get_branch_from_reg_no(row.get('Reg_No', ''))
+            row['Batch'] = get_year_from_reg_no(row.get('Reg_No', ''))
+        
+        # Create DataFrame
+        df_data = []
+        for row in result:
+            df_data.append({
+                'Registration No': row.get('Reg_No', ''),
+                'Name': row.get('Name', ''),
+                'Branch': row.get('Branch', ''),
+                'Batch': row.get('Batch', ''),
+                'Semester': row.get('Sem', ''),
+                'Subject Code': row.get('Subject_Code', ''),
+                'Subject Name': row.get('Subject_Name', ''),
+                'Credits': row.get('Credits', ''),
+                'Grade': row.get('Grade', '')
+            })
+        
+        df = pd.DataFrame(df_data)
+        
+        # Create Excel file
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False, sheet_name='Batch Data')
+            
+            # Get the workbook and worksheet
+            worksheet = writer.sheets['Batch Data']
+            
+            # Auto-adjust column widths
+            for column in worksheet.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                worksheet.column_dimensions[column_letter].width = adjusted_width
+        
+        output.seek(0)
+        
+        # Create response
+        response = make_response(output.getvalue())
+        response.headers['Content-Disposition'] = f'attachment; filename=batch_data_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx'
+        response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        
+        return response
+        
+    except Exception as e:
+        return render_template('batch.html', error=f"Export failed: {str(e)}")
+
+@app.route('/export_batch_pdf', methods=['POST'])
+def export_batch_pdf():
+    try:
+        # Get the same query parameters from the form
+        branch_filter = (request.form.get('branch') or "").strip()
+        batch_filter = (request.form.get('batch') or "").strip()
+        
+        # Recreate the same query logic
+        base_query = {}
+        reg_conditions = []
+        
+        def get_branch_code_from_input(branch_input):
+            branch_mapping = {
+                'civil': '1', 'civil engineering': '1',
+                'cse': '2', 'computer science': '2', 'computer science engineering': '2',
+                'ece': '3', 'electronics': '3', 'electronics & communication': '3', 'electronics & communication engineering': '3',
+                'eee': '5', 'electrical': '5', 'electrical & electronics': '5', 'electrical & electronics engineering': '5',
+                'mechanical': '6', 'mechanical engineering': '6'
+            }
+            return branch_mapping.get(branch_input.lower().strip())
+        
+        if branch_filter:
+            branch_code = get_branch_code_from_input(branch_filter)
+            if branch_code:
+                reg_conditions.append({"Reg_No": {"$regex": f"^.{{{7}}}{branch_code}"}})
+        
+        if batch_filter:
+            batch_short = batch_filter
+            if len(batch_filter) == 4 and batch_filter.isdigit():
+                batch_short = batch_filter[-2:]
+            reg_conditions.append({"Reg_No": {"$regex": f"^{batch_short}"}})
+        
+        if reg_conditions:
+            if len(reg_conditions) == 1:
+                base_query.update(reg_conditions[0])
+            else:
+                base_query["$and"] = reg_conditions
+        
+        # Get data
+        cursor = cutm_collection.find(
+            base_query,
+            {"_id": 0, "Reg_No": 1, "Name": 1, "Sem": 1, 
+             "Subject_Code": 1, "Subject_Name": 1, "Credits": 1, "Grade": 1}
+        ).sort([("Reg_No", 1), ("Sem", 1), ("Subject_Code", 1)])
+        
+        result = list(cursor)
+        
+        # Add branch and batch info
+        for row in result:
+            row['Branch'] = get_branch_from_reg_no(row.get('Reg_No', ''))
+            row['Batch'] = get_year_from_reg_no(row.get('Reg_No', ''))
+        
+        # Create PDF
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=18)
+        
+        # Container for the 'Flowable' objects
+        elements = []
+        
+        # Define styles
+        styles = getSampleStyleSheet()
+        title_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Heading1'],
+            fontSize=16,
+            spaceAfter=30,
+            alignment=1  # Center alignment
+        )
+        
+        # Add title
+        title = Paragraph("Batch Data Report", title_style)
+        elements.append(title)
+        elements.append(Spacer(1, 12))
+        
+        # Add filters info
+        filter_info = []
+        if branch_filter:
+            filter_info.append(f"Branch: {branch_filter}")
+        if batch_filter:
+            filter_info.append(f"Batch: {batch_filter}")
+        
+        if filter_info:
+            filter_text = Paragraph(f"Filters Applied: {', '.join(filter_info)}", styles['Normal'])
+            elements.append(filter_text)
+            elements.append(Spacer(1, 12))
+        
+        # Add generation date
+        date_text = Paragraph(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", styles['Normal'])
+        elements.append(date_text)
+        elements.append(Spacer(1, 20))
+        
+        # Create table data
+        data = [['Reg No', 'Name', 'Branch', 'Batch', 'Semester', 'Subject Code', 'Subject Name', 'Credits', 'Grade']]
+        
+        for row in result:
+            data.append([
+                row.get('Reg_No', ''),
+                row.get('Name', ''),
+                row.get('Branch', '').split()[0] if row.get('Branch') != 'Unknown Branch' else 'Unknown',
+                row.get('Batch', ''),
+                row.get('Sem', ''),
+                row.get('Subject_Code', ''),
+                row.get('Subject_Name', '')[:30] + '...' if len(row.get('Subject_Name', '')) > 30 else row.get('Subject_Name', ''),
+                row.get('Credits', ''),
+                row.get('Grade', '')
+            ])
+        
+        # Create table
+        table = Table(data)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        elements.append(table)
+        
+        # Build PDF
+        doc.build(elements)
+        buffer.seek(0)
+        
+        # Create response
+        response = make_response(buffer.getvalue())
+        response.headers['Content-Disposition'] = f'attachment; filename=batch_data_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf'
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        return response
+        
+    except Exception as e:
+        return render_template('batch.html', error=f"Export failed: {str(e)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # ---------------- Admin ----------------
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
@@ -284,6 +1160,7 @@ def admin_login():
             return render_template('admin_login.html', error="Invalid username or password")
     return render_template('admin_login.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -292,5 +1169,124 @@ def about():
 def admin_panel():
     return render_template('admin_panel.html')
 
+
+
+
+# ---------------- View Data with Search & Update ----------------
+@app.route('/view_data', methods=['GET', 'POST'])
+def view_data():
+    try:
+        rows = []
+        registration = ""
+        message = ""
+        error = ""
+        total_credits = 0
+        
+        if request.method == 'POST':
+            # Check if it's a search request or update request
+            if 'search_registration' in request.form:
+                # Search functionality
+                registration = (request.form.get('search_registration') or "").strip().upper()
+                
+                if not registration:
+                    error = "Please enter a registration number."
+                else:
+                    # Get all records for this student
+                    cursor = cutm_collection.find(
+                        {"Reg_No": registration},
+                        {"Reg_No": 1, "Name": 1, "Sem": 1, "Subject_Code": 1, 
+                         "Subject_Name": 1, "Credits": 1, "Grade": 1, "_id": 0}
+                    ).sort([("Sem", 1), ("Subject_Code", 1)])
+                    
+                    student_data = list(cursor)
+                    
+                    if not student_data:
+                        error = f"No records found for registration number: {registration}"
+                    else:
+                        # Convert to format expected by template (list of tuples)
+                        rows = [(record.get('Reg_No', ''), 
+                                record.get('Name', ''),
+                                record.get('Sem', ''),
+                                record.get('Subject_Code', ''),
+                                record.get('Subject_Name', ''),
+                                record.get('Credits', ''),
+                                record.get('Grade', '')) for record in student_data]
+                        
+                        # Calculate total credits
+                        for record in student_data:
+                            credits_str = record.get("Credits") or ""
+                            parts = [p for p in str(credits_str).split('+') if p.strip() != ""]
+                            if parts:
+                                try:
+                                    total_credits += sum(float(part) for part in parts)
+                                except ValueError:
+                                    continue
+                        
+            elif 'reg_no' in request.form and 'subject_code' in request.form:
+                # Update grade functionality
+                reg_no = (request.form.get('reg_no') or "").strip().upper()
+                subject_code = (request.form.get('subject_code') or "").strip().upper()
+                new_grade = (request.form.get('new_grade') or "").strip().upper()
+                
+                if not all([reg_no, subject_code, new_grade]):
+                    error = "All fields are required for update."
+                elif new_grade not in ['O', 'E', 'A', 'B', 'C', 'D', 'F', 'M', 'S', 'I', 'R']:
+                    error = "Invalid grade. Please use: O, E, A, B, C, D, F, M, S, I, R"
+                else:
+                    # Update the grade
+                    result = cutm_collection.update_one(
+                        {"Reg_No": reg_no, "Subject_Code": subject_code},
+                        {"$set": {"Grade": new_grade}}
+                    )
+                    
+                    if result.modified_count > 0:
+                        message = f"Grade updated successfully for {subject_code}!"
+                        # Keep the current registration for search continuity
+                        registration = reg_no
+                        
+                        # Reload the data to show updated grades
+                        cursor = cutm_collection.find(
+                            {"Reg_No": registration},
+                            {"Reg_No": 1, "Name": 1, "Sem": 1, "Subject_Code": 1, 
+                             "Subject_Name": 1, "Credits": 1, "Grade": 1, "_id": 0}
+                        ).sort([("Sem", 1), ("Subject_Code", 1)])
+                        
+                        student_data = list(cursor)
+                        rows = [(record.get('Reg_No', ''), 
+                                record.get('Name', ''),
+                                record.get('Sem', ''),
+                                record.get('Subject_Code', ''),
+                                record.get('Subject_Name', ''),
+                                record.get('Credits', ''),
+                                record.get('Grade', '')) for record in student_data]
+                        
+                        # Recalculate total credits after update
+                        for record in student_data:
+                            credits_str = record.get("Credits") or ""
+                            parts = [p for p in str(credits_str).split('+') if p.strip() != ""]
+                            if parts:
+                                try:
+                                    total_credits += sum(float(part) for part in parts)
+                                except ValueError:
+                                    continue
+                    else:
+                        error = "No record found to update or grade was already the same."
+        
+        return render_template('view_data.html', 
+                             rows=rows, 
+                             registration=registration,
+                             message=message,
+                             error=error,
+                             total_credits=total_credits)
+                             
+    except Exception as e:
+        return render_template('view_data.html', error=str(e))
+
+
 # Export the app for Vercel
-app = app
+# app = app
+
+
+#when i host it will commenyt this
+if __name__ == "__main__":
+    app.run(debug=True)
