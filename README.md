@@ -95,6 +95,15 @@ This system provides efficient student data management with features like GPA ca
 
 ---
 
+![home_page](images/home_page.png)
+![Result](images/result.png)
+![login](images/admin_login_panel.png)
+![Adminfeatures](images/Admin_features.png)
+![updatedata](images/Update_data.png)
+![Result](images/batch_data.png)
+![Result](images/Students_record_management.png)
+![Result](images/Backlog_search.png)
+
 ## 🤝 Contribution Guidelines
 
 We welcome contributions! 🚀
