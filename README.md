@@ -1,118 +1,93 @@
 # 🎓 CUTM Student Result Management System  
 
-A comprehensive web application for managing **student academic records**, built with **Flask** and **MongoDB**.  
-This system provides efficient student data management with features like GPA calculation, backlog tracking, batch-wise filtering, and data export capabilities.  
+A comprehensive web application for managing student academic records, built with **Flask** and **MongoDB**.  
+This system provides efficient student data management with features like GPA calculation, backlog tracking, batch-wise filtering, and data export capabilities.
 
 ---
 
 ## ✨ Features  
 
-- 🔍 **Student Records Search**: Search by registration number or student name, filter by semester, and view real-time SGPA/CGPA calculations.  
-- 📊 **GPA Calculation System**: Automatically calculates SGPA (Semester GPA) and CGPA (Cumulative GPA) based on a defined grade mapping system.  
-- 🎯 **Backlog Management**: Track failed subjects (grades **F, M, S, I, R**) with filtering by branch and year, and view statistics.  
-- 👥 **Batch-wise Data Management**: Filter student records by academic year and branch for performance insights.  
-- 📁 **Data Export Options**: Export reports in **CSV, Excel, and PDF** formats with professional formatting and branding.  
-- 🔧 **Admin Panel**: Secure interface for bulk uploads, record updates, and data validation.  
+### 🔍 Student Records Search
+- Search by registration number or student name  
+- Semester-wise result filtering  
+- Real-time SGPA and CGPA calculation  
+- Complete academic history display  
+
+### 📊 GPA Calculation System
+- **SGPA**: Semester-wise grade point calculation  
+- **CGPA**: Cumulative grade point across all semesters  
+- Automatic credit calculation with multi-format support  
+- Grade mapping system: *(O=10, E=9, A=8, B=7, C=6, D=5, F=0)*  
+
+### 🎯 Backlog Management
+- Track failed subjects (F, M, S, I, R grades)  
+- Search by registration number or subject code  
+- Branch and year-wise backlog filtering  
+- Statistical analysis with visual breakdown  
+
+### 👥 Batch-wise Data Management
+- Filter students by academic year (2020–2029)  
+- Branch-wise filtering *(Civil, CSE, ECE, EEE, Mechanical)*  
+- Complete student records with academic performance  
+- Statistical insights and analytics  
+
+### 📁 Data Export Options
+- **CSV Export**: Spreadsheet-compatible format  
+- **Excel Export**: Professional worksheets with auto-formatted columns  
+- **PDF Export**: Formatted reports with institutional branding  
+
+### 🔧 Admin Panel
+- Secure admin authentication  
+- Bulk data upload *(CSV/Excel)*  
+- Individual record updates  
+- Data validation and integrity checks  
+
+### 🏗️ Advanced Architecture
+- MongoDB indexing for optimized queries  
+- Branch identification from registration numbers  
+- Year extraction and validation  
+- Comprehensive error handling  
 
 ---
 
 ## 🛠️ Tech Stack  
 
-- **Backend:** Flask, MongoDB (PyMongo), Pandas, PyTZ, python-dotenv  
-- **Frontend:** Bootstrap 5, Jinja2, Custom CSS  
-- **Data Processing:** Pandas, openpyxl, reportlab, werkzeug  
+**Backend**  
+- Framework: Flask (Python)  
+- Database: MongoDB with PyMongo driver  
+- Authentication: Custom admin authentication  
+- File Processing: Pandas for CSV/Excel handling  
+
+**Frontend**  
+- UI Framework: Bootstrap 5  
+- Templates: Jinja2 templating engine  
+- Styling: Custom CSS with professional design  
+- Responsive: Mobile-friendly interface  
+
+**Data Processing & Export**  
+- `pandas` – DataFrame operations  
+- `openpyxl` – Excel file generation  
+- `reportlab` – PDF document creation  
+- File Handling: werkzeug secure filename processing  
+
+**Deployment & Environment**  
+- Environment: python-dotenv for configuration  
+- Timezone: PyTZ (IST)  
+- Security: Environment variable management  
 
 ---
 
 ## 📋 Prerequisites  
 
-- 🐍 Python **3.9+**  
-- 🍃 MongoDB **4.4+**  
-- 📦 pip (Python package installer)  
+- Python **3.9** or higher  
+- MongoDB **4.4** or higher  
+- pip (Python package installer)  
 
 ---
 
 ## 🚀 Installation & Setup  
 
-```bash
-# Clone the repository
-git clone https://github.com/AYUSHRAHUL/cutm-result-management.git
-cd cutm-result-management
-
-# Create Virtual Environment
-python -m venv venv
-
-# Activate it
-# On Windows
-venv\Scripts\activate
-# On macOS/Linux
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
----
-
-Plaintext
-
-MONGO_URI=mongodb://localhost:27017/your-database
-ADMIN_USERNAME=your_admin_username
-ADMIN_PASSWORD=your_secure_password
-Run the Application
-
-Bash
-
-python app.py
-Visit http://localhost:5000 to access the application.
- 
-🎯 Usage Guide
-For Students: Check results, view SGPA/CGPA, and track academic progress.
-
-For Faculty: Analyze backlogs, generate batch reports, and export data for analysis.
-
-For Administrators: Upload bulk data, update records, and manage system integrity.
-
-📁 Project Structure
-Plaintext
-
-cutm-result-management/
-├── app.py                 # Main Flask application
-├── templates/            # HTML templates
-│   ├── index.html
-│   ├── display.html
-│   ├── backlog.html
-│   ├── batch.html
-│   └── admin_login.html
-├── static/               # Static assets
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── requirements.txt      # Python dependencies
-├── .env                 # Environment variables
-└── README.md            # Project documentation
-🤝 Contributing
-Contributions are welcome! Please follow these steps:
-
-Fork the repository.
-
-Create a feature branch (git checkout -b feature/amazing-feature).
-
-Commit your changes (git commit -m 'Add amazing feature').
-
-Push to the branch (git push origin feature/amazing-feature).
-
-Open a Pull Request.
-
-📝 License
-This project is licensed under the MIT License.
-
-🙏 Acknowledgments
-CUTM for the educational data structure inspiration
-
-Flask Community for the robust web framework
-
-MongoDB for flexible document storage
-
-Bootstrap for responsive UI components
-
-Made with ❤️ for educational institutions. Empowering academic management through technology.
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/cutm-result-management.git
+   cd cutm-result-management
