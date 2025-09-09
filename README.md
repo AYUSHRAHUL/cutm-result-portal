@@ -8,7 +8,7 @@ This system provides efficient student data management with features like GPA ca
 ## ✨ Features  
 
 ### 🔍 Student Records Search
-- Search by registration number or student name  
+- Search by registration number 
 - Semester-wise result filtering  
 - Real-time SGPA and CGPA calculation  
 - Complete academic history display  
