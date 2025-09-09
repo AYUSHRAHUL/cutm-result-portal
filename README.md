@@ -91,3 +91,37 @@ This system provides efficient student data management with features like GPA ca
    ```bash
    git clone https://github.com/yourusername/cutm-result-management.git
    cd cutm-result-management
+
+
+---
+
+## 🤝 Contribution Guidelines
+
+We welcome contributions! 🚀
+
+Fork the repository
+Create a new feature branch
+Commit changes with descriptive messages
+Push to your fork
+Open a Pull Request
+
+##🧑‍💻 Future Enhancements
+
+📌 Student login portal
+📌 Automated transcript generation
+📌 Email notification system
+📌 REST API for external integrations
+📌 AI-powered performance prediction
+
+##📜 License
+
+This project is licensed under the MIT License – you are free to use, modify, and distribute.
+
+##👨‍🏫 Author
+
+Developed by [Ayush Kumar Singh] ✨
+📧 Contact: [2201011300056#cutm.ac.in]
+🔗 GitHub: AYUSHRAHUL
+
+
+             
