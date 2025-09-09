@@ -1,58 +1,57 @@
-CUTM Student Result Management System 🎓
-A comprehensive web application for managing student academic records, built with Flask and MongoDB. This system provides efficient student data management with features like GPA calculation, backlog tracking, batch-wise filtering, and data export capabilities.
+# 🎓 CUTM Student Result Management System  
 
-✨ Features
-🔍 Student Records Search: Search by registration number or student name, filter by semester, and view real-time SGPA/CGPA calculations.
+A comprehensive web application for managing **student academic records**, built with **Flask** and **MongoDB**.  
+This system provides efficient student data management with features like GPA calculation, backlog tracking, batch-wise filtering, and data export capabilities.  
 
-📊 GPA Calculation System: Automatically calculates SGPA (Semester Grade Point Average) and CGPA (Cumulative Grade Point Average) based on a defined grade mapping system.
+---
 
-🎯 Backlog Management: Easily track failed subjects (grades F, M, S, I, R) with filtering by branch and year, and view statistical analysis.
+## ✨ Features  
 
-👥 Batch-wise Data Management: Filter student records by academic year and branch to gain statistical insights into academic performance.
+- 🔍 **Student Records Search**: Search by registration number or student name, filter by semester, and view real-time SGPA/CGPA calculations.  
+- 📊 **GPA Calculation System**: Automatically calculates SGPA (Semester GPA) and CGPA (Cumulative GPA) based on a defined grade mapping system.  
+- 🎯 **Backlog Management**: Track failed subjects (grades **F, M, S, I, R**) with filtering by branch and year, and view statistics.  
+- 👥 **Batch-wise Data Management**: Filter student records by academic year and branch for performance insights.  
+- 📁 **Data Export Options**: Export reports in **CSV, Excel, and PDF** formats with professional formatting and branding.  
+- 🔧 **Admin Panel**: Secure interface for bulk uploads, record updates, and data validation.  
 
-📁 Data Export Options: Export reports in multiple formats, including CSV, Excel, and PDF, with professional formatting and branding.
+---
 
-🔧 Admin Panel: A secure interface for administrators to perform bulk data uploads, individual record updates, and data validation.
+## 🛠️ Tech Stack  
 
-🛠️ Tech Stack
-Backend: Flask, MongoDB (with PyMongo), Pandas, PyTZ, python-dotenv
+- **Backend:** Flask, MongoDB (PyMongo), Pandas, PyTZ, python-dotenv  
+- **Frontend:** Bootstrap 5, Jinja2, Custom CSS  
+- **Data Processing:** Pandas, openpyxl, reportlab, werkzeug  
 
-Frontend: Bootstrap 5, Jinja2, Custom CSS
+---
 
-Data Processing: Pandas, openpyxl, reportlab, werkzeug
+## 📋 Prerequisites  
 
-📋 Prerequisites
-Python 3.9 or higher
+- 🐍 Python **3.9+**  
+- 🍃 MongoDB **4.4+**  
+- 📦 pip (Python package installer)  
 
-MongoDB 4.4 or higher
+---
 
-pip (Python package installer)
+## 🚀 Installation & Setup  
 
-🚀 Installation & Setup
-Clone the Repository
-
-Bash
-
-git clone https://github.com/yourusername/cutm-result-management.git
+```bash
+# Clone the repository
+git clone https://github.com/AYUSHRAHUL/cutm-result-management.git
 cd cutm-result-management
-Create Virtual Environment
 
-Bash
-
+# Create Virtual Environment
 python -m venv venv
 
+# Activate it
 # On Windows
 venv\Scripts\activate
-
 # On macOS/Linux
 source venv/bin/activate
-Install Dependencies
 
-Bash
-
+# Install dependencies
 pip install -r requirements.txt
-Environment Configuration
-Create a .env file in the root directory and add your configuration details.
+
+---
 
 Plaintext
 
@@ -65,20 +64,7 @@ Bash
 
 python app.py
 Visit http://localhost:5000 to access the application.
-
-📊 Database Schema
-JSON
-
-{
-  "Reg_No": "22BXXXX001",
-  "Name": "Student Name",
-  "Sem": "Sem 1",
-  "Subject_Code": "CS101",
-  "Subject_Name": "Programming Fundamentals",
-  "Subject_Type": "Core",
-  "Credits": "3+0+2",
-  "Grade": "A"
-}
+ 
 🎯 Usage Guide
 For Students: Check results, view SGPA/CGPA, and track academic progress.
 
