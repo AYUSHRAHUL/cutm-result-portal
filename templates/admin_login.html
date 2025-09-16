@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | CUTM Result Portal</title>
-    <link rel="icon" type="image/x-icon" href=https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true">
+    <link rel="icon" type="image/x-icon" href="https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true">
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -13,30 +13,35 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <!-- AOS Animation -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-color: #0f172a;
-            --secondary-color: #1e293b;
+            --primary-color: #1e40af;
+            --primary-dark: #1e3a8a;
             --accent-color: #3b82f6;
-            --accent-hover: #2563eb;
+            --accent-light: #60a5fa;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-secondary: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            --text-light: #ffffff;
-            --text-muted: #94a3b8;
-            --text-dark: #1e293b;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --purple-color: #8b5cf6;
+            --pink-color: #ec4899;
+            --cyan-color: #06b6d4;
+            --orange-color: #f97316;
+            --gradient-bg: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --glass-border: rgba(59, 130, 246, 0.1);
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --shadow-light: 0 3px 5px -1px rgba(0, 0, 0, 0.1), 0 2px 3px -1px rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 8px 12px -3px rgba(0, 0, 0, 0.1), 0 3px 5px -2px rgba(0, 0, 0, 0.05);
+            --shadow-large: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 13px;
+            --radius-xl: 16px;
         }
 
         * {
@@ -46,18 +51,469 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--gradient-secondary);
-            color: var(--text-light);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--gradient-bg);
+            color: var(--text-dark);
             overflow-x: hidden;
-            line-height: 1.6;
-            min-height: 100vh;
             position: relative;
+            line-height: 1.5;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Enhanced animated background with security theme */
+        /* ENHANCED COLORFUL LOADING OVERLAY */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg, 
+                #667eea 0%, 
+                #764ba2 20%, 
+                #f093fb 40%, 
+                #f5576c 60%, 
+                #4facfe 80%, 
+                #00f2fe 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SMALLER SPINNER CONTAINER */
+        .spinner-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            animation: containerFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* COLORFUL BACKGROUND PARTICLES - Smaller */
+        .loading-particles {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, #48dbfb, #0abde3);
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(3) {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(45deg, #ff9ff3, #f368e0);
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(4) {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(45deg, #54a0ff, #2e86de);
+            bottom: 15%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(5) {
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #5f27cd, #a55eea);
+            top: 60%;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(6) {
+            width: 11px;
+            height: 11px;
+            background: linear-gradient(45deg, #00d2d3, #01a3a4);
+            top: 40%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.7;
+                scale: 1;
+            }
+            33% { 
+                transform: translateY(-20px) rotate(120deg); 
+                opacity: 1;
+                scale: 1.1;
+            }
+            66% { 
+                transform: translateY(15px) rotate(240deg); 
+                opacity: 0.8;
+                scale: 0.9;
+            }
+        }
+
+        /* SMALLER MAIN SPINNER */
+        .main-spinner {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* FIXED: Removed color-changing animation from logo */
+        .spinner-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: contain;
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.2) 100%
+            );
+            padding: 15px;
+            backdrop-filter: blur(15px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: logoSpin 4s ease-in-out infinite;
+            box-shadow: 
+                0 0 40px rgba(255, 255, 255, 0.4),
+                0 0 80px rgba(59, 130, 246, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* FIXED: Logo animation without color changes */
+        @keyframes logoSpin {
+            0% { 
+                transform: rotate(0deg) scale(1); 
+            }
+            25% { 
+                transform: rotate(90deg) scale(1.05); 
+            }
+            50% { 
+                transform: rotate(180deg) scale(1); 
+            }
+            75% { 
+                transform: rotate(270deg) scale(1.05); 
+            }
+            100% { 
+                transform: rotate(360deg) scale(1); 
+            }
+        }
+
+        /* SMALLER COLORFUL ORBITAL RINGS */
+        .spinner-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            animation: ringRotate 3s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-1 {
+            width: 170px;
+            height: 170px;
+            border-top: 3px solid #ff6b6b;
+            border-right: 3px solid rgba(255, 107, 107, 0.3);
+            border-bottom: 3px solid #feca57;
+            border-left: 3px solid rgba(254, 202, 87, 0.3);
+            animation-duration: 2s;
+            filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.5));
+        }
+
+        .ring-2 {
+            width: 200px;
+            height: 200px;
+            border-top: 3px solid #48dbfb;
+            border-right: 3px solid rgba(72, 219, 251, 0.3);
+            border-bottom: 3px solid #ff9ff3;
+            border-left: 3px solid rgba(255, 159, 243, 0.3);
+            animation-duration: 3s;
+            animation-direction: reverse;
+            filter: drop-shadow(0 0 15px rgba(72, 219, 251, 0.5));
+        }
+
+        .ring-3 {
+            width: 230px;
+            height: 230px;
+            border-top: 3px solid #5f27cd;
+            border-right: 3px solid rgba(95, 39, 205, 0.3);
+            border-bottom: 3px solid #00d2d3;
+            border-left: 3px solid rgba(0, 210, 211, 0.3);
+            animation-duration: 4s;
+            filter: drop-shadow(0 0 15px rgba(95, 39, 205, 0.5));
+        }
+
+        .ring-4 {
+            width: 260px;
+            height: 260px;
+            border-top: 3px solid #54a0ff;
+            border-right: 3px solid rgba(84, 160, 255, 0.3);
+            border-bottom: 3px solid #f368e0;
+            border-left: 3px solid rgba(243, 104, 224, 0.3);
+            animation-duration: 5s;
+            animation-direction: reverse;
+            filter: drop-shadow(0 0 15px rgba(84, 160, 255, 0.5));
+        }
+
+        @keyframes ringRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* SMALLER GLOWING PULSE BACKGROUND */
+        .pulse-bg {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(
+                circle,
+                rgba(255, 107, 107, 0.15) 0%,
+                rgba(72, 219, 251, 0.15) 25%,
+                rgba(255, 159, 243, 0.15) 50%,
+                rgba(95, 39, 205, 0.15) 75%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            animation: pulseGlow 3s ease-in-out infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(0.8); 
+                opacity: 0.5; 
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.2); 
+                opacity: 0.8; 
+            }
+        }
+
+        /* SMALLER LOADING TEXT */
+        .loading-text {
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 25px;
+            text-shadow: 
+                0 0 8px rgba(255, 255, 255, 0.6),
+                0 0 15px rgba(255, 107, 107, 0.4),
+                0 0 20px rgba(72, 219, 251, 0.3);
+            letter-spacing: 1.5px;
+            animation: textGlow 2s ease-in-out infinite alternate;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(
+                45deg,
+                #ff6b6b,
+                #feca57,
+                #48dbfb,
+                #ff9ff3,
+                #5f27cd,
+                #00d2d3
+            );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 2s ease-in-out infinite alternate, gradientText 4s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0% { 
+                transform: scale(1); 
+                filter: brightness(1);
+            }
+            100% { 
+                transform: scale(1.03); 
+                filter: brightness(1.2);
+            }
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SMALLER COLORFUL PROGRESS BAR */
+        .progress-container {
+            width: 250px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 
+                inset 0 1px 3px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar-custom {
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #ff6b6b 0%,
+                #feca57 20%,
+                #48dbfb 40%,
+                #ff9ff3 60%,
+                #5f27cd 80%,
+                #00d2d3 100%
+            );
+            background-size: 200% 100%;
+            border-radius: 15px;
+            animation: progressFill 5s ease-in-out infinite, progressGradient 3s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes progressFill {
+            0% { width: 0%; }
+            20% { width: 30%; }
+            40% { width: 60%; }
+            60% { width: 80%; }
+            80% { width: 95%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes progressGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SMALLER STATUS TEXT */
+        .loading-status {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            animation: statusPulse 2s ease-in-out infinite;
+            letter-spacing: 0.8px;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.8; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-2px); }
+        }
+
+        /* SMALLER FLOATING ICONS */
+        .floating-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            animation: iconFloat 8s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+            color: #ff6b6b;
+        }
+
+        .floating-icon:nth-child(2) {
+            top: 20%;
+            right: 20%;
+            animation-delay: 2s;
+            color: #48dbfb;
+        }
+
+        .floating-icon:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+            color: #ff9ff3;
+        }
+
+        .floating-icon:nth-child(4) {
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 6s;
+            color: #5f27cd;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.7; 
+            }
+            25% { 
+                transform: translateY(-15px) rotate(90deg); 
+                opacity: 1; 
+            }
+            50% { 
+                transform: translateY(0px) rotate(180deg); 
+                opacity: 0.7; 
+            }
+            75% { 
+                transform: translateY(15px) rotate(270deg); 
+                opacity: 1; 
+            }
+        }
+
+        /* Animated Background Elements - 20% smaller */
         body::before {
             content: '';
             position: fixed;
@@ -66,249 +522,54 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(30, 64, 175, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(96, 165, 250, 0.06) 0%, transparent 50%);
             z-index: -2;
-            animation: securityGlow 25s ease-in-out infinite;
+            animation: backgroundFloat 20s ease-in-out infinite alternate;
         }
 
-        @keyframes securityGlow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            25% { opacity: 0.2; transform: scale(1.05); }
-            50% { opacity: 0.4; transform: scale(0.95); }
-            75% { opacity: 0.25; transform: scale(1.02); }
+        @keyframes backgroundFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-8px, -8px) rotate(1deg); }
         }
 
-        /* Security-themed floating elements */
-        .security-bg {
+        /* Professional floating elements - 20% smaller */
+        .floating-shapes {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
+            pointer-events: none;
         }
 
-        .security-element {
+        .shape {
             position: absolute;
-            opacity: 0.05;
-            animation: securityFloat 20s ease-in-out infinite;
-            color: var(--accent-color);
-        }
-
-        .security-element:nth-child(1) {
-            top: 15%;
-            left: 10%;
-            font-size: 2rem;
-            animation-delay: -2s;
-        }
-
-        .security-element:nth-child(2) {
-            top: 25%;
-            right: 15%;
-            font-size: 1.5rem;
-            animation-delay: -8s;
-        }
-
-        .security-element:nth-child(3) {
-            bottom: 30%;
-            left: 20%;
-            font-size: 2.5rem;
-            animation-delay: -15s;
-        }
-
-        .security-element:nth-child(4) {
-            bottom: 15%;
-            right: 25%;
-            font-size: 1.8rem;
-            animation-delay: -5s;
-        }
-
-        @keyframes securityFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(90deg); }
-            50% { transform: translateY(-10px) rotate(180deg); }
-            75% { transform: translateY(-30px) rotate(270deg); }
-        }
-
-        /* Professional Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #2563eb 50%, #0ea5e9 75%, #0f172a 100%);
-            background-size: 300% 300%;
-            animation: professionalGradient 8s ease infinite;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes professionalGradient {
-            0% { background-position: 0% 0%; }
-            25% { background-position: 100% 0%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        /* Professional Spinner Container */
-        .spinner-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
-
-        /* Main Logo Spinner */
-        .main-spinner {
-            width: 120px;
-            height: 120px;
-            position: relative;
-            z-index: 3;
-        }
-
-        .spinner-logo {
-            width: 100%;
-            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(30, 64, 175, 0.03));
             border-radius: 50%;
-            object-fit: contain;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(59, 130, 246, 0.3);
-            animation: logoSpin 3s linear infinite;
-            box-shadow: 
-                0 0 30px rgba(59, 130, 246, 0.4),
-                inset 0 0 20px rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            animation: floatShape 15s linear infinite;
         }
 
-        @keyframes logoSpin {
-            0% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(90deg) scale(1.05); }
-            50% { transform: rotate(180deg) scale(1); }
-            75% { transform: rotate(270deg) scale(1.05); }
-            100% { transform: rotate(360deg) scale(1); }
+        .shape:nth-child(1) { width: 64px; height: 64px; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 96px; height: 96px; right: 10%; animation-delay: 5s; }
+        .shape:nth-child(3) { width: 48px; height: 48px; left: 50%; animation-delay: 10s; }
+
+        @keyframes floatShape {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-80px) rotate(360deg); opacity: 0; }
         }
 
-        /* Orbital Rings */
-        .spinner-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            animation: ringRotate 4s linear infinite;
-        }
-
-        .ring-1 {
-            width: 140px;
-            height: 140px;
-            border-top: 2px solid var(--accent-color);
-            border-right: 2px solid rgba(59, 130, 246, 0.3);
-            animation-duration: 2s;
-        }
-
-        .ring-2 {
-            width: 160px;
-            height: 160px;
-            border-bottom: 2px solid var(--success-color);
-            border-left: 2px solid rgba(16, 185, 129, 0.3);
-            animation-duration: 3s;
-            animation-direction: reverse;
-        }
-
-        .ring-3 {
-            width: 180px;
-            height: 180px;
-            border-top: 2px solid var(--warning-color);
-            border-right: 2px solid rgba(245, 158, 11, 0.3);
-            animation-duration: 4s;
-        }
-
-        @keyframes ringRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Pulsing Background Circle */
-        .pulse-bg {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        /* Professional Loading Text */
-        .loading-text {
-            color: var(--text-light);
-            font-size: 1.4rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
-            animation: textFade 3s ease-in-out infinite;
-        }
-
-        @keyframes textFade {
-            0%, 100% { opacity: 1; transform: translateY(0); }
-            50% { opacity: 0.7; transform: translateY(-5px); }
-        }
-
-        /* Progress Indicator */
-        .progress-container {
-            width: 200px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .progress-bar-custom {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
-            border-radius: 2px;
-            animation: progressFill 4s ease-in-out infinite;
-        }
-
-        @keyframes progressFill {
-            0% { width: 0%; }
-            50% { width: 70%; }
-            100% { width: 100%; }
-        }
-
-        /* Loading Status */
-        .loading-status {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        /* Enhanced navbar with admin theme */
+        /* Enhanced Navbar - 20% smaller */
         .navbar {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 20px 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            padding: 0.8rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: fixed;
             width: 100%;
             top: 0;
@@ -316,95 +577,107 @@
         }
 
         .navbar.scrolled {
-            background: rgba(15, 23, 42, 0.98);
-            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.98);
             box-shadow: var(--shadow-medium);
+            padding: 0.6rem 0;
         }
 
         .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.75rem;
+            font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            color: var(--text-light) !important;
+            color: var(--primary-color) !important;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .navbar-brand:hover {
-            transform: scale(1.05);
+            color: var(--accent-color) !important;
+            transform: translateY(-1px);
         }
 
         .navbar-brand img {
-            margin-right: 15px;
-            border-radius: 12px;
+            margin-right: 10px;
+            border-radius: var(--radius-sm);
             box-shadow: var(--shadow-light);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .navbar-brand:hover img {
             box-shadow: var(--shadow-medium);
-            transform: rotate(5deg);
+            transform: scale(1.05);
         }
 
-        .navbar .nav-link {
-            color: var(--text-muted) !important;
+        .nav-link {
+            color: var(--text-dark) !important;
             font-weight: 500;
-            margin: 0 5px;
-            padding: 12px 20px !important;
-            border-radius: 50px;
+            font-size: 0.76rem;
+            margin: 0 0.4rem;
+            padding: 0.6rem 0.8rem !important;
+            border-radius: var(--radius-md);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .navbar .nav-link::before {
+        .nav-link::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
-            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
         }
 
-        .navbar .nav-link:hover::before {
-            left: 100%;
+        .nav-link:hover::before {
+            transform: translateY(0);
         }
 
-        .navbar .nav-link:hover {
-            color: var(--text-light) !important;
-            background: rgba(59, 130, 246, 0.15);
+        .nav-link:hover {
+            color: white !important;
             transform: translateY(-2px);
             box-shadow: var(--shadow-light);
         }
 
-        .navbar .nav-link.active {
+        .nav-link.active {
             color: var(--accent-color) !important;
             background: rgba(59, 130, 246, 0.1);
         }
 
-        /* Main container */
+        .nav-link i {
+            margin-right: 0.4rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Main container - 20% smaller */
         .main-container {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 120px 20px 40px;
+            padding: 96px 16px 32px;
             min-height: 100vh;
         }
 
-        /* Admin login card with 2025 glassmorphism trends */
+        /* Admin login card - 20% smaller */
         .admin-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 50px 40px;
-            box-shadow: var(--shadow-heavy);
+            border-radius: var(--radius-xl);
+            padding: 40px 32px;
+            box-shadow: var(--shadow-large);
             width: 100%;
-            max-width: 450px;
+            max-width: 360px;
             position: relative;
             overflow: hidden;
             animation: slideInUp 0.8s ease;
@@ -436,46 +709,46 @@
             50% { transform: rotate(180deg) scale(1.1); opacity: 0.8; }
         }
 
-        /* Header section with security theme */
+        /* Header section - 20% smaller */
         .admin-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             position: relative;
             z-index: 2;
         }
 
         .admin-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 25px;
-            font-size: 2rem;
+            margin: 0 auto 20px;
+            font-size: 1.6rem;
             color: white;
             animation: securityPulse 3s ease-in-out infinite;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 24px rgba(59, 130, 246, 0.4);
         }
 
         @keyframes securityPulse {
             0%, 100% { 
                 transform: scale(1); 
-                box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); 
+                box-shadow: 0 0 24px rgba(59, 130, 246, 0.4); 
             }
             50% { 
                 transform: scale(1.05); 
-                box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); 
+                box-shadow: 0 0 32px rgba(59, 130, 246, 0.6); 
             }
         }
 
         .admin-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-family: 'Poppins', serif;
+            font-size: 2rem;
             font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #ffffff, var(--accent-color));
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
@@ -483,91 +756,91 @@
 
         .admin-subtitle {
             color: var(--text-muted);
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
         }
 
         .security-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 50px;
-            padding: 6px 16px;
-            font-size: 0.85rem;
+            border-radius: 40px;
+            padding: 5px 13px;
+            font-size: 0.68rem;
             color: var(--success-color);
             font-weight: 600;
         }
 
-        /* Enhanced form styling */
+        /* Enhanced form styling - 20% smaller */
         .admin-form {
             position: relative;
             z-index: 2;
         }
 
         .form-group {
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             position: relative;
         }
 
         .form-label {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-light);
-            font-size: 0.95rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            font-size: 0.76rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
         .form-label i {
             color: var(--accent-color);
-            width: 16px;
+            width: 13px;
         }
 
         .form-control {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-light);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 18px 24px;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+            border: 2px solid rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius-md);
+            padding: 14px 19px;
+            font-size: 13px;
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             position: relative;
         }
 
         .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
         }
 
         .form-control:focus {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 1);
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
             transform: translateY(-2px);
         }
 
-        /* Password visibility toggle */
+        /* Password visibility toggle - 20% smaller */
         .password-container {
             position: relative;
         }
 
         .password-toggle {
             position: absolute;
-            right: 20px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            padding: 5px;
+            padding: 4px;
             transition: color 0.3s ease;
         }
 
@@ -575,23 +848,23 @@
             color: var(--accent-color);
         }
 
-        /* Enhanced login button */
+        /* Enhanced login button - 20% smaller */
         .login-btn {
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
             border: none;
             color: white;
             font-weight: 700;
-            font-size: 16px;
-            border-radius: 50px;
-            padding: 18px 40px;
+            font-size: 13px;
+            border-radius: 40px;
+            padding: 14px 32px;
             width: 100%;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             box-shadow: var(--shadow-medium);
-            margin-top: 20px;
+            margin-top: 16px;
         }
 
         .login-btn::before {
@@ -610,9 +883,9 @@
         }
 
         .login-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: var(--shadow-heavy);
-            background: linear-gradient(135deg, var(--accent-hover), #1d4ed8);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-large);
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
         }
 
         .login-btn:active {
@@ -625,11 +898,11 @@
             transform: none !important;
         }
 
-        /* Security features section */
+        /* Security features section - 20% smaller */
         .security-features {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
             position: relative;
             z-index: 2;
         }
@@ -637,119 +910,90 @@
         .security-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
             color: var(--text-muted);
         }
 
         .security-item i {
             color: var(--success-color);
-            width: 16px;
+            width: 13px;
         }
 
-        /* Enhanced footer */
+        /* Enhanced footer - 20% smaller */
         footer {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--glass-border);
-            padding: 40px 0;
-            text-align: center;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: rgba(255, 255, 255, 0.9);
+            padding: 2rem 0 1.3rem;
             position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
         }
 
         .footer-content {
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-links {
             display: flex;
-            gap: 30px;
+            gap: 24px;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         .footer-links a {
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.72rem;
             transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
-            color: var(--accent-color);
+            color: var(--accent-light);
         }
 
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
-            z-index: 9999;
-            transition: width 0.25s ease;
-        }
-
-        /* Scroll to top button */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .scroll-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-to-top:hover {
-            transform: scale(1.1) translateY(-2px);
-            box-shadow: var(--shadow-heavy);
-        }
-
-        /* Alert messages */
+        /* Alert messages - 20% smaller */
         .alert {
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             border: none;
-            margin-bottom: 25px;
-            padding: 16px 20px;
-            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            padding: 13px 16px;
+            backdrop-filter: blur(8px);
         }
 
         .alert-danger {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
+            color: #dc2626;
         }
 
         .alert-success {
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #6ee7b7;
+            color: var(--success-color);
         }
 
         @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(24px);
             }
             to {
                 opacity: 1;
@@ -757,139 +1001,156 @@
             }
         }
 
-        /* Responsive design */
+        /* Responsive design - smaller breakpoints */
         @media (max-width: 768px) {
             .main-container {
-                padding: 100px 15px 20px;
+                padding: 80px 12px 16px;
             }
 
             .admin-card {
-                padding: 40px 25px;
-                border-radius: 24px;
+                padding: 32px 20px;
+                border-radius: var(--radius-lg);
             }
 
             .admin-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
             }
 
             .admin-title {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
 
             .navbar {
-                padding: 15px 0;
+                padding: 12px 0;
             }
 
             .footer-links {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
             }
 
             .main-spinner {
-                width: 100px;
-                height: 100px;
+                width: 110px;
+                height: 110px;
             }
 
-            .ring-1 { width: 120px; height: 120px; }
-            .ring-2 { width: 140px; height: 140px; }
-            .ring-3 { width: 160px; height: 160px; }
+            .ring-1 { width: 130px; height: 130px; }
+            .ring-2 { width: 150px; height: 150px; }
+            .ring-3 { width: 170px; height: 170px; }
+            .ring-4 { width: 190px; height: 190px; }
 
             .loading-text {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
+            }
+
+            .progress-container {
+                width: 200px;
+            }
+
+            .loading-particles {
+                width: 280px;
+                height: 280px;
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
             .admin-card {
-                margin: 0 10px;
-                padding: 30px 20px;
+                margin: 0 8px;
+                padding: 24px 16px;
             }
 
             .form-control {
-                padding: 15px 20px;
+                padding: 12px 16px;
             }
 
             .login-btn {
-                padding: 15px;
+                padding: 12px;
             }
 
             .main-spinner {
-                width: 80px;
-                height: 80px;
+                width: 90px;
+                height: 90px;
             }
 
-            .ring-1 { width: 100px; height: 100px; }
-            .ring-2 { width: 120px; height: 120px; }
-            .ring-3 { width: 140px; height: 140px; }
+            .ring-1 { width: 110px; height: 110px; }
+            .ring-2 { width: 130px; height: 130px; }
+            .ring-3 { width: 150px; height: 150px; }
+            .ring-4 { width: 170px; height: 170px; }
 
             .progress-container {
-                width: 150px;
+                width: 180px;
             }
-        }
 
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .admin-card {
-                border: 2px solid var(--accent-color);
+            .loading-text {
+                font-size: 1.1rem;
             }
-            
-            .form-control {
-                border-width: 2px;
-            }
-        }
 
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            .loading-particles {
+                width: 250px;
+                height: 250px;
+            }
+
+            .pulse-bg {
+                width: 220px;
+                height: 220px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Professional Loading Overlay -->
+    <!-- COLORFUL LOADING OVERLAY - SMALLER SIZE -->
     <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite" aria-label="Loading Admin Portal">
+        <!-- Floating Icons -->
+        <div class="floating-icons">
+            <div class="floating-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="floating-icon"><i class="fas fa-book-open"></i></div>
+            <div class="floating-icon"><i class="fas fa-award"></i></div>
+            <div class="floating-icon"><i class="fas fa-chart-line"></i></div>
+        </div>
+
+        <!-- Colorful Particles -->
+        <div class="loading-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Main Spinner Container -->
         <div class="spinner-container">
             <div class="pulse-bg"></div>
+            <div class="spinner-ring ring-4"></div>
             <div class="spinner-ring ring-3"></div>
             <div class="spinner-ring ring-2"></div>
             <div class="spinner-ring ring-1"></div>
             <div class="main-spinner">
                 <img class="spinner-logo" 
-                     src="https://tse1.mm.bing.net/th/id/OIP.yR5DUnUlOBL5eCaPQ9HFgwHaHZ?rs=1&pid=ImgDetMain&o=7&rm=3" 
+                     src="https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true" 
                      alt="CUTM Logo Loading" />
             </div>
         </div>
+
+        <!-- Enhanced Loading Text -->
         <div class="loading-text" id="loadingText">Initializing Secure Portal...</div>
+        
+        <!-- Colorful Progress Bar -->
         <div class="progress-container">
             <div class="progress-bar-custom"></div>
         </div>
+        
+        <!-- Dynamic Status -->
         <div class="loading-status" id="loadingStatus">Setting up security protocols</div>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar" id="progressBar"></div>
-
-    <!-- Security Background Elements -->
-    <div class="security-bg">
-        <div class="security-element">
-            <i class="fas fa-shield-alt"></i>
-        </div>
-        <div class="security-element">
-            <i class="fas fa-lock"></i>
-        </div>
-        <div class="security-element">
-            <i class="fas fa-key"></i>
-        </div>
-        <div class="security-element">
-            <i class="fas fa-user-shield"></i>
-        </div>
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
 
     <!-- Enhanced Navbar -->
@@ -897,11 +1158,11 @@
         <nav class="navbar navbar-expand-lg" id="mainNavbar">
             <div class="container">
                 <a class="navbar-brand" href="{{ url_for('home') }}">
-                    <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="45"> 
+                    <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="32"> 
                     CUTM Portal
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                    <span><i class="fas fa-bars text-white"></i></span>
+                    <span><i class="fas fa-bars" style="color: var(--primary-color);"></i></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
@@ -1045,15 +1306,10 @@
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
                 </div>
-                <p>&copy; 2024 CUTM Result Portal. All rights reserved. | Secure Admin Access</p>
+                <p>&copy; 2025 CUTM Result Portal. All rights reserved. | Secure Admin Access</p>
             </div>
         </div>
     </footer>
-
-    <!-- Scroll to Top Button -->
-    <div class="scroll-to-top" id="scrollToTop">
-        <i class="fas fa-chevron-up"></i>
-    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -1066,28 +1322,43 @@
         AOS.init({ 
             duration: 600, 
             once: true,
-            offset: 50
+            offset: 40
         });
 
-        // Professional loading sequence
+        // ENHANCED COLORFUL LOADING SEQUENCE
         window.addEventListener('load', function() {
             const loadingText = document.getElementById('loadingText');
             const loadingStatus = document.getElementById('loadingStatus');
             
             const loadingMessages = [
-                { text: 'Initializing Secure Portal...', status: 'Setting up security protocols' },
-                { text: 'Verifying System Status...', status: 'Checking server connectivity' },
-                { text: 'Loading Security Modules...', status: 'Encrypting communication channels' },
-                { text: 'Preparing Admin Interface...', status: 'Finalizing user interface' },
-                { text: 'Access Ready', status: 'Welcome to CUTM Admin Portal' }
+                { 
+                    text: '🎨 Initializing Portal...', 
+                    status: '🔐 Setting up security protocols' 
+                },
+                { 
+                    text: '🚀 Loading Interface...', 
+                    status: '🌐 Checking server connectivity' 
+                },
+                { 
+                    text: '✨ Applying Themes...', 
+                    status: '🔒 Encrypting channels' 
+                },
+                { 
+                    text: '🎯 Preparing Dashboard...', 
+                    status: '🎨 Finalizing setup' 
+                },
+                { 
+                    text: '🔥 Ready!', 
+                    status: '🎉 Welcome to CUTM Admin!' 
+                }
             ];
             
             let messageIndex = 0;
             
             const updateMessages = () => {
                 if (messageIndex < loadingMessages.length) {
-                    loadingText.textContent = loadingMessages[messageIndex].text;
-                    loadingStatus.textContent = loadingMessages[messageIndex].status;
+                    loadingText.innerHTML = loadingMessages[messageIndex].text;
+                    loadingStatus.innerHTML = loadingMessages[messageIndex].status;
                     messageIndex++;
                 }
             };
@@ -1100,38 +1371,24 @@
                 clearInterval(messageInterval);
                 const overlay = document.getElementById('loadingOverlay');
                 
-                // Smooth fade out
+                // Smooth fade out with scale
                 overlay.style.opacity = '0';
                 overlay.style.transform = 'scale(0.95)';
+                overlay.style.filter = 'blur(3px)';
                 
                 setTimeout(() => {
                     overlay.style.display = 'none';
                 }, 600);
-            }, 4500); // Total loading time: 4.5 seconds
-        });
-
-        // Progress bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('progressBar').style.width = scrolled + '%';
+            }, 4200); // Total loading time: 4.2 seconds
         });
 
         // Navbar scroll effect
         $(window).scroll(function() {
-            if ($(window).scrollTop() > 100) {
+            if ($(window).scrollTop() > 80) {
                 $('#mainNavbar').addClass('scrolled');
-                $('#scrollToTop').addClass('show');
             } else {
                 $('#mainNavbar').removeClass('scrolled');
-                $('#scrollToTop').removeClass('show');
             }
-        });
-
-        // Scroll to top
-        $('#scrollToTop').click(function() {
-            $('html, body').animate({scrollTop: 0}, 800);
         });
 
         // Password visibility toggle
@@ -1148,27 +1405,27 @@
             }
         });
 
-        // Professional form submission with loading state
+        // Form submission with colorful loading state
         $('#adminLoginForm').on('submit', function(e) {
             const loginButton = $('#loginButton');
             const originalText = loginButton.html();
             
-            // Professional loading state
+            // Colorful loading state
             loginButton.html(`
-                <span style="display: inline-flex; align-items: center; gap: 10px;">
-                    <span style="width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></span>
-                    Authenticating...
+                <span style="display: inline-flex; align-items: center; gap: 8px;">
+                    <span style="width: 14px; height: 14px; border: 2px solid transparent; border-top: 2px solid #ff6b6b; border-right: 2px solid #48dbfb; border-radius: 50%; animation: colorfulSpin 1s linear infinite;"></span>
+                    🔐 Authenticating...
                 </span>
             `);
             loginButton.prop('disabled', true);
             
-            // Reset button state after timeout (adjust based on your server response time)
+            // Reset button state after timeout
             setTimeout(() => {
                 if (window.location.pathname.includes('/admin/login')) {
                     loginButton.html(originalText);
                     loginButton.prop('disabled', false);
                 }
-            }, 5000);
+            }, 4000);
         });
 
         // Enhanced form interactions
@@ -1186,7 +1443,6 @@
             const password = $('#password').val();
             const loginButton = $('#loginButton');
             
-            // Enable/disable login button based on input
             if (username.length >= 3 && password.length >= 6) {
                 loginButton.prop('disabled', false);
                 loginButton.css('opacity', '1');
@@ -1199,81 +1455,81 @@
         // Bind validation to input events
         $('#username, #password').on('input', validateForm);
 
-        // Smooth scrolling for navigation links
-        $('a[href^="#"]').on('click', function(event) {
-            const target = $(this.getAttribute('href'));
-            if (target.length) {
-                event.preventDefault();
-                $('html, body').stop().animate({
-                    scrollTop: target.offset().top - 100
-                }, 1000);
-            }
-        });
-
-        // Keyboard shortcuts
-        $(document).keydown(function(e) {
-            // Enter key to submit form
-            if (e.keyCode === 13 && ($('#username').is(':focus') || $('#password').is(':focus'))) {
-                e.preventDefault();
-                if (!$('#loginButton').prop('disabled')) {
-                    $('#adminLoginForm').submit();
-                }
-            }
-            
-            // Escape key to clear form
-            if (e.keyCode === 27) {
-                $('#username, #password').val('');
-                $('#username').focus();
-                validateForm();
-            }
-        });
-
         // Auto-focus username field when page loads
         $(document).ready(function() {
             setTimeout(() => {
                 $('#username').focus();
-                validateForm(); // Initial validation
-            }, 4600); // Focus after loading completes
+                validateForm();
+            }, 4300); // Focus after loading completes
         });
 
-        // Security timeout simulation
-        let inactivityTimer;
-        const INACTIVITY_TIME = 15 * 60 * 1000; // 15 minutes
+        // CSS for colorful spin animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes colorfulSpin {
+                0% { 
+                    transform: rotate(0deg); 
+                    border-top-color: #ff6b6b;
+                    border-right-color: #48dbfb;
+                }
+                25% { 
+                    transform: rotate(90deg); 
+                    border-top-color: #48dbfb;
+                    border-right-color: #ff9ff3;
+                }
+                50% { 
+                    transform: rotate(180deg); 
+                    border-top-color: #ff9ff3;
+                    border-right-color: #5f27cd;
+                }
+                75% { 
+                    transform: rotate(270deg); 
+                    border-top-color: #5f27cd;
+                    border-right-color: #00d2d3;
+                }
+                100% { 
+                    transform: rotate(360deg); 
+                    border-top-color: #00d2d3;
+                    border-right-color: #ff6b6b;
+                }
+            }
+        `;
+        document.head.appendChild(style);
 
-        function resetInactivityTimer() {
-            clearTimeout(inactivityTimer);
-            inactivityTimer = setTimeout(() => {
-                console.log('Session timeout warning - implement server-side session management');
-                // You can show a warning modal here
-            }, INACTIVITY_TIME);
-        }
+        // Add colorful mouse trail effect
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() > 0.7) { // Only create trail 30% of the time for performance
+                const cursor = document.createElement('div');
+                cursor.style.position = 'fixed';
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                cursor.style.width = '4px';
+                cursor.style.height = '4px';
+                cursor.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                cursor.style.borderRadius = '50%';
+                cursor.style.pointerEvents = 'none';
+                cursor.style.zIndex = '999';
+                cursor.style.animation = 'cursorFade 0.8s ease-out forwards';
+                
+                document.body.appendChild(cursor);
+                
+                setTimeout(() => {
+                    if (cursor.parentNode) {
+                        cursor.parentNode.removeChild(cursor);
+                    }
+                }, 800);
+            }
+        });
 
-        // Reset timer on user activity
-        $(document).on('mousedown keydown scroll touchstart', resetInactivityTimer);
-        resetInactivityTimer();
-
-        // Performance optimization
-        const debounce = (func, wait) => {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        };
-
-        // Debounced scroll handler
-        const debouncedScrollHandler = debounce(() => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('progressBar').style.width = scrolled + '%';
-        }, 10);
-
-        window.addEventListener('scroll', debouncedScrollHandler);
+        // Cursor fade animation
+        const cursorStyle = document.createElement('style');
+        cursorStyle.textContent = `
+            @keyframes cursorFade {
+                0% { opacity: 0.8; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0.3); }
+            }
+        `;
+        document.head.appendChild(cursorStyle);
     </script>
 </body>
 </html>

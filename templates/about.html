@@ -29,13 +29,13 @@
       --glass-border: rgba(59, 130, 246, 0.1);
       --text-dark: #1f2937;
       --text-muted: #6b7280;
-      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-large: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 20px;
+      --shadow-light: 0 3px 5px -1px rgba(0, 0, 0, 0.1), 0 2px 3px -1px rgba(0, 0, 0, 0.06);
+      --shadow-medium: 0 8px 12px -3px rgba(0, 0, 0, 0.1), 0 3px 5px -2px rgba(0, 0, 0, 0.05);
+      --shadow-large: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 13px;
+      --radius-xl: 16px;
     }
 
     * {
@@ -50,7 +50,7 @@
       color: var(--text-dark);
       overflow-x: hidden;
       position: relative;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     /* Animated Background Elements */
@@ -71,10 +71,10 @@
 
     @keyframes backgroundFloat {
       0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(-10px, -10px) rotate(1deg); }
+      100% { transform: translate(-8px, -8px) rotate(1deg); }
     }
 
-    /* Professional floating elements with morphing */
+    /* Professional floating elements with morphing - 20% smaller */
     .floating-shapes {
       position: fixed;
       top: 0;
@@ -94,22 +94,22 @@
     }
 
     .shape:nth-child(1) { 
-      width: 120px; 
-      height: 120px; 
+      width: 96px; 
+      height: 96px; 
       left: 10%; 
       top: 20%;
       animation-delay: 0s; 
     }
     .shape:nth-child(2) { 
-      width: 80px; 
-      height: 80px; 
+      width: 64px; 
+      height: 64px; 
       right: 15%; 
       top: 60%;
       animation-delay: 7s; 
     }
     .shape:nth-child(3) { 
-      width: 150px; 
-      height: 150px; 
+      width: 120px; 
+      height: 120px; 
       left: 60%; 
       bottom: 30%;
       animation-delay: 14s; 
@@ -122,28 +122,28 @@
         opacity: 0.1; 
       }
       25% { 
-        transform: translateY(-20px) scale(1.1) rotate(90deg); 
+        transform: translateY(-16px) scale(1.1) rotate(90deg); 
         border-radius: 40% 60% 30% 70%; 
         opacity: 0.15; 
       }
       50% { 
-        transform: translateY(-40px) scale(0.9) rotate(180deg); 
+        transform: translateY(-32px) scale(0.9) rotate(180deg); 
         border-radius: 60% 40% 60% 40%; 
         opacity: 0.08; 
       }
       75% { 
-        transform: translateY(-15px) scale(1.05) rotate(270deg); 
+        transform: translateY(-12px) scale(1.05) rotate(270deg); 
         border-radius: 30% 70% 50% 50%; 
         opacity: 0.12; 
       }
     }
 
-    /* Enhanced Navbar with slide-down animation */
+    /* Enhanced Navbar - 20% smaller */
     .navbar {
       background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(16px);
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-      padding: 1rem 0;
+      padding: 0.8rem 0;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: fixed;
       width: 100%;
@@ -160,14 +160,14 @@
     .navbar.scrolled {
       background: rgba(255, 255, 255, 0.98);
       box-shadow: var(--shadow-medium);
-      padding: 0.75rem 0;
+      padding: 0.6rem 0;
     }
 
     .navbar-brand {
       font-family: 'Poppins', sans-serif;
       font-weight: 700;
       color: var(--primary-color) !important;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -179,7 +179,7 @@
     }
 
     .navbar-brand img {
-      margin-right: 12px;
+      margin-right: 10px;
       border-radius: var(--radius-sm);
       box-shadow: var(--shadow-light);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -199,9 +199,9 @@
     .nav-link {
       color: var(--text-dark) !important;
       font-weight: 500;
-      font-size: 0.95rem;
-      margin: 0 0.5rem;
-      padding: 0.75rem 1rem !important;
+      font-size: 0.76rem;
+      margin: 0 0.4rem;
+      padding: 0.6rem 0.8rem !important;
       border-radius: var(--radius-md);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
@@ -247,12 +247,12 @@
 
     .nav-link:hover {
       color: white !important;
-      transform: translateY(-3px) scale(1.05);
+      transform: translateY(-2px) scale(1.05);
       box-shadow: var(--shadow-medium);
     }
 
     .nav-link i {
-      margin-right: 0.5rem;
+      margin-right: 0.4rem;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -266,12 +266,12 @@
       50% { transform: scale(1.4) rotate(25deg); }
     }
 
-    /* Hero Section with epic title animation */
+    /* Hero Section - 20% smaller */
     .about-hero {
-      min-height: 70vh;
+      min-height: 56vh;
       display: flex;
       align-items: center;
-      padding: 120px 0 80px;
+      padding: 96px 0 64px;
       position: relative;
       text-align: center;
       overflow: hidden;
@@ -283,13 +283,13 @@
 
     .hero-title {
       font-family: 'Poppins', serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: clamp(2rem, 4vw, 3.2rem);
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 24px;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 19px;
+      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.3);
       opacity: 0;
-      transform: translateY(50px) scale(0.9);
+      transform: translateY(40px) scale(0.9);
       animation: heroTitleReveal 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards;
       position: relative;
     }
@@ -309,12 +309,12 @@
     @keyframes heroTitleReveal {
       0% { 
         opacity: 0; 
-        transform: translateY(50px) scale(0.9) rotate(-5deg); 
-        filter: blur(10px);
+        transform: translateY(40px) scale(0.9) rotate(-5deg); 
+        filter: blur(8px);
       }
       50% { 
         opacity: 0.8; 
-        transform: translateY(10px) scale(1.02) rotate(1deg); 
+        transform: translateY(8px) scale(1.02) rotate(1deg); 
         filter: blur(2px);
       }
       100% { 
@@ -330,14 +330,14 @@
     }
 
     .hero-subtitle {
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-size: clamp(0.88rem, 1.6vw, 1.12rem);
       color: rgba(255, 255, 255, 0.9);
       font-weight: 400;
-      max-width: 600px;
-      margin: 0 auto 40px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(24px);
       animation: subtitleFadeIn 1s ease-out 1.8s forwards;
     }
 
@@ -350,17 +350,17 @@
 
     .breadcrumb-nav {
       background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50px;
-      padding: 12px 30px;
+      border-radius: 40px;
+      padding: 10px 24px;
       display: inline-flex;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 30px;
-      font-size: 0.9rem;
+      gap: 12px;
+      margin-bottom: 24px;
+      font-size: 0.72rem;
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-16px);
       animation: breadcrumbSlideIn 0.8s ease-out 1.3s forwards;
       transition: all 0.3s ease;
     }
@@ -368,7 +368,7 @@
     .breadcrumb-nav:hover {
       background: rgba(255, 255, 255, 0.15);
       transform: scale(1.05);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     }
 
     @keyframes breadcrumbSlideIn {
@@ -409,24 +409,24 @@
       font-weight: 600;
     }
 
-    /* Mission & Vision with card slide-in */
+    /* Mission & Vision - 20% smaller */
     .mission-vision {
-      padding: 100px 0;
+      padding: 80px 0;
       position: relative;
     }
 
     .section-card {
       background: var(--card-bg);
-      backdrop-filter: blur(25px);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-xl);
-      padding: 50px 40px;
+      padding: 40px 32px;
       box-shadow: var(--shadow-large);
       transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
-      margin-bottom: 40px;
-      transform: translateY(50px) rotateX(10deg);
+      margin-bottom: 32px;
+      transform: translateY(40px) rotateX(8deg);
       opacity: 0;
     }
 
@@ -469,31 +469,31 @@
     }
 
     .section-card:hover {
-      transform: translateY(-15px) scale(1.02);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
       border-color: var(--accent-color);
     }
 
     .section-title {
       font-family: 'Poppins', serif;
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
       color: var(--primary-color);
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
     }
 
     .title-icon {
-      width: 60px;
-      height: 60px;
+      width: 48px;
+      height: 48px;
       background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: white;
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
@@ -516,7 +516,7 @@
 
     .title-icon:hover {
       transform: scale(1.1) rotate(15deg);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
     }
 
     .title-icon i {
@@ -525,10 +525,10 @@
     }
 
     .section-text {
-      font-size: 1.1rem;
-      line-height: 1.8;
+      font-size: 0.88rem;
+      line-height: 1.7;
       color: var(--text-muted);
-      margin-bottom: 30px;
+      margin-bottom: 24px;
     }
 
     .highlight-text {
@@ -553,11 +553,11 @@
       50% { opacity: 1; transform: scaleX(1); }
     }
 
-    /* Stats Section with counter glow */
+    /* Stats Section - 20% smaller */
     .about-stats {
-      padding: 80px 0;
+      padding: 64px 0;
       background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
       position: relative;
     }
 
@@ -573,13 +573,13 @@
 
     .stat-card {
       background: white;
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(12px);
       border-radius: var(--radius-lg);
-      padding: 40px 30px;
+      padding: 32px 24px;
       text-align: center;
       border: 1px solid var(--glass-border);
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      margin-bottom: 30px;
+      margin-bottom: 24px;
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-light);
@@ -598,7 +598,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
       transform: scaleX(0);
       transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -628,46 +628,46 @@
     }
 
     .stat-card:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
     }
 
     .stat-icon {
-      font-size: 3.5rem;
+      font-size: 2.8rem;
       color: var(--accent-color);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       transition: all 0.4s ease;
       display: inline-block;
     }
 
     .stat-card:hover .stat-icon {
-      transform: scale(1.2) rotate(10deg);
+      transform: scale(1.2) rotate(8deg);
       animation: iconPulse 1s ease-in-out infinite;
     }
 
     @keyframes iconPulse {
       0%, 100% { 
         text-shadow: 
-          0 0 5px rgba(59, 130, 246, 0.5),
-          0 0 10px rgba(59, 130, 246, 0.3),
-          0 0 15px rgba(59, 130, 246, 0.1);
+          0 0 4px rgba(59, 130, 246, 0.5),
+          0 0 8px rgba(59, 130, 246, 0.3),
+          0 0 12px rgba(59, 130, 246, 0.1);
       }
       50% { 
         text-shadow: 
-          0 0 10px rgba(59, 130, 246, 0.8),
-          0 0 20px rgba(59, 130, 246, 0.5),
-          0 0 30px rgba(59, 130, 246, 0.2);
+          0 0 8px rgba(59, 130, 246, 0.8),
+          0 0 16px rgba(59, 130, 246, 0.5),
+          0 0 24px rgba(59, 130, 246, 0.2);
       }
     }
 
     .stat-number {
-      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
       font-weight: 700;
       background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: block;
       position: relative;
     }
@@ -678,44 +678,44 @@
 
     @keyframes numberGlow {
       0%, 100% { 
-        filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3));
+        filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.3));
       }
       50% { 
-        filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.8));
+        filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.8));
         transform: scale(1.05);
       }
     }
 
     .stat-label {
-      font-size: 1.1rem;
+      font-size: 0.88rem;
       color: var(--text-dark);
       font-weight: 500;
     }
 
-    /* Team Section with epic photo effects */
+    /* Team Section - 20% smaller */
     .team-section {
-      padding: 100px 0;
+      padding: 80px 0;
       background: white;
     }
 
     .team-card {
       background: rgba(248, 250, 252, 0.8);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 40px 30px;
+      padding: 32px 24px;
       text-align: center;
       transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
-      max-width: 400px;
+      max-width: 320px;
       margin: 0 auto;
-      transform: perspective(1000px) rotateY(10deg);
+      transform: perspective(800px) rotateY(8deg);
       opacity: 0;
     }
 
     .team-card.animate {
-      transform: perspective(1000px) rotateY(0deg);
+      transform: perspective(800px) rotateY(0deg);
       opacity: 1;
     }
 
@@ -749,29 +749,29 @@
     }
 
     .team-card:hover {
-      transform: translateY(-15px) scale(1.05);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
       background: white;
       border-color: var(--accent-color);
     }
 
     .team-photo {
-      width: 120px;
-      height: 120px;
+      width: 96px;
+      height: 96px;
       border-radius: 50%;
-      margin: 0 auto 30px;
+      margin: 0 auto 24px;
       overflow: hidden;
       position: relative;
       z-index: 2;
-      border: 4px solid var(--accent-light);
+      border: 3px solid var(--accent-light);
       transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     }
 
     .team-photo::before {
       content: '';
       position: absolute;
-      inset: -4px;
+      inset: -3px;
       border-radius: 50%;
       background: conic-gradient(from 0deg, var(--accent-color), var(--primary-color), var(--accent-light), var(--accent-color));
       animation: photoRotate 3s linear infinite paused;
@@ -796,7 +796,7 @@
 
     .team-card:hover .team-photo {
       transform: scale(1.1);
-      box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
     }
 
     .team-card:hover .team-photo img {
@@ -805,17 +805,17 @@
     }
 
     .team-name {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--text-dark);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       position: relative;
     }
 
     .team-name::after {
       content: '';
       position: absolute;
-      bottom: -5px;
+      bottom: -4px;
       left: 50%;
       width: 0;
       height: 2px;
@@ -831,42 +831,43 @@
     .team-role {
       color: var(--accent-color);
       font-weight: 600;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.9rem;
+      letter-spacing: 0.8px;
+      font-size: 0.72rem;
       position: relative;
     }
 
     .team-description {
       color: var(--text-muted);
-      line-height: 1.7;
+      line-height: 1.6;
+      font-size: 0.8rem;
     }
 
-    /* Values Section with staggered animations */
+    /* Values Section - 20% smaller */
     .values-section {
-      padding: 100px 0;
+      padding: 80px 0;
       background: rgba(255, 255, 255, 0.95);
     }
 
     .values-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      margin-top: 60px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
     }
 
     .value-card {
       background: white;
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 40px 30px;
+      padding: 32px 24px;
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-light);
-      transform: translateY(50px) rotateX(10deg);
+      transform: translateY(40px) rotateX(8deg);
       opacity: 0;
     }
 
@@ -892,7 +893,7 @@
       bottom: 0;
       left: 50%;
       width: 0;
-      height: 3px;
+      height: 2px;
       background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
       transition: all 0.4s ease;
       transform: translateX(-50%);
@@ -907,44 +908,45 @@
     }
 
     .value-card:hover {
-      transform: translateY(-15px) scale(1.02);
+      transform: translateY(-12px) scale(1.02);
       box-shadow: var(--shadow-medium);
       border-color: var(--accent-color);
     }
 
     .value-icon {
-      font-size: 3rem;
+      font-size: 2.4rem;
       color: var(--accent-color);
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       transition: all 0.4s ease;
       display: inline-block;
     }
 
     .value-card:hover .value-icon {
-      transform: scale(1.1) rotate(-10deg);
+      transform: scale(1.1) rotate(-8deg);
       animation: valueIconFloat 2s ease-in-out infinite;
     }
 
     @keyframes valueIconFloat {
-      0%, 100% { transform: scale(1.1) rotate(-10deg) translateY(0); }
-      50% { transform: scale(1.1) rotate(-10deg) translateY(-5px); }
+      0%, 100% { transform: scale(1.1) rotate(-8deg) translateY(0); }
+      50% { transform: scale(1.1) rotate(-8deg) translateY(-4px); }
     }
 
     .value-title {
-      font-size: 1.4rem;
+      font-size: 1.12rem;
       font-weight: 700;
       color: var(--text-dark);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .value-description {
       color: var(--text-muted);
-      line-height: 1.7;
+      line-height: 1.6;
+      font-size: 0.8rem;
     }
 
-    /* CTA Section with epic button */
+    /* CTA Section - 20% smaller */
     .cta-section {
-      padding: 80px 0;
+      padding: 64px 0;
       text-align: center;
       background: var(--gradient-bg);
       position: relative;
@@ -964,13 +966,13 @@
 
     .cta-card {
       background: var(--card-bg);
-      backdrop-filter: blur(25px);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-xl);
-      padding: 60px 40px;
+      padding: 48px 32px;
       position: relative;
       overflow: hidden;
-      max-width: 800px;
+      max-width: 640px;
       margin: 0 auto;
       box-shadow: var(--shadow-large);
       z-index: 1;
@@ -986,17 +988,17 @@
 
     .cta-title {
       font-family: 'Poppins', serif;
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       color: var(--primary-color);
     }
 
     .cta-text {
-      font-size: 1.2rem;
+      font-size: 0.96rem;
       color: var(--text-muted);
-      margin-bottom: 40px;
-      line-height: 1.6;
+      margin-bottom: 32px;
+      line-height: 1.5;
     }
 
     .cta-button {
@@ -1004,17 +1006,17 @@
       border: none;
       color: white;
       font-weight: 700;
-      font-size: 18px;
-      border-radius: 50px;
-      padding: 18px 40px;
+      font-size: 14px;
+      border-radius: 40px;
+      padding: 14px 32px;
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
       overflow: hidden;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       text-decoration: none;
       display: inline-block;
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      box-shadow: 0 3px 12px rgba(59, 130, 246, 0.3);
     }
 
     .cta-button::before {
@@ -1052,8 +1054,8 @@
     }
 
     .cta-button:hover {
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 24px rgba(59, 130, 246, 0.5);
       color: white;
       text-decoration: none;
       animation: buttonPulse 1.5s ease-in-out infinite;
@@ -1061,18 +1063,18 @@
 
     @keyframes buttonPulse {
       0%, 100% { 
-        box-shadow: 0 15px 30px rgba(59, 130, 246, 0.5);
+        box-shadow: 0 12px 24px rgba(59, 130, 246, 0.5);
       }
       50% { 
-        box-shadow: 0 15px 30px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6);
+        box-shadow: 0 12px 24px rgba(59, 130, 246, 0.8), 0 0 16px rgba(59, 130, 246, 0.6);
       }
     }
 
-    /* Enhanced Footer */
+    /* Enhanced Footer - 20% smaller */
     footer {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
       color: rgba(255, 255, 255, 0.9);
-      padding: 3rem 0 2rem;
+      padding: 2.4rem 0 1.6rem;
       position: relative;
       overflow: hidden;
     }
@@ -1097,31 +1099,31 @@
     .footer-content h3 {
       font-family: 'Poppins', serif;
       font-weight: 700;
-      font-size: 1.75rem;
-      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
       color: white;
     }
 
     .social-links {
-      margin: 2rem 0;
+      margin: 1.6rem 0;
     }
 
     .social-links a {
       display: inline-block;
-      margin: 0 1rem;
-      padding: 1rem;
+      margin: 0 0.8rem;
+      padding: 0.8rem;
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 50%;
       color: rgba(255, 255, 255, 0.8);
-      font-size: 1.25rem;
-      width: 50px;
-      height: 50px;
+      font-size: 1rem;
+      width: 40px;
+      height: 40px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
       position: relative;
       overflow: hidden;
     }
@@ -1142,8 +1144,8 @@
 
     .social-links a:hover {
       color: white;
-      transform: translateY(-5px) scale(1.1);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transform: translateY(-4px) scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       text-decoration: none;
     }
 
@@ -1154,16 +1156,16 @@
     }
 
     .social-links a:hover i {
-      transform: scale(1.1) rotate(10deg);
+      transform: scale(1.1) rotate(8deg);
     }
 
-    /* Scroll to top with pulse animation */
+    /* Scroll to top - 20% smaller */
     .scroll-to-top {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 50px;
-      height: 50px;
+      bottom: 1.6rem;
+      right: 1.6rem;
+      width: 40px;
+      height: 40px;
       background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
       border: none;
       border-radius: 50%;
@@ -1189,20 +1191,20 @@
         box-shadow: var(--shadow-medium);
       }
       50% { 
-        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6), 0 0 16px rgba(59, 130, 246, 0.4);
         transform: scale(1.05);
       }
     }
 
     .scroll-to-top:hover {
       transform: scale(1.15);
-      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.8);
+      box-shadow: 0 12px 28px rgba(59, 130, 246, 0.8);
       animation: none;
     }
 
     .scroll-to-top i {
       color: white;
-      font-size: 1.2rem;
+      font-size: 0.96rem;
       transition: transform 0.3s ease;
     }
 
@@ -1210,7 +1212,7 @@
       transform: translateY(-2px);
     }
 
-    /* Loading overlay with epic animation */
+    /* Loading overlay - 20% smaller */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -1227,20 +1229,20 @@
     }
 
     .loader {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(255, 255, 255, 0.2);
-      border-top: 4px solid white;
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top: 3px solid white;
       border-radius: 50%;
       animation: loaderSpin 1s linear infinite;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       position: relative;
     }
 
     .loader::before {
       content: '';
       position: absolute;
-      inset: 8px;
+      inset: 6px;
       border: 2px solid transparent;
       border-top: 2px solid rgba(255, 255, 255, 0.6);
       border-radius: 50%;
@@ -1254,10 +1256,10 @@
 
     .loading-text {
       color: white;
-      font-size: 1.2rem;
+      font-size: 0.96rem;
       font-weight: 600;
       animation: loadingTextPulse 1.5s ease-in-out infinite;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
     }
 
     @keyframes loadingTextPulse {
@@ -1265,47 +1267,47 @@
       50% { opacity: 1; }
     }
 
-    /* Responsive Design */
+    /* Responsive Design - 20% smaller breakpoints and sizes */
     @media (max-width: 768px) {
       .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
 
       .section-card {
-        padding: 30px 20px;
-        margin: 0 15px 30px;
+        padding: 24px 16px;
+        margin: 0 12px 24px;
       }
 
       .team-card {
-        margin: 0 15px;
+        margin: 0 12px;
       }
 
       .values-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 16px;
       }
 
       .cta-card {
-        padding: 40px 20px;
-        margin: 0 15px;
+        padding: 32px 16px;
+        margin: 0 12px;
       }
 
       .nav-link {
-        margin: 0.25rem 0;
+        margin: 0.16rem 0;
       }
     }
 
     @media (max-width: 576px) {
       .hero-title {
-        font-size: 1.75rem;
+        font-size: 1.4rem;
       }
 
       .section-card {
-        padding: 1.5rem 1rem;
+        padding: 1.2rem 0.8rem;
       }
 
       .team-card {
-        padding: 30px 20px;
+        padding: 24px 16px;
       }
     }
 
@@ -1347,7 +1349,7 @@
   <nav class="navbar navbar-expand-lg" id="mainNavbar">
     <div class="container">
       <a class="navbar-brand" href="{{ url_for('home') }}">
-        <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="40">
+        <img src="https://gajajyoti.cutm.ac.in/img/images-removebg-preview.png" alt="CUTM Logo" height="32">
         CUTM Portal
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -1396,11 +1398,6 @@
       <div class="row justify-content-center">
         <div class="col-lg-10">
           <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
-            <!-- <div class="breadcrumb-nav" data-aos="fade-up" data-aos-delay="100">
-              <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
-              <i class="fas fa-chevron-right"></i>
-              <span class="current">About Us</span>
-            </div> -->
             <h1 class="hero-title">About CUTM Portal</h1>
             <p class="hero-subtitle">
               Discover the story behind our commitment to academic excellence, innovation,
@@ -1430,7 +1427,7 @@
             </p>
             <p class="section-text">
               We are committed to fostering educational excellence by providing intuitive digital solutions
-              that empower students, faculty, and administrators with the tools they need to succeed .
+              that empower students, faculty, and administrators with the tools they need to succeed.
             </p>
           </div>
         </div>
@@ -1587,27 +1584,7 @@
             practices in all our operations and interactions.
           </p>
         </div>
-
-        <!-- Value 5 -->
-        <div class="value-card" data-aos="fade-up" data-aos-delay="700">
-          <div class="value-icon"><i class="fas fa-clock"></i></div>
-          <h3 class="value-title">Reliability</h3>
-          <p class="value-description">
-            Providing consistent, dependable service that students and faculty
-            can rely on for their most important academic needs.
-          </p>
-        </div>
-
-        <!-- Value 6 -->
-        <div class="value-card" data-aos="fade-up" data-aos-delay="800">
-          <div class="value-icon"><i class="fas fa-star"></i></div>
-          <h3 class="value-title">Excellence</h3>
-          <p class="value-description">
-            Striving for excellence in every aspect of our platform, from
-            user experience to system performance and customer support.
-          </p>
-        </div>
-      </div>
+ 
     </div>
   </section>
 
@@ -1632,7 +1609,7 @@
     <div class="container">
       <div class="footer-content">
         <h3>CUTM Result Portal</h3>
-        <p style="margin-bottom: 1.5rem; opacity: 0.9;">
+        <p style="margin-bottom: 1.2rem; opacity: 0.9;">
           Empowering students with transparent, secure, and instant access to their academic achievements through innovative technology.
         </p>
         
@@ -1651,7 +1628,7 @@
           </a>
         </div>
         
-        <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.5rem; margin-top: 2rem; opacity: 0.8;">
+        <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.2rem; margin-top: 1.6rem; opacity: 0.8;">
           <p>&copy; 2025 CUTM Result Portal. All rights reserved. | Crafted with excellence for academic success.</p>
         </div>
       </div>
@@ -1671,9 +1648,9 @@
   <script>
     // Initialize AOS with custom settings
     AOS.init({
-      duration: 1000,
+      duration: 800,
       once: true,
-      offset: 100,
+      offset: 80,
       easing: 'ease-out-cubic'
     });
 
@@ -1684,8 +1661,8 @@
         overlay.style.opacity = '0';
         setTimeout(() => {
           overlay.style.display = 'none';
-        }, 800);
-      }, 2000);
+        }, 640);
+      }, 1600);
     });
 
     // Enhanced navbar scroll effect
@@ -1694,7 +1671,7 @@
       const navbar = $('#mainNavbar');
       const scrollToTop = $('#scrollToTop');
       
-      if (scrollTop > 100) {
+      if (scrollTop > 80) {
         navbar.addClass('scrolled');
         scrollToTop.addClass('show');
       } else {
@@ -1707,7 +1684,7 @@
     $('#scrollToTop').click(function() {
       $('html, body').animate({
         scrollTop: 0
-      }, 1000, 'easeInOutCubic');
+      }, 800, 'easeInOutCubic');
     });
 
     // Enhanced animated counter with glow effect
@@ -1721,7 +1698,7 @@
           $({ countNum: 0 }).animate({
             countNum: countTo
           }, {
-            duration: 2500,
+            duration: 2000,
             easing: 'easeOutCubic',
             step: function() {
               $this.text(Math.floor(this.countNum).toLocaleString());
@@ -1729,17 +1706,17 @@
             complete: function() {
               $this.text(countTo.toLocaleString() + '+');
               $this.closest('.stat-card').addClass('animated');
-              setTimeout(() => $this.removeClass('counting'), 500);
+              setTimeout(() => $this.removeClass('counting'), 400);
             }
           });
-        }, index * 300);
+        }, index * 240);
       });
     }
 
     // Intersection Observer for enhanced animations
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
     };
 
     const observer = new IntersectionObserver(function(entries) {
@@ -1756,7 +1733,7 @@
           }
           if (entry.target.classList.contains('value-card')) {
             setTimeout(() => entry.target.classList.add('animate'), 
-                      Array.from(entry.target.parentElement.children).indexOf(entry.target) * 100);
+                      Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80);
           }
           if (entry.target.classList.contains('cta-card')) {
             entry.target.classList.add('animate');
@@ -1780,9 +1757,9 @@
         const windowTop = $(window).scrollTop();
         const windowHeight = $(window).height();
         
-        if (windowTop + windowHeight > statsTop + 200 && !statsAnimated) {
+        if (windowTop + windowHeight > statsTop + 160 && !statsAnimated) {
           statsAnimated = true;
-          setTimeout(animateCounter, 500);
+          setTimeout(animateCounter, 400);
         }
       }
     });
@@ -1792,11 +1769,11 @@
       const target = $(this.getAttribute('href'));
       if (target.length) {
         event.preventDefault();
-        const offsetTop = target.offset().top - 100;
+        const offsetTop = target.offset().top - 80;
         
         $('html, body').stop().animate({
           scrollTop: offsetTop
-        }, 1200, 'easeInOutCubic');
+        }, 960, 'easeInOutCubic');
       }
     });
 
@@ -1827,12 +1804,12 @@
       const scrolled = $(window).scrollTop();
       
       // Hero parallax
-      $('.hero-content').css('transform', `translateY(${scrolled * 0.1}px)`);
+      $('.hero-content').css('transform', `translateY(${scrolled * 0.08}px)`);
       
       // Floating shapes parallax
       $('.shape').each(function(index) {
-        const speed = 0.2 + (index * 0.1);
-        $(this).css('transform', `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`);
+        const speed = 0.16 + (index * 0.08);
+        $(this).css('transform', `translateY(${scrolled * speed}px) rotate(${scrolled * 0.08}deg)`);
       });
     });
 
@@ -1842,18 +1819,18 @@
       
       // Stagger value card animations
       $('.value-card').each(function(index) {
-        $(this).css('transition-delay', (index * 0.1) + 's');
+        $(this).css('transition-delay', (index * 0.08) + 's');
       });
       
       // Add random rotation to floating shapes
       $('.shape').each(function() {
-        $(this).css('animation-delay', Math.random() * 10 + 's');
+        $(this).css('animation-delay', Math.random() * 8 + 's');
       });
     });
 
     // Enhanced button interactions
     $('.cta-button').on('mouseenter', function() {
-      $(this).find('i').css('transform', 'translateX(5px)');
+      $(this).find('i').css('transform', 'translateX(4px)');
     }).on('mouseleave', function() {
       $(this).find('i').css('transform', 'translateX(0)');
     });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Result | CUTM</title>
+  <title>Multi-Semester Result | CUTM</title>
   <link rel="icon" type="image/x-icon" href="https://github.com/AYUSHRAHUL/cutm-result-portal/blob/main/templates/spinner.jpg?raw=true">
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -392,6 +392,9 @@
     .desktop-table tbody tr:nth-child(6) { animation-delay: 2.4s; }
     .desktop-table tbody tr:nth-child(7) { animation-delay: 2.5s; }
     .desktop-table tbody tr:nth-child(8) { animation-delay: 2.6s; }
+    .desktop-table tbody tr:nth-child(9) { animation-delay: 2.7s; }
+    .desktop-table tbody tr:nth-child(10) { animation-delay: 2.8s; }
+    .desktop-table tbody tr:nth-child(n+11) { animation-delay: 2.9s; }
     
     @keyframes rowFadeIn {
       from { 
@@ -870,7 +873,7 @@
   <!-- Professional Loading Overlay -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-spinner"></div>
-    <div class="loading-text" id="loadingText">Loading Result...</div>
+    <div class="loading-text" id="loadingText">Loading Multi-Semester Results...</div>
     <div class="loading-subtitle" id="loadingSubtitle">Please wait while we fetch your data</div>
   </div>
 
@@ -911,34 +914,36 @@
     <div class="student-info" data-aos="fade-up" data-aos-duration="800">
       <div class="row">
         <div class="col-md-6 col-12" data-aos="fade-right" data-aos-delay="100">
-          <b>Registration Number:</b> {{ result[0].Reg_No }}
+          <b>Registration Number:</b> {{ result[0].Reg_No if result and result[0] else registration if registration else 'N/A' }}
         </div>
         <div class="col-md-6 col-12" data-aos="fade-left" data-aos-delay="200">
-          <b>Name:</b> {{ result[0].Name }}
+          <b>Name:</b> {{ result[0].Name if result and result[0] else name if name else 'N/A' }}
         </div>
         <div class="col-md-6 col-12" data-aos="fade-right" data-aos-delay="300">
-          <b>Semester:</b> {{ result[0].Sem if result[0].Sem else selected_semester }}
+          <b>Semesters:</b> {{ semesters_display if semesters_display else 'Multiple' }}
         </div>
         <div class="col-md-6 col-12" data-aos="fade-left" data-aos-delay="400">
-          <b>Number of Subjects:</b> {{ count }}
+          <b>Total Subjects:</b> {{ count if count else result|length }}
         </div>
       </div>
     </div>
     
-    <!-- Subject Table with Row Animations -->
+    <!-- Subject Table with Row Animations - UPDATED to include Semester column -->
     <div class="desktop-table table-responsive" data-aos="fade-up" data-aos-duration="800" data-aos-delay="700">
       <table>
         <thead>
           <tr>
-            <th data-aos="fade-down" data-aos-delay="800">Subject Code</th>
+            <th data-aos="fade-down" data-aos-delay="800">Semester</th>
+            <th data-aos="fade-down" data-aos-delay="850">Subject Code</th>
             <th data-aos="fade-down" data-aos-delay="900">Subject Name</th>
-            <th data-aos="fade-down" data-aos-delay="1000">Credits</th>
-            <th data-aos="fade-down" data-aos-delay="1100">Grade</th>
+            <th data-aos="fade-down" data-aos-delay="950">Credits</th>
+            <th data-aos="fade-down" data-aos-delay="1000">Grade</th>
           </tr>
         </thead>
         <tbody>
           {% for row in result %}
-          <tr data-aos="fade-right" data-aos-delay="{{ 1200 + loop.index0 * 100 }}">
+          <tr data-aos="fade-right" data-aos-delay="{{ 1200 + loop.index0 * 50 }}">
+            <td><b>{{ row.Sem }}</b></td>
             <td>{{ row.Subject_Code }}</td>
             <td style="font-weight: 600;">{{ row.Subject_Name }}</td>
             <td>{{ row.Credits }}</td>
@@ -949,7 +954,7 @@
       </table>
     </div>
 
-    <!-- Additional Information Section - Now with 5 columns including SGPA and CGPA -->
+    <!-- Additional Information Section - FIXED for multi-semester -->
     <div class="additional-info" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
       <div class="info-row">
         <div class="info-item">
@@ -959,13 +964,13 @@
           <b>Credits Cleared:</b> <span id="creditsCleared">0</span>
         </div>
         <div class="info-item">
-          <b>SGPA:</b> {{ '%.2f' % sgpa if sgpa else 'N/A' }}
+          <b>Overall SGPA:</b> N/A
         </div>
         <div class="info-item">
           <b>CGPA:</b> {{ '%.2f' % cgpa if cgpa else 'N/A' }}
         </div>
         <div class="info-item">
-          <b>Date:</b> <span id="currentDate">--</span>
+          <b>Date:</b> <span id="currentDate">10-Sep-2025</span>
         </div>
       </div>
     </div>
@@ -975,7 +980,7 @@
   <div class="download-section">
     <button id="downloadPdfBtn" onclick="downloadPDF()" class="btn btn-lg download-btn">
       <i class="fas fa-file-pdf"></i>
-      Download Result as PDF
+      Download Multi-Semester Result as PDF
     </button>
   </div>
   
@@ -991,24 +996,34 @@
       offset: 50
     });
 
-    // FIXED Function to calculate credits with NO DECIMALS
+    // UPDATED Function to calculate credits for multi-semester data
     function calculateCredits() {
-      const failedGrades = ['S', 'F', 'M', 'I', 'R'];  // Failed/incomplete grades
+      const failedGrades = ['S', 'F', 'M', 'I', 'R'];
       let totalCredits = 0;
       let creditsCleared = 0;
       
-      // Get all table rows
+      // Get all table rows (excluding header)
       const tableRows = document.querySelectorAll('.desktop-table tbody tr');
       
-      console.log('Found table rows:', tableRows.length); // Debug log
+      console.log('Found table rows:', tableRows.length);
       
       tableRows.forEach((row, index) => {
         const cells = row.querySelectorAll('td');
-        if (cells.length >= 4) {
-          const credits = parseFloat(cells[2].textContent) || 0;
-          const grade = cells[3].textContent.trim().toUpperCase();
+        if (cells.length >= 5) { // Now we have 5 columns including semester
+          const creditsText = cells[3].textContent.trim();
+          let credits = 0;
           
-          console.log(`Row ${index}: Credits=${credits}, Grade=${grade}`); // Debug log
+          // Handle credits like "4+2" or single values
+          if (creditsText.includes('+')) {
+            const parts = creditsText.split('+');
+            credits = parts.reduce((sum, part) => sum + (parseFloat(part.trim()) || 0), 0);
+          } else {
+            credits = parseFloat(creditsText) || 0;
+          }
+          
+          const grade = cells[4].textContent.trim().toUpperCase();
+          
+          console.log(`Row ${index}: Semester=${cells[0].textContent}, Credits=${credits}, Grade=${grade}`);
           
           // Total Credits: Sum of ALL subject credits
           totalCredits += credits;
@@ -1020,20 +1035,20 @@
         }
       });
       
-      console.log('Before rounding - Total Credits:', totalCredits, 'Credits Cleared:', creditsCleared); // Debug log
+      console.log('Before rounding - Total Credits:', totalCredits, 'Credits Cleared:', creditsCleared);
       
-      // FIXED: Force whole numbers (no decimals) - using Math.round
+      // Force whole numbers (no decimals)
       totalCredits = Math.round(totalCredits);
       creditsCleared = Math.round(creditsCleared);
       
-      console.log('After rounding - Total Credits:', totalCredits, 'Credits Cleared:', creditsCleared); // Debug log
+      console.log('After rounding - Total Credits:', totalCredits, 'Credits Cleared:', creditsCleared);
       
       // Update the display
       document.getElementById('totalCredits').textContent = totalCredits;
       document.getElementById('creditsCleared').textContent = creditsCleared;
     }
 
-    // Function to show current date
+    // Function to show current date - FIXED
     function showCurrentDate() {
       const now = new Date();
       const day = String(now.getDate()).padStart(2, '0');
@@ -1041,20 +1056,29 @@
       const year = now.getFullYear();
       
       const formattedDate = `${day}-${monthName}-${year}`;
-      document.getElementById('currentDate').textContent = formattedDate;
+      console.log('Setting date to:', formattedDate); // Debug log
+      
+      const dateElement = document.getElementById('currentDate');
+      if (dateElement) {
+        dateElement.textContent = formattedDate;
+        console.log('Date element found and updated'); // Debug log
+      } else {
+        console.log('Date element not found!'); // Debug log
+      }
     }
 
-    // FIXED Professional loading sequence - Waits for table to be rendered
+    // UPDATED Professional loading sequence for multi-semester
     window.addEventListener('load', function() {
       const loadingText = document.getElementById('loadingText');
       const loadingSubtitle = document.getElementById('loadingSubtitle');
       
       const loadingMessages = [
-        { text: 'Loading Result...', subtitle: 'Connecting to CUTM servers' },
-        { text: 'Fetching Data...', subtitle: 'Retrieving student information' },
-        { text: 'Processing Grades...', subtitle: 'Calculating SGPA and CGPA' },
-        { text: 'Preparing Display...', subtitle: 'Formatting result data' },
-        { text: 'Almost Ready...', subtitle: 'Finalizing presentation' }
+        { text: 'Loading Multi-Semester Results...', subtitle: 'Connecting to CUTM servers' },
+        { text: 'Fetching Data...', subtitle: 'Retrieving multi-semester information' },
+        { text: 'Processing Grades...', subtitle: 'Calculating overall SGPA and CGPA' },
+        { text: 'Organizing Data...', subtitle: 'Sorting by semester and subject' },
+        { text: 'Preparing Display...', subtitle: 'Formatting comprehensive result data' },
+        { text: 'Almost Ready...', subtitle: 'Finalizing multi-semester presentation' }
       ];
       
       let messageIndex = 0;
@@ -1080,27 +1104,35 @@
           overlay.style.display = 'none';
           triggerEntranceAnimations();
           
-          // FIXED: Wait for table to be fully rendered, then calculate credits
+          // FIXED: Always call these functions
+          console.log('Calling calculateCredits and showCurrentDate...'); // Debug log
+          calculateCredits();
+          showCurrentDate();
+          
+          // Wait for table to be fully rendered, then calculate credits again if needed
           const waitForTable = () => {
             const tableRows = document.querySelectorAll('.desktop-table tbody tr');
-            console.log('Checking for table rows:', tableRows.length); // Debug log
+            console.log('Checking for table rows:', tableRows.length);
             
             if (tableRows.length > 0) {
-              // Table is ready, now calculate credits
-              console.log('Table found! Calculating credits...'); // Debug log
+              console.log('Table found! Calculating credits again...');
               calculateCredits();
               showCurrentDate();
-            } else {
-              // Table not ready yet, wait a bit more
-              console.log('Table not ready, waiting...'); // Debug log
-              setTimeout(waitForTable, 500);
             }
           };
           
-          // Start checking for table after a delay to allow animations to complete
-          setTimeout(waitForTable, 2000);
+          setTimeout(waitForTable, 1000);
         }, 500);
-      }, 3500);
+      }, 4000);
+    });
+    
+    // Also call the functions immediately when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        console.log('DOM ready - calling functions...'); // Debug log
+        calculateCredits();
+        showCurrentDate();
+      }, 1000);
     });
     
     // Trigger entrance animations
@@ -1180,7 +1212,7 @@
       }
     }, 4000);
     
-    // Enhanced Download as PDF functionality
+    // Enhanced Download as PDF functionality for multi-semester
     function downloadPDF() {
       try {
         if (!window.print) {
@@ -1190,16 +1222,26 @@
 
         const downloadBtn = document.getElementById('downloadPdfBtn');
         
-        // Set document title for PDF filename
-        const regNo = document.querySelector('.student-info .col-md-6 b').nextSibling.textContent.trim();
-        document.title = `CUTM_Result_${regNo.replace(/\s+/g, '_')}`;
+        // Set document title for PDF filename - for multi-semester
+        const regNoElement = document.querySelector('.student-info .col-md-6');
+        let regNo = 'CUTM_Result';
+        
+        if (regNoElement) {
+          const regNoText = regNoElement.textContent.trim();
+          const match = regNoText.match(/Registration Number:\s*(.+)/);
+          if (match && match[1] && match[1] !== 'N/A') {
+            regNo = match[1].trim();
+          }
+        }
+        
+        document.title = `CUTM_Multi_Semester_Result_${regNo.replace(/\s+/g, '_')}`;
         
         // Disable button to prevent multiple clicks
         downloadBtn.disabled = true;
         downloadBtn.style.opacity = '0.6';
-        downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing PDF...';
+        downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing Multi-Semester PDF...';
         
-        showDownloadMessage('Preparing PDF for download...', 'info');
+        showDownloadMessage('Preparing multi-semester PDF for download...', 'info');
         
         // Add enhanced print CSS for better PDF output
         const printCSS = `
@@ -1272,9 +1314,9 @@
                 // Re-enable button
                 downloadBtn.disabled = false;
                 downloadBtn.style.opacity = '1';
-                downloadBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Result as PDF';
+                downloadBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Multi-Semester Result as PDF';
                 
-                showDownloadMessage('PDF generation completed! Check your browser\'s download folder.', 'success');
+                showDownloadMessage('Multi-semester PDF generation completed! Check your browser\'s download folder.', 'success');
               };
               
               if ('onafterprint' in window) {
@@ -1293,7 +1335,7 @@
             
             downloadBtn.disabled = false;
             downloadBtn.style.opacity = '1';
-            downloadBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Result as PDF';
+            downloadBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Multi-Semester Result as PDF';
           }
         }, 200);
         
@@ -1304,7 +1346,7 @@
         const downloadBtn = document.getElementById('downloadPdfBtn');
         downloadBtn.disabled = false;
         downloadBtn.style.opacity = '1';
-        downloadBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Result as PDF';
+        downloadBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Multi-Semester Result as PDF';
       }
     }
     
