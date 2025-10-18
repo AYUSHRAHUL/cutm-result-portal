@@ -89,7 +89,7 @@ This system provides efficient student data management with features like GPA ca
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/cutm-result-management.git
+   git clone https://github.com/AYUSHRAHUL/cutm-result-management.git
    cd cutm-result-management
 
 
